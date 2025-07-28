@@ -2,15 +2,15 @@ package com.arthur.ecommerceapi.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record CustomerRequest(@NotBlank
+public record CustomerRequestDTO(@NotBlank
                               String name,
 
-                              @NotBlank
+                                 @NotBlank
                               String email ,
 
-                              @NotBlank
+                                 @NotBlank
                               String phone ,
 
-                              @NotBlank
+                                 @NotBlank
                               String password
 ) {}

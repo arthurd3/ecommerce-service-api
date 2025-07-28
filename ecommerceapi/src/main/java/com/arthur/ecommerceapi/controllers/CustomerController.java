@@ -1,7 +1,8 @@
 package com.arthur.ecommerceapi.controllers;
 
-import com.arthur.ecommerceapi.dtos.request.CustomerRequest;
-import com.arthur.ecommerceapi.dtos.response.CustomerResponse;
+import com.arthur.ecommerceapi.controllers.mapper.CustomerMapper;
+import com.arthur.ecommerceapi.dtos.request.CustomerRequestDTO;
+import com.arthur.ecommerceapi.dtos.response.CustomerResponseDTO;
 import com.arthur.ecommerceapi.usecases.CreateCustomer;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +15,13 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequiredArgsConstructor
 public class CustomerController {
 
+    private final CustomerMapper mapper;
     private final CreateCustomer create;
 
     @ResponseStatus(CREATED)
     @PostMapping
-    public CustomerResponse save(@RequestBody @Valid final CustomerRequest dto){
-        return create.createCustomer(dto);
+    public CustomerResponseDTO save(@RequestBody @Valid final CustomerRequestDTO dto){
+        final var customer = mapper.toDomain(dto);
+        return mapper.toDTO(create.createCustomer(customer));
     }
 }
