@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.controllers;
 
 import com.arthur.ecommerceapi.dtos.request.CustomerRequest;
+import com.arthur.ecommerceapi.dtos.response.CustomerResponse;
 import com.arthur.ecommerceapi.usecases.CreateCustomer;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +17,8 @@ public class Customer {
     private final CreateCustomer create;
 
     @ResponseStatus(CREATED)
-    @PostMapping()
+    @PostMapping
     public CustomerResponse save(@RequestBody @Valid final CustomerRequest dto){
         return create.createCustomer(dto);
     }
-
-
 }
