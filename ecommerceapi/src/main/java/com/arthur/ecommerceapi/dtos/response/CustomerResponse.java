@@ -1,4 +1,5 @@
 package com.arthur.ecommerceapi.dtos.response;
 
-public class CustomerResponse {
+
+public record CustomerResponse(Long id , String name , String email){
 }

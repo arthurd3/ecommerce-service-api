@@ -1,8 +1,8 @@
 package com.arthur.ecommerceapi.gateways;
 
-import com.arthur.ecommerceapi.controllers.Customer;
+import com.arthur.ecommerceapi.controllers.CustomerController;
 
 public interface CustomerGateway {
 
-    Customer save();
+    CustomerController save();
 }
