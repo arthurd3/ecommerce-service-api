@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 public class DeleteCustomer {
 
     private final CustomerGateway customerGateway;
+    private final CustomerValidator validator;
 
     public void delete(final Long id){
+        validator.validateExists(id);
         customerGateway.delete(id);
     }
 
