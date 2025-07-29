@@ -1,8 +1,10 @@
 package com.arthur.ecommerceapi.controllers;
 
 import com.arthur.ecommerceapi.controllers.mapper.CustomerMapper;
+import com.arthur.ecommerceapi.dtos.request.AddressRequestDTO;
 import com.arthur.ecommerceapi.dtos.request.CustomerPutRequestDTO;
 import com.arthur.ecommerceapi.dtos.request.CustomerRequestDTO;
+import com.arthur.ecommerceapi.dtos.response.AddressResponseDTO;
 import com.arthur.ecommerceapi.dtos.response.CustomerResponseDTO;
 import com.arthur.ecommerceapi.usecases.*;
 import jakarta.validation.Valid;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/customer")
 @RequiredArgsConstructor
 public class CustomerController {
 

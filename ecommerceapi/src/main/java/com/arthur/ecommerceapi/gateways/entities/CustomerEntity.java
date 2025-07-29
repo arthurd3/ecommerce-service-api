@@ -24,4 +24,6 @@ public class CustomerEntity {
 
     private String phone;
 
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private AddressEntity address;
 }

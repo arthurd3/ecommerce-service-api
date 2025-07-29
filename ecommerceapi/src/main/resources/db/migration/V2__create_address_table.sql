@@ -1,0 +1,10 @@
+CREATE TABLE address(
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL ,
+    street VARCHAR(255) NOT NULL ,
+    city VARCHAR(255) NOT NULL ,
+    state VARCHAR(255) NOT NULL ,
+    zip VARCHAR(255) NOT NULL ,
+    country VARCHAR(255) NOT NULL,
+    customer_id BIGINT NOT NULL UNIQUE,
+    FOREIGN KEY (customer_id) REFERENCES customer(id)
+);
