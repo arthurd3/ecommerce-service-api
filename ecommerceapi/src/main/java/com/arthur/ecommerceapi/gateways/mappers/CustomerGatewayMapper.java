@@ -11,6 +11,4 @@ public interface CustomerGatewayMapper {
     Customer toDomain(CustomerEntity entity);
 
     CustomerEntity toEntity(Customer customer);
-
-
 }

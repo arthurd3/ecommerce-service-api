@@ -5,7 +5,11 @@ import com.arthur.ecommerceapi.gateways.CustomerGateway;
 import com.arthur.ecommerceapi.gateways.mappers.CustomerGatewayMapper;
 import com.arthur.ecommerceapi.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +31,11 @@ public class CustomerGatewayImpl implements CustomerGateway {
     @Override
     public Boolean existsByPhone(String phone) {
         return repository.existsByPhone(phone);
+    }
+
+    @Override
+    public Page<Customer> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(mapper::toDomain);
     }
 
 
