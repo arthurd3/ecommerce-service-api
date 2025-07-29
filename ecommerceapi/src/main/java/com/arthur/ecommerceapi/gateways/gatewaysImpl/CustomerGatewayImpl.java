@@ -20,8 +20,13 @@ public class CustomerGatewayImpl implements CustomerGateway {
     }
 
     @Override
-    public boolean existsByEmail(String email) {
+    public Boolean existsByEmail(String email) {
         return repository.existsByEmailIgnoreCase(email);
+    }
+
+    @Override
+    public Boolean existsByPhone(String phone) {
+        return repository.existsByPhone(phone);
     }
 
 

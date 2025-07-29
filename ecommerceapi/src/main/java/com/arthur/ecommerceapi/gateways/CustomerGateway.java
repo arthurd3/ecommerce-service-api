@@ -5,5 +5,7 @@ import com.arthur.ecommerceapi.domain.model.Customer;
 public interface CustomerGateway {
     Customer save(Customer customer);
 
-    boolean existsByEmail(String email);
+    Boolean existsByEmail(String email);
+
+    Boolean existsByPhone(String phone);
 }

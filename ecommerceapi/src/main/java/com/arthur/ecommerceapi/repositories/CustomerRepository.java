@@ -6,4 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
 
     Boolean existsByEmailIgnoreCase(String email);
+
+    Boolean existsByPhone(String phone);
+
 }

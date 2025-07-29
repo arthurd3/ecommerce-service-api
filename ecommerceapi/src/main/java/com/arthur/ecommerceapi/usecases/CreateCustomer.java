@@ -18,6 +18,10 @@ public class CreateCustomer {
             throw new UserAlreadyExistsException("Email already exists");
         }
 
+        if(customerGateway.existsByPhone(customer.getPhone())) {
+            throw new UserAlreadyExistsException("Phone already exists");
+        }
+
         return customerGateway.save(customer);
     }
 }
