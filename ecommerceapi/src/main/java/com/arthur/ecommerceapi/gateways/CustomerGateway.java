@@ -12,4 +12,7 @@ public interface CustomerGateway {
     Boolean existsByPhone(String phone);
 
     Page<Customer> findAll(Pageable pageable);
+
+    Customer findById(Long id);
+
 }

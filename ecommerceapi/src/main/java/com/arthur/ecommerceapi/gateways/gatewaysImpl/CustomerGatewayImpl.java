@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.gateways.gatewaysImpl;
 
 import com.arthur.ecommerceapi.domain.model.Customer;
+import com.arthur.ecommerceapi.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.gateways.CustomerGateway;
 import com.arthur.ecommerceapi.gateways.mappers.CustomerGatewayMapper;
 import com.arthur.ecommerceapi.repositories.CustomerRepository;
@@ -36,6 +37,12 @@ public class CustomerGatewayImpl implements CustomerGateway {
     @Override
     public Page<Customer> findAll(Pageable pageable) {
         return repository.findAll(pageable).map(mapper::toDomain);
+    }
+
+    @Override
+    public Customer findById(Long id) {
+        return mapper.toDomain(repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found -> " + id)));
     }
 
 
