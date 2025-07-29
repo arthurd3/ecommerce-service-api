@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.usecases;
 
 import com.arthur.ecommerceapi.domain.model.Customer;
+import com.arthur.ecommerceapi.exceptions.UserAlreadyExistsException;
 import com.arthur.ecommerceapi.gateways.CustomerGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,11 @@ public class CreateCustomer {
     private final CustomerGateway customerGateway;
 
     public Customer createCustomer(final Customer customer) {
+
+        if (customerGateway.existsByEmail(customer.getEmail())) {
+            throw new UserAlreadyExistsException("Email already exists");
+        }
+
         return customerGateway.save(customer);
     }
 }

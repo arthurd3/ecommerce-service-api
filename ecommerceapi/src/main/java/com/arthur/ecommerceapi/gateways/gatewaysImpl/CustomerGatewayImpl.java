@@ -18,4 +18,11 @@ public class CustomerGatewayImpl implements CustomerGateway {
     public Customer save(Customer customer) {
         return mapper.toDomain(repository.save(mapper.toEntity(customer)));
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return repository.existsByEmailIgnoreCase(email);
+    }
+
+
 }

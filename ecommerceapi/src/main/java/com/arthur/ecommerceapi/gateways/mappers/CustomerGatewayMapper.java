@@ -9,5 +9,8 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 @Mapper(componentModel = "spring" , unmappedTargetPolicy = IGNORE)
 public interface CustomerGatewayMapper {
     Customer toDomain(CustomerEntity entity);
+
     CustomerEntity toEntity(Customer customer);
+
+
 }
