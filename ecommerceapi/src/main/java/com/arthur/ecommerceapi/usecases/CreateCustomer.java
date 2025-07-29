@@ -12,7 +12,7 @@ public class CreateCustomer {
     private final CustomerGateway customerGateway;
     private final CustomerValidator customerValidator;
 
-    public Customer execute(final Customer customer) {
+    public Customer create(final Customer customer) {
         customerValidator.validate(customer);
         return customerGateway.save(customer);
     }

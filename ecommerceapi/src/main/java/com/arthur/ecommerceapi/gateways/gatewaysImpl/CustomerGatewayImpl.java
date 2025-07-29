@@ -20,28 +20,38 @@ public class CustomerGatewayImpl implements CustomerGateway {
     private final CustomerGatewayMapper mapper;
 
     @Override
-    public Customer save(Customer customer) {
+    public Customer save(final Customer customer) {
         return mapper.toDomain(repository.save(mapper.toEntity(customer)));
     }
 
     @Override
-    public Boolean existsByEmail(String email) {
+    public Boolean existsByEmail(final String email) {
         return repository.existsByEmailIgnoreCase(email);
     }
 
     @Override
-    public Boolean existsByPhone(String phone) {
+    public Boolean existsByPhone(final String phone) {
         return repository.existsByPhone(phone);
     }
 
     @Override
-    public Page<Customer> findAll(Pageable pageable) {
+    public Page<Customer> findAll(final Pageable pageable) {
         return repository.findAll(pageable).map(mapper::toDomain);
     }
 
     @Override
-    public Customer findById(Long id) {
-        return mapper.toDomain(repository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found -> " + id)));
+    public Customer findById(final Long id) {
+        return mapper.toDomain(repository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id)));
+    }
+
+    @Override
+    public void delete(final Long id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Boolean existsById(Long id) {
+        return repository.existsById(id);
     }
 
 

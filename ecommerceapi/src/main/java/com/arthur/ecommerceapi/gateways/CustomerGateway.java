@@ -5,14 +5,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CustomerGateway {
-    Customer save(Customer customer);
+    Customer save(final Customer customer);
 
-    Boolean existsByEmail(String email);
+    Boolean existsByEmail(final String email);
 
-    Boolean existsByPhone(String phone);
+    Boolean existsByPhone(final String phone);
 
-    Page<Customer> findAll(Pageable pageable);
+    Page<Customer> findAll(final Pageable pageable);
 
-    Customer findById(Long id);
+    Customer findById(final Long id);
+
+    void delete(final Long id);
+
+    Boolean existsById(final Long id);
 
 }

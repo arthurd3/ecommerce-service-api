@@ -38,4 +38,6 @@ public class RestExceptionHandler{
                 .title("UserNotFoundException")
                 .build();
     }
+
+
 }

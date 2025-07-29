@@ -20,4 +20,8 @@ public class CustomerValidator {
             throw new UserAlreadyExistsException("Phone already exists");
     }
 
+    public void validateExists(final Long id){
+        if(customerGateway)
+    }
+
 }

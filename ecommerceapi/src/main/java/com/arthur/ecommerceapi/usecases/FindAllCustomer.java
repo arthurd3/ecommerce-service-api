@@ -13,7 +13,7 @@ public class FindAllCustomer {
 
     private final CustomerGateway customerGateway;
 
-    public Page<Customer> find(Pageable pageable) {
+    public Page<Customer> findAll(Pageable pageable) {
         return customerGateway.findAll(pageable);
     }
 }

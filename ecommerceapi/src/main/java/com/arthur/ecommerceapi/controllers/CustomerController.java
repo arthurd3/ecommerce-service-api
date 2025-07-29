@@ -4,6 +4,7 @@ import com.arthur.ecommerceapi.controllers.mapper.CustomerMapper;
 import com.arthur.ecommerceapi.dtos.request.CustomerRequestDTO;
 import com.arthur.ecommerceapi.dtos.response.CustomerResponseDTO;
 import com.arthur.ecommerceapi.usecases.CreateCustomer;
+import com.arthur.ecommerceapi.usecases.DeleteCustomer;
 import com.arthur.ecommerceapi.usecases.FindAllCustomer;
 import com.arthur.ecommerceapi.usecases.FindCustomer;
 import jakarta.validation.Valid;
@@ -13,8 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -22,15 +22,16 @@ import static org.springframework.http.HttpStatus.OK;
 public class CustomerController {
 
     private final CustomerMapper mapper;
-    private final CreateCustomer create;
-    private final FindAllCustomer findAll;
+    private final CreateCustomer createCustomer;
     private final FindCustomer findCustomer;
+    private final DeleteCustomer deleteCustomer;
+    private final FindAllCustomer findAllCustomer;
 
     @ResponseStatus(CREATED)
     @PostMapping
     public CustomerResponseDTO save(@RequestBody @Valid final CustomerRequestDTO dto){
         final var customer = mapper.toDomain(dto);
-        return mapper.toDTO(create.execute(customer));
+        return mapper.toDTO(createCustomer.create(customer));
     }
 
     @ResponseStatus(OK)
@@ -38,13 +39,19 @@ public class CustomerController {
     public Page<CustomerResponseDTO> findAll(@RequestParam @Min(0)final Integer page,
                                              @RequestParam @Min(1)final Integer size){
         final var pageRequest = PageRequest.of(page, size);
-        return findAll.find(pageRequest).map(mapper::toDTO);
+        return findAllCustomer.findAll(pageRequest).map(mapper::toDTO);
     }
 
     @ResponseStatus(OK)
     @GetMapping("{id}")
     public CustomerResponseDTO findById(@PathVariable final Long id){
         return mapper.toDTO(findCustomer.find(id));
+    }
+
+    @ResponseStatus(NO_CONTENT)
+    @DeleteMapping("{id}")
+    public void deleteById(@PathVariable final Long id){
+        deleteCustomer.delete(id);
     }
 
 }
