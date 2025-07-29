@@ -22,6 +22,6 @@ public class CustomerController {
     @PostMapping
     public CustomerResponseDTO save(@RequestBody @Valid final CustomerRequestDTO dto){
         final var customer = mapper.toDomain(dto);
-        return mapper.toDTO(create.createCustomer(customer));
+        return mapper.toDTO(create.execute(customer));
     }
 }
