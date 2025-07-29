@@ -1,7 +1,6 @@
 package com.arthur.ecommerceapi.controllers;
 
 import com.arthur.ecommerceapi.controllers.mapper.CustomerMapper;
-import com.arthur.ecommerceapi.domain.model.Customer;
 import com.arthur.ecommerceapi.dtos.request.CustomerRequestDTO;
 import com.arthur.ecommerceapi.dtos.response.CustomerResponseDTO;
 import com.arthur.ecommerceapi.usecases.CreateCustomer;
@@ -9,14 +8,10 @@ import com.arthur.ecommerceapi.usecases.FindAllCustomer;
 import com.arthur.ecommerceapi.usecases.FindCustomer;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -47,7 +42,7 @@ public class CustomerController {
     }
 
     @ResponseStatus(OK)
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public CustomerResponseDTO findById(@PathVariable final Long id){
         return mapper.toDTO(findCustomer.find(id));
     }

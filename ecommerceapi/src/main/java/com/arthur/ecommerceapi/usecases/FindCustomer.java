@@ -12,7 +12,7 @@ public class FindCustomer {
     private final CustomerGateway customerGateway;
 
     public Customer find(final Long id){
-        customerGateway.findById(id);
+        return customerGateway.findById(id);
     }
 
 }
