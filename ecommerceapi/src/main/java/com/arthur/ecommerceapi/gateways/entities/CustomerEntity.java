@@ -9,10 +9,11 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-@Table(name = "custumer")
+@Table(name = "customer")
 public class CustomerEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
