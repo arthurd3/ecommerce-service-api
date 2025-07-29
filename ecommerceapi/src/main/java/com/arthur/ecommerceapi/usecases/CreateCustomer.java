@@ -11,17 +11,10 @@ import org.springframework.stereotype.Service;
 public class CreateCustomer {
 
     private final CustomerGateway customerGateway;
+    private final CustomerValidator customerValidator;
 
     public Customer createCustomer(final Customer customer) {
-
-        if (customerGateway.existsByEmail(customer.getEmail())) {
-            throw new UserAlreadyExistsException("Email already exists");
-        }
-
-        if(customerGateway.existsByPhone(customer.getPhone())) {
-            throw new UserAlreadyExistsException("Phone already exists");
-        }
-
+        customerValidator.validate(customer);
         return customerGateway.save(customer);
     }
 }
