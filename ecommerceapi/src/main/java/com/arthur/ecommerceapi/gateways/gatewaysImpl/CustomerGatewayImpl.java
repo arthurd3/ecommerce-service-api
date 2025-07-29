@@ -54,5 +54,10 @@ public class CustomerGatewayImpl implements CustomerGateway {
         return repository.existsById(id);
     }
 
+    @Override
+    public Customer update(Customer updatedCustomer) {
+        return null;
+    }
+
 
 }

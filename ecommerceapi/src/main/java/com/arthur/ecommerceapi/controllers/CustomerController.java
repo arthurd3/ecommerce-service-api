@@ -1,12 +1,10 @@
 package com.arthur.ecommerceapi.controllers;
 
 import com.arthur.ecommerceapi.controllers.mapper.CustomerMapper;
+import com.arthur.ecommerceapi.dtos.request.CustomerPutRequestDTO;
 import com.arthur.ecommerceapi.dtos.request.CustomerRequestDTO;
 import com.arthur.ecommerceapi.dtos.response.CustomerResponseDTO;
-import com.arthur.ecommerceapi.usecases.CreateCustomer;
-import com.arthur.ecommerceapi.usecases.DeleteCustomer;
-import com.arthur.ecommerceapi.usecases.FindAllCustomer;
-import com.arthur.ecommerceapi.usecases.FindCustomer;
+import com.arthur.ecommerceapi.usecases.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +24,8 @@ public class CustomerController {
     private final FindCustomer findCustomer;
     private final DeleteCustomer deleteCustomer;
     private final FindAllCustomer findAllCustomer;
+    private final UpdateCustomer updateCustomer;
+
 
     @ResponseStatus(CREATED)
     @PostMapping
@@ -45,13 +45,21 @@ public class CustomerController {
     @ResponseStatus(OK)
     @GetMapping("{id}")
     public CustomerResponseDTO findById(@PathVariable final Long id){
-        return mapper.toDTO(findCustomer.find(id));
+        return mapper.toDTO(findCustomer.findById(id));
     }
 
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("{id}")
     public void deleteById(@PathVariable final Long id){
         deleteCustomer.delete(id);
+    }
+
+    @ResponseStatus(OK)
+    @PutMapping
+    public CustomerResponseDTO update(@RequestBody @Valid final CustomerPutRequestDTO dto){
+        final var customerUpdated = findCustomer.findById(dto.id());
+        final var toResponse = updateCustomer.update(mapper.updateCustomerFromDTO(dto, customerUpdated));
+        return mapper.toDTO(toResponse);
     }
 
 }

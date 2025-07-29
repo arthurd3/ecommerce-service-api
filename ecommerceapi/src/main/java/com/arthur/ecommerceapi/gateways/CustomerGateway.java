@@ -19,4 +19,7 @@ public interface CustomerGateway {
 
     Boolean existsById(final Long id);
 
+    Customer update(final Customer updatedCustomer);
+
+
 }
