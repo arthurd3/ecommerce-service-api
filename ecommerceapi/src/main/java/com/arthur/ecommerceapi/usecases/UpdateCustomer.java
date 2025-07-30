@@ -11,11 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class UpdateCustomer {
 
     private final CustomerGateway customerGateway;
-    private final CustomerValidator customerValidator;
+    private final ValidatorCustomer validatorCustomer;
 
     @Transactional
     public Customer update(Customer updatedCustomer){
-        customerValidator.validate(updatedCustomer);
+        validatorCustomer.validate(updatedCustomer);
         return customerGateway.save(updatedCustomer);
     }
 }

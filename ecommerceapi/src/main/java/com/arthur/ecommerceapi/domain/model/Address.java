@@ -13,4 +13,11 @@ public class Address {
     private String zip;
     private String country;
     private Customer customer;
+
+    public void defineCustomer(final Customer customer){
+        if(customer == null)
+            throw new NullPointerException("Customer is null");
+
+        this.customer = customer;
+    }
 }

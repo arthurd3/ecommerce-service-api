@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeleteCustomer {
 
     private final CustomerGateway customerGateway;
-    private final CustomerValidator validator;
+    private final ValidatorCustomer validator;
 
     @Transactional
     public void delete(final Long id){

@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 public class CreateCustomer {
 
     private final CustomerGateway customerGateway;
-    private final CustomerValidator customerValidator;
+    private final ValidatorCustomer validatorCustomer;
 
     public Customer create(final Customer customer) {
-        customerValidator.validate(customer);
+        validatorCustomer.validate(customer);
         return customerGateway.save(customer);
     }
 }

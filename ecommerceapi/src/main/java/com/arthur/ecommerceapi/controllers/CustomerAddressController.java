@@ -23,7 +23,8 @@ public class CustomerAddressController {
     @PostMapping
     public AddressResponseDTO create(@RequestBody @Valid final AddressRequestDTO addressRequestDTO) {
         final var address = mapper.toDomain(addressRequestDTO);
-        return mapper.toDTO(createAddress.create(address));
+        final Long customerId = addressRequestDTO.customerId();
+        return mapper.toDTO(createAddress.create(address , customerId));
     }
 
 }
