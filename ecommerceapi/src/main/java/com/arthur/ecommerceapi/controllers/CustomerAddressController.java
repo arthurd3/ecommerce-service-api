@@ -35,8 +35,7 @@ public class CustomerAddressController {
     @ResponseStatus(OK)
     @PutMapping
     public AddressResponseDTO update(@RequestBody @Valid final AddressPutRequestDTO dto) {
-        final var updatedDomainAddress = mapper.updateFromDTO(dto);
-        return mapper.toDTO(updateAddress.update(updatedDomainAddress));
+        return mapper.toDTO(updateAddress.update(mapper.updateFromDTO(dto)));
     }
 
 }

@@ -13,5 +13,6 @@ public interface CustomerGatewayMapper {
     @Mapping(target = "address", ignore = true)
     Customer toDomain(CustomerEntity entity);
 
+    @Mapping(target = "address", ignore = true)
     CustomerEntity toEntity(Customer customer);
 }
