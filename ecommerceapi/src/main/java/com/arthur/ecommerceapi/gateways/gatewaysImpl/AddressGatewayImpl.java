@@ -19,4 +19,9 @@ public class AddressGatewayImpl implements AddressGateway {
         return mapper.toDomain(repository.save(mapper.toEntity(address)));
     }
 
+    @Override
+    public Boolean existsByCustomerId(final Long customerId) {
+        return repository.existsByCustomer_Id(customerId);
+    }
+
 }

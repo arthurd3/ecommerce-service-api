@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.exceptions.handler;
 
 import com.arthur.ecommerceapi.exceptions.UserAlreadyExistsException;
+import com.arthur.ecommerceapi.exceptions.UserAlreadyHaveAddress;
 import com.arthur.ecommerceapi.exceptions.UserNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -34,8 +35,21 @@ public class RestExceptionHandler{
                 .timestamp(LocalDateTime.now())
                 .details(ex.getMessage())
                 .devMsg(ex.getClass().getName())
-                .status(CONFLICT.value())
+                .status(NOT_FOUND.value())
                 .title("UserNotFoundException")
+                .build();
+    }
+
+
+    @ResponseStatus(CONFLICT)
+    @ExceptionHandler(UserAlreadyHaveAddress.class)
+    public ExceptionFilters illegalArgumentException(UserAlreadyHaveAddress ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(CONFLICT.value())
+                .title("UserAlreadyHaveAddress")
                 .build();
     }
 
