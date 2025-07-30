@@ -1,10 +1,8 @@
 package com.arthur.ecommerceapi.controllers;
 
 import com.arthur.ecommerceapi.controllers.mapper.CustomerMapper;
-import com.arthur.ecommerceapi.dtos.request.AddressRequestDTO;
 import com.arthur.ecommerceapi.dtos.request.CustomerPutRequestDTO;
 import com.arthur.ecommerceapi.dtos.request.CustomerRequestDTO;
-import com.arthur.ecommerceapi.dtos.response.AddressResponseDTO;
 import com.arthur.ecommerceapi.dtos.response.CustomerResponseDTO;
 import com.arthur.ecommerceapi.usecases.*;
 import jakarta.validation.Valid;
@@ -60,7 +58,7 @@ public class CustomerController {
     @PutMapping
     public CustomerResponseDTO update(@RequestBody @Valid final CustomerPutRequestDTO dto){
         final var customerUpdated = findCustomer.findById(dto.id());
-        final var toResponse = updateCustomer.update(mapper.updateCustomerFromDTO(dto, customerUpdated));
+        final var toResponse = updateCustomer.update(mapper.updateFromDTO(dto, customerUpdated));
         return mapper.toDTO(toResponse);
     }
 

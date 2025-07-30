@@ -6,4 +6,7 @@ public interface AddressGateway {
     Address save(final Address address);
 
     Boolean existsByCustomerId(final Long customerId);
+
+    Address findById(final Long addressId);
+
 }

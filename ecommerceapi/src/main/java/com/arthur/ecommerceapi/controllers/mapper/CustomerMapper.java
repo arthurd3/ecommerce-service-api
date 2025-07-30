@@ -11,11 +11,10 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 @Mapper(componentModel = "spring" , unmappedTargetPolicy = IGNORE)
 public interface CustomerMapper {
 
-    @Mapping(target = "address", ignore = true)
     Customer toDomain(CustomerRequestDTO dto);
 
     CustomerResponseDTO toDTO(Customer customer);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Customer updateCustomerFromDTO(CustomerPutRequestDTO dto, @MappingTarget Customer customer);
+    Customer updateFromDTO(CustomerPutRequestDTO dto, @MappingTarget Customer customer);
 }

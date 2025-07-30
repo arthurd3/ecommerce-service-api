@@ -10,7 +10,7 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 @Mapper(componentModel = "spring" , unmappedTargetPolicy = IGNORE)
 public interface CustomerGatewayMapper {
 
-    @Mapping(target = "address",ignore = true)
+    @Mapping(target = "address", ignore = true)
     Customer toDomain(CustomerEntity entity);
 
     CustomerEntity toEntity(Customer customer);

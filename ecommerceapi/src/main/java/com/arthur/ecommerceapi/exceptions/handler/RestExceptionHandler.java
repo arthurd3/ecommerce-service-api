@@ -15,7 +15,6 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RestControllerAdvice
 public class RestExceptionHandler{
 
-
     @ResponseStatus(CONFLICT)
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ExceptionFilters illegalArgumentException(UserAlreadyExistsException ex) {

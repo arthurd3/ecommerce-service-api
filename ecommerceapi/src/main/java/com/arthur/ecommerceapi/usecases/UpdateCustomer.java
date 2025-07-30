@@ -13,7 +13,6 @@ public class UpdateCustomer {
     private final CustomerGateway customerGateway;
     private final ValidatorCustomer validatorCustomer;
 
-    @Transactional
     public Customer update(Customer updatedCustomer){
         validatorCustomer.validate(updatedCustomer);
         return customerGateway.save(updatedCustomer);

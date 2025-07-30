@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.gateways.gatewaysImpl;
 
 import com.arthur.ecommerceapi.domain.model.Address;
+import com.arthur.ecommerceapi.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.gateways.AddressGateway;
 import com.arthur.ecommerceapi.gateways.mappers.AddressGatewayMapper;
 import com.arthur.ecommerceapi.repositories.AddressRepository;
@@ -16,12 +17,20 @@ public class AddressGatewayImpl implements AddressGateway {
 
     @Override
     public Address save(final Address address) {
-        return mapper.toDomain(repository.save(mapper.toEntity(address)));
+        var savedAddress = repository.save(mapper.toEntity(address));
+        return mapper.toDomain(savedAddress);
     }
 
     @Override
     public Boolean existsByCustomerId(final Long customerId) {
         return repository.existsByCustomer_Id(customerId);
+    }
+
+    @Override
+    public Address findById(Long addressId) {
+        var updateAddress = repository.findById(addressId)
+                .orElseThrow(() -> new UserNotFoundException("Addres with id :" +addressId + " not found!"));
+        return mapper.toDomain(updateAddress);
     }
 
 }
