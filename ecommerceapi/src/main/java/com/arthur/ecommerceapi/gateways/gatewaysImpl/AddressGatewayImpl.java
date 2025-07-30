@@ -36,10 +36,8 @@ public class AddressGatewayImpl implements AddressGateway {
 
     @Override
     public Address update(final Address addressWithChanges) {
-        Long addressId = addressWithChanges.getId();
-
-        AddressEntity entityToUpdate = repository.findById(addressId)
-                .orElseThrow(() -> new UserNotFoundException("Addres with id :" +addressId + " not found!"));
+        AddressEntity entityToUpdate = repository.findById(addressWithChanges.getId())
+                .orElseThrow(() -> new UserNotFoundException("Addres with id :" + addressWithChanges.getId() + " not found!"));
 
         mapper.updateEntityFromDomain(addressWithChanges, entityToUpdate);
 
