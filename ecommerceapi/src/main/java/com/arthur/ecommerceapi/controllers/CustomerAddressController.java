@@ -18,13 +18,11 @@ public class CustomerAddressController {
 
     private final CreateAddress createAddress;
     private final AddressMapper mapper;
-    private final FindCustomer findCustomer;
 
     @ResponseStatus(OK)
     @PostMapping
     public AddressResponseDTO create(@RequestBody @Valid final AddressRequestDTO addressRequestDTO) {
-        final var customerOwner = findCustomer.findById(addressRequestDTO.customerId());
-        final var address = mapper.toDomain(addressRequestDTO , customerOwner);
+        final var address = mapper.toDomain(addressRequestDTO);
         return mapper.toDTO(createAddress.create(address));
     }
 

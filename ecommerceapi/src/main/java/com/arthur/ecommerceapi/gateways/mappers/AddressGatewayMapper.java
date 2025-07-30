@@ -12,5 +12,4 @@ public interface AddressGatewayMapper {
     Address toDomain(AddressEntity entity);
 
     AddressEntity toEntity(Address address);
-
 }
