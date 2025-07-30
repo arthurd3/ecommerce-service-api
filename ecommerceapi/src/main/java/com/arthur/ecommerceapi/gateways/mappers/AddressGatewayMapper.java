@@ -12,19 +12,19 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = IGNORE)
 public interface AddressGatewayMapper {
 
-    // --- Caminho de Leitura (Entity -> Domain) ---
-
     Address toDomain(AddressEntity entity);
 
-    @Mapping(target = "address", ignore = true) // Quebra o ciclo na leitura
+    @Mapping(target = "address", ignore = true)
     Customer customerEntityToCustomer(CustomerEntity customerEntity);
-
-
-    // --- Caminho de Escrita (Domain -> Entity) ---
 
     AddressEntity toEntity(Address address);
 
-    // ADICIONE ESTE MÉTODO PARA QUEBRAR O CICLO NA ESCRITA
-    @Mapping(target = "address", ignore = true) // Quebra o ciclo na escrita
+    @Mapping(target = "address", ignore = true)
     CustomerEntity customerToCustomerEntity(Customer customer);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "customer", ignore = true)
+    void updateEntityFromDomain(Address domainSource, @MappingTarget AddressEntity entityTarget);
+
 }

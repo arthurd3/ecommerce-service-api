@@ -13,7 +13,7 @@ public class UpdateAddress {
     private final AddressGateway addressGateway;
 
     @Transactional
-    public Address update(Address address) {
-        return addressGateway.save(address);
+    public Address update(final Address addressUpdate) {
+        return addressGateway.update(addressUpdate);
     }
 }

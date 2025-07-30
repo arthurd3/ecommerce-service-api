@@ -21,10 +21,8 @@ import static org.springframework.http.HttpStatus.OK;
 public class CustomerAddressController {
 
     private final CreateAddress createAddress;
-    private final FindAddress findAddress;
-    private final UpdateAddress updateAddress;
     private final AddressMapper mapper;
-    private final FindCustomer findCustomer;
+    private final UpdateAddress updateAddress;
 
     @ResponseStatus(OK)
     @PostMapping
@@ -35,12 +33,10 @@ public class CustomerAddressController {
     }
 
     @ResponseStatus(OK)
-    @PutMapping("{id}")
-    public AddressResponseDTO update(@PathVariable(name = "id") Long customerId ,
-                                     @RequestBody @Valid final AddressPutRequestDTO dto) {
-        final var addressUpdated = findAddress.findById(dto.addressId());
-        final var addressToResponse = mapper.updateFromDTO(dto , addressUpdated);
-        return mapper.toDTO(updateAddress.update(addressToResponse));
+    @PutMapping
+    public AddressResponseDTO update(@RequestBody @Valid final AddressPutRequestDTO dto) {
+        final var updatedDomainAddress = mapper.updateFromDTO(dto);
+        return mapper.toDTO(updateAddress.update(updatedDomainAddress));
     }
 
 }

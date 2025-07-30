@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.usecases;
 
 import com.arthur.ecommerceapi.domain.model.Address;
+import com.arthur.ecommerceapi.domain.model.Customer;
 import com.arthur.ecommerceapi.exceptions.UserAlreadyHaveAddress;
 import com.arthur.ecommerceapi.gateways.AddressGateway;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,11 @@ public class CreateAddress {
         if(addressGateway.existsByCustomerId(customerId))
             throw new UserAlreadyHaveAddress("This User have already a address");
 
-        address.defineCustomer(findCustomer.findById(customerId));
+        Customer customer = findCustomer.findById(customerId);
+
+        address.defineCustomer(customer);
+        customer.defineAddress(address);
+
         return addressGateway.save(address);
     }
 }

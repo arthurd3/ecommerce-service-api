@@ -9,4 +9,5 @@ public interface AddressGateway {
 
     Address findById(final Long addressId);
 
+    Address update(final Address address);
 }

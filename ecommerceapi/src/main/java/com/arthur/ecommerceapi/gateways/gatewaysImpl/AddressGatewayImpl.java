@@ -3,6 +3,7 @@ package com.arthur.ecommerceapi.gateways.gatewaysImpl;
 import com.arthur.ecommerceapi.domain.model.Address;
 import com.arthur.ecommerceapi.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.gateways.AddressGateway;
+import com.arthur.ecommerceapi.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.gateways.mappers.AddressGatewayMapper;
 import com.arthur.ecommerceapi.repositories.AddressRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +28,27 @@ public class AddressGatewayImpl implements AddressGateway {
     }
 
     @Override
-    public Address findById(Long addressId) {
+    public Address findById(final Long addressId) {
         var updateAddress = repository.findById(addressId)
                 .orElseThrow(() -> new UserNotFoundException("Addres with id :" +addressId + " not found!"));
         return mapper.toDomain(updateAddress);
+    }
+
+    @Override
+    public Address update(final Address addressWithChanges) {
+        Long addressId = addressWithChanges.getId();
+        if (addressId == null) {
+            throw new IllegalArgumentException("O ID do endereço não pode ser nulo para uma atualização.");
+        }
+
+        AddressEntity entityToUpdate = repository.findById(addressId)
+                .orElseThrow(() -> new UserNotFoundException("Endereço com id: " + addressId + " não encontrado!"));
+
+        mapper.updateEntityFromDomain(addressWithChanges, entityToUpdate);
+
+        AddressEntity savedEntity = repository.save(entityToUpdate);
+
+        return mapper.toDomain(savedEntity);
     }
 
 }
