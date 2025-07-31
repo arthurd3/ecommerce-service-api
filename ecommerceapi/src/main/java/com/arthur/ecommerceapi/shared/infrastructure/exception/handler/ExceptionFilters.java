@@ -1,4 +1,4 @@
-package com.arthur.ecommerceapi.customers.exceptions.handler;
+package com.arthur.ecommerceapi.shared.infrastructure.exception.handler;
 
 import lombok.*;
 

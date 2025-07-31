@@ -5,13 +5,15 @@ import com.arthur.ecommerceapi.products.gateways.ProductGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
-public class CreateProduct {
+public class FindProduct {
 
     private final ProductGateway productGateway;
 
-    public Product create(final Product product) {
-        return productGateway.create(product);
+    public Product findById(final UUID uuid) {
+        return productGateway.findById(uuid);
     }
 }
