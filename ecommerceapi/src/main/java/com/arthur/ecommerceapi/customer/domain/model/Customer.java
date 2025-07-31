@@ -13,7 +13,6 @@ public class Customer {
     private String phone;
     private Address address;
 
-
     public void defineAddress(Address address) {
         if (address == null) {
             if (this.address != null) {
