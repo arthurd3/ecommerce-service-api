@@ -26,15 +26,4 @@ public class CustomerEntity {
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private AddressEntity address;
-
-    public void defineAddress(AddressEntity address) {
-        if (address == null) {
-            if (this.address != null) {
-                this.address.setCustomer(null);
-            }
-        } else {
-            address.setCustomer(this);
-        }
-        this.address = address;
-    }
 }

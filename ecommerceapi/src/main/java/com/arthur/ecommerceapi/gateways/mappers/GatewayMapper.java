@@ -13,6 +13,7 @@ public interface GatewayMapper {
 
     @Mapping(target = "customer.address", ignore = true)
     Address addressToDomain(AddressEntity entity);
+    @Mapping(target = "customer.address", ignore = true)
     AddressEntity addressToEntity(Address address);
 
     Customer customerToDomain(CustomerEntity entity);
@@ -21,7 +22,6 @@ public interface GatewayMapper {
     //CopyProperties
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "customer", ignore = true)
     void editEntityFromDomain(Address domainSource, @MappingTarget AddressEntity entityTarget);
 }
 

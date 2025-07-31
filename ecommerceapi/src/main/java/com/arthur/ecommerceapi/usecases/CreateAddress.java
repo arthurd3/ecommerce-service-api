@@ -1,12 +1,9 @@
 package com.arthur.ecommerceapi.usecases;
 
 import com.arthur.ecommerceapi.domain.model.Address;
+import com.arthur.ecommerceapi.domain.model.Customer;
 import com.arthur.ecommerceapi.exceptions.UserAlreadyHaveAddress;
-import com.arthur.ecommerceapi.exceptions.UserNotFoundException;
-import com.arthur.ecommerceapi.gateways.entities.AddressEntity;
-import com.arthur.ecommerceapi.gateways.entities.CustomerEntity;
-import com.arthur.ecommerceapi.gateways.mappers.GatewayMapper;
-import com.arthur.ecommerceapi.repositories.CustomerRepository;
+import com.arthur.ecommerceapi.gateways.CustomerGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,26 +12,23 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreateAddress {
 
-    private final GatewayMapper addressMapper;
-    private final CustomerRepository customerRepository;
     private final FindCustomer findCustomer;
+    private final CustomerGateway customerGateway;
 
     @Transactional
     public Address create(final Address address , final Long customerId) {
 
-        CustomerEntity customerEntity = customerRepository.findById(customerId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + customerId));
+        Customer customer = findCustomer.findById(customerId);
 
-        if (customerEntity.getAddress() != null) {
+        if (customer.getAddress() != null) {
             throw new UserAlreadyHaveAddress("This User already has an address");
         }
 
-        AddressEntity addressEntity = addressMapper.addressToEntity(address);
+        customer.defineAddress(address);
+        address.defineCustomer(customer);
 
-        customerEntity.defineAddress(addressEntity);
+        Customer savedCustomer = customerGateway.save(customer);
 
-        CustomerEntity savedCustomer = customerRepository.save(customerEntity);
-
-        return addressMapper.addressToDomain(savedCustomer.getAddress());
+        return savedCustomer.getAddress();
     }
 }
