@@ -39,7 +39,7 @@ public class AddressGatewayImpl implements AddressGateway {
         AddressEntity entityToUpdate = repository.findById(addressWithChanges.getId())
                 .orElseThrow(() -> new AddressNotFound("Addres with id :" + addressWithChanges.getId() + " not found!"));
 
-        mapper.editEntityFromDomain(addressWithChanges, entityToUpdate);
+        mapper.editAddressEntityFromDomain(addressWithChanges, entityToUpdate);
 
         return mapper.addressToDomain(repository.save(entityToUpdate));
     }

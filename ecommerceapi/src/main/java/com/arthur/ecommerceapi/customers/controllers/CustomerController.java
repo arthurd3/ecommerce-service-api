@@ -57,9 +57,7 @@ public class CustomerController {
     @ResponseStatus(OK)
     @PutMapping
     public CustomerResponseDTO update(@RequestBody @Valid final CustomerPutRequestDTO dto){
-        final var customerUpdated = findCustomer.findById(dto.id());
-        final var toResponse = updateCustomer.update(mapper.updateFromDTO(dto, customerUpdated));
-        return mapper.toDTO(toResponse);
+        return mapper.toDTO(updateCustomer.update(mapper.updateFromDTO(dto)));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.products.controllers;
 
 import com.arthur.ecommerceapi.products.controllers.mappers.ProductMapper;
+import com.arthur.ecommerceapi.products.dtos.request.ProductPutRequestDTO;
 import com.arthur.ecommerceapi.products.dtos.request.ProductRequestDTO;
 import com.arthur.ecommerceapi.products.dtos.response.ProductResponseDTO;
 import com.arthur.ecommerceapi.products.usecases.CreateProduct;
@@ -44,5 +45,11 @@ public class ProductController {
         return mapper.toDTO(findProduct.findById(uuid));
     }
 
+    @ResponseStatus(OK)
+    @PutMapping
+    public ProductResponseDTO update(@RequestBody @Valid final ProductPutRequestDTO updateDto){
+
+        return null;
+    }
 
 }

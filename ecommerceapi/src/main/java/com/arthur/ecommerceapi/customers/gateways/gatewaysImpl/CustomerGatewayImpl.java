@@ -3,6 +3,7 @@ package com.arthur.ecommerceapi.customers.gateways.gatewaysImpl;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
+import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.customers.gateways.mappers.GatewayMapper;
 import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,8 +57,11 @@ public class CustomerGatewayImpl implements CustomerGateway {
 
     @Override
     public Customer update(Customer updatedCustomer) {
-        return null;
+        CustomerEntity customerEntity = repository.findById(updatedCustomer.getId())
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + updatedCustomer.getId()));
+
+        mapper.editCustomerEntityFromDomain(updatedCustomer , customerEntity);
+
+        return mapper.customerToDomain(repository.save(customerEntity));
     }
-
-
 }

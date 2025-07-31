@@ -16,5 +16,6 @@ public interface CustomerMapper {
     CustomerResponseDTO toDTO(Customer customer);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Customer updateFromDTO(CustomerPutRequestDTO dto, @MappingTarget Customer customer);
+    @Mapping(target = "id" , source = "customerId")
+    Customer updateFromDTO(CustomerPutRequestDTO dto);
 }

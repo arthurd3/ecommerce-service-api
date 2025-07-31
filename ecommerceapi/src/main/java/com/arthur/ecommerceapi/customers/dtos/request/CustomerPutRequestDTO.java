@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record CustomerPutRequestDTO (
         @NotNull
-        Long id,
+        Long customerId,
 
         String name,
 

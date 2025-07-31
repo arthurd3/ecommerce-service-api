@@ -20,9 +20,14 @@ public interface GatewayMapper {
     Customer customerToDomain(CustomerEntity entity);
     CustomerEntity customerToEntity(Customer customer);
 
-    //CopyProperties
+    //CopyProperties Address
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
-    void editEntityFromDomain(Address domainSource, @MappingTarget AddressEntity entityTarget);
+    void editAddressEntityFromDomain(Address domainSource, @MappingTarget AddressEntity entityTarget);
+
+    //CopyProperties Customer
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    void editCustomerEntityFromDomain(Customer domainSource, @MappingTarget CustomerEntity entityTarget);
 }
 

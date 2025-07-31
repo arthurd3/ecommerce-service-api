@@ -14,6 +14,6 @@ public class UpdateCustomer {
 
     public Customer update(Customer updatedCustomer){
         validatorCustomer.validate(updatedCustomer);
-        return customerGateway.save(updatedCustomer);
+        return customerGateway.update(updatedCustomer);
     }
 }

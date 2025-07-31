@@ -26,7 +26,7 @@ public class ProductGatewayImpl implements ProductGateway {
 
     @Override
     public Product findById(UUID uuid) {
-        return mapper.toDomain(repository.findByUUID(uuid)
+        return mapper.toDomain(repository.findById(uuid)
                 .orElseThrow(() -> new ProductNotFoundException("Product with "+ uuid +" not found!")));
     }
 
