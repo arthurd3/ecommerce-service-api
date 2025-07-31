@@ -12,8 +12,7 @@ public class FindCustomer {
     private final CustomerGateway customerGateway;
 
     public Customer findById(final Long id){
-        var foundedCustomer = customerGateway.findById(id);
-        return foundedCustomer;
+        return customerGateway.findById(id);
     }
 
 }
