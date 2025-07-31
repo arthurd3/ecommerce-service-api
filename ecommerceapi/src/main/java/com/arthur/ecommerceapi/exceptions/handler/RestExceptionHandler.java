@@ -1,5 +1,6 @@
 package com.arthur.ecommerceapi.exceptions.handler;
 
+import com.arthur.ecommerceapi.exceptions.AddressNotFound;
 import com.arthur.ecommerceapi.exceptions.UserAlreadyExistsException;
 import com.arthur.ecommerceapi.exceptions.UserAlreadyHaveAddress;
 import com.arthur.ecommerceapi.exceptions.UserNotFoundException;
@@ -39,6 +40,17 @@ public class RestExceptionHandler{
                 .build();
     }
 
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(AddressNotFound.class)
+    public ExceptionFilters illegalArgumentException(AddressNotFound ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(NOT_FOUND.value())
+                .title("UserNotFoundException")
+                .build();
+    }
 
     @ResponseStatus(CONFLICT)
     @ExceptionHandler(UserAlreadyHaveAddress.class)

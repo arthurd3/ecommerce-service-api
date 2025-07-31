@@ -23,6 +23,7 @@ public class CustomerAddressController {
     private final CreateAddress createAddress;
     private final AddressMapper mapper;
     private final UpdateAddress updateAddress;
+    private final FindAddress findAddress;
 
     @ResponseStatus(OK)
     @PostMapping
@@ -35,6 +36,12 @@ public class CustomerAddressController {
     @PutMapping
     public AddressResponseDTO update(@RequestBody @Valid final AddressPutRequestDTO dto) {
         return mapper.toDTO(updateAddress.update(mapper.updateFromDTO(dto)));
+    }
+
+    @ResponseStatus(OK)
+    @GetMapping("{id}")
+    public AddressResponseDTO findById(@PathVariable final Long id) {
+        return mapper.toDTO(findAddress.findById(id));
     }
 
 }
