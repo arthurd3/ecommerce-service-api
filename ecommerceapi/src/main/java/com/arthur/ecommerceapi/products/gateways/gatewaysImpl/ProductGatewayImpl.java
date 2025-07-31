@@ -32,6 +32,16 @@ public class ProductGatewayImpl implements ProductGateway {
 
     @Override
     public void delete(UUID uuid) {
+        repository.deleteById(uuid);
+    }
 
+    @Override
+    public Product update(Product product) {
+        ProductEntity productEntity = repository.findById(product.getId())
+                .orElseThrow(() -> new ProductNotFoundException("Product with "+ product.getId() +" not found!"));
+
+        mapper.editProductEntityFromDomain(product, productEntity);
+
+        return mapper.toDomain(productEntity);
     }
 }

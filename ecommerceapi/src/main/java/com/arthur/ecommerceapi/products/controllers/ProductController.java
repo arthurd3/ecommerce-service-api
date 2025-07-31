@@ -7,6 +7,7 @@ import com.arthur.ecommerceapi.products.dtos.response.ProductResponseDTO;
 import com.arthur.ecommerceapi.products.usecases.CreateProduct;
 import com.arthur.ecommerceapi.products.usecases.DeleteProduct;
 import com.arthur.ecommerceapi.products.usecases.FindProduct;
+import com.arthur.ecommerceapi.products.usecases.UpdateProduct;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class ProductController {
     private final CreateProduct createProduct;
     private final DeleteProduct deleteProduct;
     private final FindProduct findProduct;
-
+    private final UpdateProduct updateProduct;
 
     @ResponseStatus(OK)
     @PostMapping
@@ -47,9 +48,8 @@ public class ProductController {
 
     @ResponseStatus(OK)
     @PutMapping
-    public ProductResponseDTO update(@RequestBody @Valid final ProductPutRequestDTO updateDto){
-
-        return null;
+    public ProductResponseDTO update(@RequestBody @Valid final ProductPutRequestDTO dto){
+        return mapper.toDTO(updateProduct.update(mapper.updateFromDTO(dto)));
     }
 
 }

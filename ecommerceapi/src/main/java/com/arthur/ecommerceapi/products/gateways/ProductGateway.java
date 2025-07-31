@@ -12,4 +12,5 @@ public interface ProductGateway {
 
     void delete(final UUID uuid);
 
+    Product update(final Product product);
 }
