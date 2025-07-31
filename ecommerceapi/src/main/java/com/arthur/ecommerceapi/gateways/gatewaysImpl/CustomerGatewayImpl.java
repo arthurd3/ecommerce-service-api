@@ -40,8 +40,8 @@ public class CustomerGatewayImpl implements CustomerGateway {
 
     @Override
     public Customer findById(final Long id) {
-        var foundedCustomer = mapper.customerToDomain(repository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id)));
-        return foundedCustomer;
+        return mapper.customerToDomain(repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id)));
     }
 
     @Override

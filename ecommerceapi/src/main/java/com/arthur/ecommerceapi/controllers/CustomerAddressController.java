@@ -28,8 +28,7 @@ public class CustomerAddressController {
     @PostMapping
     public AddressResponseDTO create(@RequestBody @Valid final AddressRequestDTO dto) {
         final var address = mapper.toDomain(dto);
-        final Long customerId = dto.customerId();
-        return mapper.toDTO(createAddress.create(address , customerId));
+        return mapper.toDTO(createAddress.create(address , dto.customerId()));
     }
 
     @ResponseStatus(OK)
