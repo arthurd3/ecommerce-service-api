@@ -2,6 +2,7 @@ package com.arthur.ecommerceapi.products.gateways.gatewaysImpl;
 
 import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.gateways.ProductGateway;
+import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 import com.arthur.ecommerceapi.products.gateways.mappers.ProductGatewayMapper;
 import com.arthur.ecommerceapi.products.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class ProductGatewayImpl implements ProductGateway {
 
     @Override
     public Product create(Product product) {
-        return mapper.toDomain(repository.save(mapper.toEntity(product)));
+        ProductEntity savedProduct = repository.save(mapper.toEntity(product));
+        return mapper.toDomain(savedProduct);
     }
 }

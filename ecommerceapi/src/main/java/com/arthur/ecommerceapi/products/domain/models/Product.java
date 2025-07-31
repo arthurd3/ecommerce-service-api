@@ -5,10 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class Product {
+
+    private UUID id;
     private String name;
     private Coin price;
     private String description;
@@ -17,6 +20,10 @@ public class Product {
     private Boolean availableToDiscount;
 
     public BigDecimal productPrice() {
-        return price.getValue();
+        return this.price.getValue();
+    }
+
+    public String productFormatedPrice() {
+        return this.price.getFormatedValue();
     }
 }
