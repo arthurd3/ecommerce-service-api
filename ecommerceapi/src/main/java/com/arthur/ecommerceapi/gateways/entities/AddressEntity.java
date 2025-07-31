@@ -23,7 +23,7 @@ public class AddressEntity {
     private String zip;
     private String country;
 
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private CustomerEntity customer;
 }

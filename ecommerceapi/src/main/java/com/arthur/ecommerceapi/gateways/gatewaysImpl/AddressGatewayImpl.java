@@ -4,7 +4,7 @@ import com.arthur.ecommerceapi.domain.model.Address;
 import com.arthur.ecommerceapi.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.gateways.AddressGateway;
 import com.arthur.ecommerceapi.gateways.entities.AddressEntity;
-import com.arthur.ecommerceapi.gateways.mappers.AddressGatewayMapper;
+import com.arthur.ecommerceapi.gateways.mappers.GatewayMapper;
 import com.arthur.ecommerceapi.repositories.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
 public class AddressGatewayImpl implements AddressGateway {
 
     private final AddressRepository repository;
-    private final AddressGatewayMapper mapper;
+    private final GatewayMapper mapper;
 
     @Override
     public Address save(final Address address) {
-        var savedAddress = repository.save(mapper.toEntity(address));
-        return mapper.toDomain(savedAddress);
+        var savedAddress = repository.save(mapper.addressToEntity(address));
+        return mapper.addressToDomain(savedAddress);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class AddressGatewayImpl implements AddressGateway {
     public Address findById(final Long addressId) {
         var updateAddress = repository.findById(addressId)
                 .orElseThrow(() -> new UserNotFoundException("Addres with id :" +addressId + " not found!"));
-        return mapper.toDomain(updateAddress);
+        return mapper.addressToDomain(updateAddress);
     }
 
     @Override
@@ -39,9 +39,8 @@ public class AddressGatewayImpl implements AddressGateway {
         AddressEntity entityToUpdate = repository.findById(addressWithChanges.getId())
                 .orElseThrow(() -> new UserNotFoundException("Addres with id :" + addressWithChanges.getId() + " not found!"));
 
-        mapper.updateEntityFromDomain(addressWithChanges, entityToUpdate);
-
-        return mapper.toDomain(repository.save(entityToUpdate));
+        mapper.editEntityFromDomain(addressWithChanges, entityToUpdate);
+        return mapper.addressToDomain(repository.save(entityToUpdate));
     }
 
 }

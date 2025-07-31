@@ -1,6 +1,5 @@
 package com.arthur.ecommerceapi.domain.model;
 
-import com.arthur.ecommerceapi.exceptions.UserAlreadyHaveAddress;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,9 +15,13 @@ public class Customer {
 
 
     public void defineAddress(Address address) {
-        if(address == null)
-            throw new UserAlreadyHaveAddress("Is not possible define this address");
-
+        if (address == null) {
+            if (this.address != null) {
+                this.address.setCustomer(null);
+            }
+        } else {
+            address.setCustomer(this);
+        }
         this.address = address;
     }
 }

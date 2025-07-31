@@ -3,7 +3,7 @@ package com.arthur.ecommerceapi.gateways.gatewaysImpl;
 import com.arthur.ecommerceapi.domain.model.Customer;
 import com.arthur.ecommerceapi.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.gateways.CustomerGateway;
-import com.arthur.ecommerceapi.gateways.mappers.CustomerGatewayMapper;
+import com.arthur.ecommerceapi.gateways.mappers.GatewayMapper;
 import com.arthur.ecommerceapi.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 public class CustomerGatewayImpl implements CustomerGateway {
 
     private final CustomerRepository repository;
-    private final CustomerGatewayMapper mapper;
+    private final GatewayMapper mapper;
 
     @Override
     public Customer save(final Customer customer) {
-        return mapper.toDomain(repository.save(mapper.toEntity(customer)));
+        return mapper.customerToDomain(repository.save(mapper.customerToEntity(customer)));
     }
 
     @Override
@@ -35,12 +35,14 @@ public class CustomerGatewayImpl implements CustomerGateway {
 
     @Override
     public Page<Customer> findAll(final Pageable pageable) {
-        return repository.findAll(pageable).map(mapper::toDomain);
+        return repository.findAll(pageable).map(mapper::customerToDomain);
     }
 
     @Override
     public Customer findById(final Long id) {
-        return mapper.toDomain(repository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id)));
+        var foundedCustomer = mapper.customerToDomain(repository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id)));
+        System.out.println(foundedCustomer.getAddress().getState());
+        return foundedCustomer;
     }
 
     @Override
