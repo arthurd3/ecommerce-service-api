@@ -1,30 +1,40 @@
 package com.arthur.ecommerceapi.orders.usecases;
 
-import com.arthur.ecommerceapi.customers.domain.model.Address;
-import com.arthur.ecommerceapi.customers.domain.model.Customer;
-import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
+import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.orders.domain.model.Order;
 import com.arthur.ecommerceapi.orders.dtos.request.OrderRequestDTO;
+import com.arthur.ecommerceapi.orders.enums.OrderStatus;
 import com.arthur.ecommerceapi.orders.gateways.OrderGateway;
-import com.arthur.ecommerceapi.products.domain.models.Product;
-import com.arthur.ecommerceapi.products.gateways.ProductGateway;
+import com.arthur.ecommerceapi.orders.gateways.OrderSystemGateway;
+import com.arthur.ecommerceapi.orders.gateways.entities.OrderEntity;
+import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class CreateOrder {
 
     private final OrderGateway orderGateway;
-    private final CustomerGateway customerGateway;
-    private final ProductGateway productGateway;
+    private final OrderSystemGateway orderSystemGateway;
 
+    @Transactional
     public Order create(final OrderRequestDTO dto){
-        Product product = productGateway.findById(dto.productId());
-        Customer customer = customerGateway.findById(dto.customerId());
-        Address address = customer.getAddress();
 
-        return orderGateway.create(Order.createObj(product , customer , address , dto.specification()));
+        CustomerEntity customer = orderSystemGateway
+                .findCustomerEntityById(dto.customerId());
+
+        ProductEntity product = orderSystemGateway
+                .findProductEntityById(dto.productId());
+
+        OrderEntity orderSave = new OrderEntity();
+        orderSave.setCustomer(customer);
+        orderSave.setProduct(product);
+        orderSave.setToAddress(customer.getAddress());
+        orderSave.setSpecification(dto.specification());
+        orderSave.setStatus(OrderStatus.PENDING_PAYMENT);
+
+        return orderGateway.create(orderSave);
     }
-
 }

@@ -37,11 +37,16 @@ public class ProductGatewayImpl implements ProductGateway {
 
     @Override
     public Product update(Product product) {
-        ProductEntity productEntity = repository.findById(product.getId())
-                .orElseThrow(() -> new ProductNotFoundException("Product with "+ product.getId() +" not found!"));
+        ProductEntity productEntity = this.findEntityById(product.getId());
 
         mapper.editEntityFromDomain(product, productEntity);
 
         return mapper.toDomain(productEntity);
+    }
+
+    @Override
+    public ProductEntity findEntityById(UUID uuid) {
+        return repository.findById(uuid)
+                .orElseThrow(() -> new ProductNotFoundException("Product with "+ uuid +" not found!"));
     }
 }

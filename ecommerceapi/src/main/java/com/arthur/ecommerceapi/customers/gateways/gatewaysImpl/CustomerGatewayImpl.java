@@ -57,11 +57,16 @@ public class CustomerGatewayImpl implements CustomerGateway {
 
     @Override
     public Customer update(Customer updatedCustomer) {
-        CustomerEntity customerEntity = repository.findById(updatedCustomer.getId())
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + updatedCustomer.getId()));
+        CustomerEntity customerEntity = this.findEntityById(updatedCustomer.getId());
 
         mapper.editCustomerEntityFromDomain(updatedCustomer , customerEntity);
 
         return mapper.customerToDomain(repository.save(customerEntity));
+    }
+
+    @Override
+    public CustomerEntity findEntityById(Long customerId) {
+        return repository.findById(customerId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + customerId));
     }
 }

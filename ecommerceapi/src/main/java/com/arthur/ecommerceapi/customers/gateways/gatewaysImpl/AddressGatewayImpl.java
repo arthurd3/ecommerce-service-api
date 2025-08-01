@@ -30,7 +30,7 @@ public class AddressGatewayImpl implements AddressGateway {
     @Override
     public Address findById(final Long addressId) {
         var updateAddress = repository.findById(addressId)
-                .orElseThrow(() -> new AddressNotFound("Addres with id :" +addressId + " not found!"));
+                .orElseThrow(() -> new AddressNotFound("Addres with id :" + addressId + " not found!"));
         return mapper.addressToDomain(updateAddress);
     }
 

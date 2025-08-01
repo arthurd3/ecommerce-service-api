@@ -15,11 +15,10 @@ public class Order {
     private final Product product;
     private final Customer customer;
     private final Address toAddress;
-
     private String specification;
     private OrderStatus status;
 
-    private Order(UUID orderId, Product product, Customer customer, Address address, String specification) {
+    private Order(UUID orderId, Product product, Customer customer, Address address, String specification , OrderStatus status) {
         if (product == null || customer == null || address == null) {
             throw new IllegalArgumentException("Product and customer or address cannot be null.");
         }
@@ -28,11 +27,15 @@ public class Order {
         this.customer = customer;
         this.toAddress = address;
         this.specification = specification;
-        this.status = OrderStatus.PENDING_PAYMENT;
+        this.status = status;
     }
 
     public static Order createObj(Product product, Customer customer, Address address, String specification) {
-        return new Order(UUID.randomUUID(), product, customer, address, specification);
+        return new Order(UUID.randomUUID(), product, customer, address, specification , OrderStatus.PENDING_PAYMENT);
+    }
+
+    public static Order reconstitute(UUID orderId, Product product, Customer customer, Address address, String specification, OrderStatus status) {
+        return new Order(orderId, product, customer, address, specification, status);
     }
 
     public void approve() {
@@ -58,5 +61,15 @@ public class Order {
 
     public void updateSpecification(String newSpecification) {
         this.specification = newSpecification;
+    }
+
+    public Address getAddress(Address address) {
+        final Long originalAddress = this.toAddress.getId();
+
+        if (address == null || !address.getId().equals(originalAddress)) {
+            throw new RuntimeException("Address is not valid");
+        }
+
+        return this.toAddress;
     }
 }

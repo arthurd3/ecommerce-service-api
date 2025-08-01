@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.products.gateways;
 
 import com.arthur.ecommerceapi.products.domain.models.Product;
+import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 
 import java.util.UUID;
 
@@ -13,4 +14,7 @@ public interface ProductGateway {
     void delete(final UUID uuid);
 
     Product update(final Product product);
+
+    ProductEntity findEntityById(final UUID uuid);
+
 }
