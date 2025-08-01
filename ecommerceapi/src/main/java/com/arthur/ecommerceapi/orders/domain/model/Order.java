@@ -30,10 +30,6 @@ public class Order {
         this.status = status;
     }
 
-    public static Order createObj(Product product, Customer customer, Address address, String specification) {
-        return new Order(UUID.randomUUID(), product, customer, address, specification , OrderStatus.PENDING_PAYMENT);
-    }
-
     public static Order reconstitute(UUID orderId, Product product, Customer customer, Address address, String specification, OrderStatus status) {
         return new Order(orderId, product, customer, address, specification, status);
     }

@@ -1,5 +1,6 @@
 package com.arthur.ecommerceapi.orders.usecases;
 
+import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.orders.domain.model.Order;
 import com.arthur.ecommerceapi.orders.dtos.request.OrderRequestDTO;
@@ -28,12 +29,7 @@ public class CreateOrder {
         ProductEntity product = orderSystemGateway
                 .findProductEntityById(dto.productId());
 
-        OrderEntity orderSave = new OrderEntity();
-        orderSave.setCustomer(customer);
-        orderSave.setProduct(product);
-        orderSave.setToAddress(customer.getAddress());
-        orderSave.setSpecification(dto.specification());
-        orderSave.setStatus(OrderStatus.PENDING_PAYMENT);
+        OrderEntity orderSave = OrderEntity.createObj(product, customer, customer.getAddress(), dto.specification());
 
         return orderGateway.create(orderSave);
     }
