@@ -40,7 +40,7 @@ public class ProductGatewayImpl implements ProductGateway {
         ProductEntity productEntity = repository.findById(product.getId())
                 .orElseThrow(() -> new ProductNotFoundException("Product with "+ product.getId() +" not found!"));
 
-        mapper.editProductEntityFromDomain(product, productEntity);
+        mapper.editEntityFromDomain(product, productEntity);
 
         return mapper.toDomain(productEntity);
     }
