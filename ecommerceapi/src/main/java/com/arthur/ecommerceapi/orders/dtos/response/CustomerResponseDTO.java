@@ -2,8 +2,7 @@ package com.arthur.ecommerceapi.orders.dtos.response;
 
 public record CustomerResponseDTO(
         Long customerId,
-        String nome ,
-        String cpf ,
+        String name ,
         String email ,
         String phone
 ) {}
