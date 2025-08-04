@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.customers.usecases;
 
 import com.arthur.ecommerceapi.customers.domain.model.Address;
+import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
 import com.arthur.ecommerceapi.customers.gateways.AddressGateway;
 import com.arthur.ecommerceapi.testFactory.DataTestFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
@@ -37,7 +37,7 @@ class FindAddressTest {
         }
 
         @Test
-        @DisplayName("Shoul find address with success")
+        @DisplayName("Should find address with success")
         public void shouldFindAddressWithSuccess(){
             Long idAddress = address.getId();
             when(addressGateway.findById(address.getId())).thenReturn(address);
@@ -50,7 +50,22 @@ class FindAddressTest {
             verify(addressGateway , times(1)).findById(idAddress);
         }
 
+        @Test
+        @DisplayName("Should Throw Address Not Found Exception")
+        public void shouldThrowAddressNotFoundException(){
+            Long idAddress = address.getId();
 
+            when(addressGateway.findById(address.getId()))
+                    .thenThrow(new AddressNotFoundException("Addres with id :" + idAddress + " not found!"));
+
+            AddressNotFoundException exception = assertThrows(AddressNotFoundException.class ,
+                    () -> findAddress.findById(idAddress));
+
+
+            assertEquals(exception.getMessage(), "Addres with id :" + idAddress + " not found!");
+
+            verify(addressGateway , times(1)).findById(idAddress);
+        }
     }
 
 
