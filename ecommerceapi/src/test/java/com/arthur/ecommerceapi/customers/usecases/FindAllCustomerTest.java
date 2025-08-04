@@ -82,7 +82,7 @@ class FindAllCustomerTest {
             assertEquals(0, findedPage.getNumber()); // Não há nenhum item nesta página
             assertEquals(0 ,  findedPage.getNumberOfElements()); // Estamos na primeira página, de índice 0
             assertEquals(1 , findedPage.getTotalPages());  // Existe uma página no resultado total, e ela está vazia
-            
+
         }
 
 
