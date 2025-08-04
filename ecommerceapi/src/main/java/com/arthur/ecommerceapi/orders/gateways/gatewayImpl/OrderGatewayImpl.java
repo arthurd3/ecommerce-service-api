@@ -2,12 +2,15 @@ package com.arthur.ecommerceapi.orders.gateways.gatewayImpl;
 
 import com.arthur.ecommerceapi.customers.gateways.mappers.GatewayMapper;
 import com.arthur.ecommerceapi.orders.domain.model.Order;
+import com.arthur.ecommerceapi.orders.exceptions.OrderNotFoundExecption;
 import com.arthur.ecommerceapi.orders.gateways.OrderGateway;
 import com.arthur.ecommerceapi.orders.gateways.entities.OrderEntity;
 import com.arthur.ecommerceapi.orders.repositories.OrderRepository;
 import com.arthur.ecommerceapi.products.gateways.mappers.ProductGatewayMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -19,19 +22,27 @@ public class OrderGatewayImpl implements OrderGateway {
 
     @Override
     public Order create(final OrderEntity order) {
-
         OrderEntity savedOrder = repository.save(order);
-
-        return Order.reconstitute(
-                savedOrder.getId(),
-                productMapper.toDomain(savedOrder.getProduct()),
-                gatewayMapper.customerToDomain(savedOrder.getCustomer()),
-                gatewayMapper.addressToDomain(savedOrder.getToAddress()),
-                savedOrder.getSpecification(),
-                savedOrder.getStatus()
-        );
+        productMapper.toDomain(order.getProduct());
+                gatewayMapper.customerToDomain(order.getCustomer());
+                gatewayMapper.addressToDomain(order.getToAddress());
+        return createOrder(savedOrder);
     }
 
+    @Override
+    public Order findById(final UUID orderId) {
+         return createOrder(repository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundExecption("Order with id "+ orderId +" not found!!")));
+    }
 
+    //Create Order
+    private Order createOrder(OrderEntity order) {
+        return Order.createOrder(
+                order,
+                productMapper.toDomain(order.getProduct()),
+                gatewayMapper.customerToDomain(order.getCustomer()),
+                gatewayMapper.addressToDomain(order.getToAddress())
+        );
+    }
 
 }

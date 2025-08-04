@@ -3,6 +3,7 @@ package com.arthur.ecommerceapi.orders.domain.model;
 import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.orders.enums.OrderStatus;
+import com.arthur.ecommerceapi.orders.gateways.entities.OrderEntity;
 import com.arthur.ecommerceapi.products.domain.models.Product;
 import lombok.Getter;
 
@@ -30,9 +31,18 @@ public class Order {
         this.status = status;
     }
 
-    public static Order reconstitute(UUID orderId, Product product, Customer customer, Address address, String specification, OrderStatus status) {
-        return new Order(orderId, product, customer, address, specification, status);
+    public static Order createOrder(OrderEntity order , Product product, Customer customer, Address address) {
+        return new Order (
+                order.getId(),
+                product,
+                customer,
+                address,
+                order.getSpecification(),
+                order.getStatus()
+        );
     }
+
+
 
     public void approve() {
         if (this.status != OrderStatus.PENDING_PAYMENT) {

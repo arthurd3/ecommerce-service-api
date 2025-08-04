@@ -1,7 +1,7 @@
 package com.arthur.ecommerceapi.customers.gateways.gatewaysImpl;
 
 import com.arthur.ecommerceapi.customers.domain.model.Address;
-import com.arthur.ecommerceapi.customers.exceptions.AddressNotFound;
+import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
 import com.arthur.ecommerceapi.customers.gateways.AddressGateway;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.mappers.GatewayMapper;
@@ -30,14 +30,14 @@ public class AddressGatewayImpl implements AddressGateway {
     @Override
     public Address findById(final Long addressId) {
         var updateAddress = repository.findById(addressId)
-                .orElseThrow(() -> new AddressNotFound("Addres with id :" + addressId + " not found!"));
+                .orElseThrow(() -> new AddressNotFoundException("Addres with id :" + addressId + " not found!"));
         return mapper.addressToDomain(updateAddress);
     }
 
     @Override
     public Address update(final Address addressWithChanges) {
         AddressEntity entityToUpdate = repository.findById(addressWithChanges.getId())
-                .orElseThrow(() -> new AddressNotFound("Addres with id :" + addressWithChanges.getId() + " not found!"));
+                .orElseThrow(() -> new AddressNotFoundException("Addres with id :" + addressWithChanges.getId() + " not found!"));
 
         mapper.editAddressEntityFromDomain(addressWithChanges, entityToUpdate);
 

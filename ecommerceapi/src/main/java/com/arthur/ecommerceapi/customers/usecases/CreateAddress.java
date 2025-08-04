@@ -2,7 +2,7 @@ package com.arthur.ecommerceapi.customers.usecases;
 
 import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
-import com.arthur.ecommerceapi.customers.exceptions.UserAlreadyHaveAddress;
+import com.arthur.ecommerceapi.customers.exceptions.UserAlreadyHaveAddressException;
 import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class CreateAddress {
         Customer customer = findCustomer.findById(customerId);
 
         if (customer.getAddress() != null) {
-            throw new UserAlreadyHaveAddress("This User already has an address");
+            throw new UserAlreadyHaveAddressException("This User already has an address");
         }
 
         customer.defineAddress(address);

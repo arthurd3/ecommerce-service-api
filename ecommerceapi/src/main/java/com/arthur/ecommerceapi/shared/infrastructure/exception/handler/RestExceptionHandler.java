@@ -1,9 +1,10 @@
 package com.arthur.ecommerceapi.shared.infrastructure.exception.handler;
 
-import com.arthur.ecommerceapi.customers.exceptions.AddressNotFound;
+import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
 import com.arthur.ecommerceapi.customers.exceptions.UserAlreadyExistsException;
-import com.arthur.ecommerceapi.customers.exceptions.UserAlreadyHaveAddress;
+import com.arthur.ecommerceapi.customers.exceptions.UserAlreadyHaveAddressException;
 import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
+import com.arthur.ecommerceapi.orders.exceptions.OrderNotFoundExecption;
 import com.arthur.ecommerceapi.products.exceptions.ProductNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -42,8 +43,8 @@ public class RestExceptionHandler{
     }
 
     @ResponseStatus(NOT_FOUND)
-    @ExceptionHandler(AddressNotFound.class)
-    public ExceptionFilters illegalArgumentException(AddressNotFound ex) {
+    @ExceptionHandler(AddressNotFoundException.class)
+    public ExceptionFilters illegalArgumentException(AddressNotFoundException ex) {
         return ExceptionFilters.builder()
                 .timestamp(LocalDateTime.now())
                 .details(ex.getMessage())
@@ -54,8 +55,8 @@ public class RestExceptionHandler{
     }
 
     @ResponseStatus(CONFLICT)
-    @ExceptionHandler(UserAlreadyHaveAddress.class)
-    public ExceptionFilters illegalArgumentException(UserAlreadyHaveAddress ex) {
+    @ExceptionHandler(UserAlreadyHaveAddressException.class)
+    public ExceptionFilters illegalArgumentException(UserAlreadyHaveAddressException ex) {
         return ExceptionFilters.builder()
                 .timestamp(LocalDateTime.now())
                 .details(ex.getMessage())
@@ -73,8 +74,21 @@ public class RestExceptionHandler{
                 .timestamp(LocalDateTime.now())
                 .details(ex.getMessage())
                 .devMsg(ex.getClass().getName())
-                .status(CONFLICT.value())
-                .title("UserAlreadyHaveAddress")
+                .status(NOT_FOUND.value())
+                .title("ProductNotFoundException")
+                .build();
+    }
+
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(OrderNotFoundExecption.class)
+    public ExceptionFilters illegalArgumentException(OrderNotFoundExecption ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(NOT_FOUND.value())
+                .title("OrderNotFoundExecption")
                 .build();
     }
 
