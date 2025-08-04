@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -62,6 +63,26 @@ class FindAllCustomerTest {
             assertEquals(pageNumber, findedPage.getNumber());
             assertEquals(pageContent.size() ,  findedPage.getNumberOfElements());
             assertEquals(2 , findedPage.getTotalPages());
+        }
+
+
+        @Test
+        @DisplayName("Should find none customers")
+        public void shouldFindNoneCustomers() {
+
+            PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+
+            when(customerGateway.findAll(pageRequest)).thenReturn(Page.empty());
+
+            Page<Customer> findedPage = findAllCustomer.findAll(pageRequest);
+
+            assertNotNull(findedPage);
+
+            assertEquals(0, findedPage.getSize()); // Não há nenhum item no total
+            assertEquals(0, findedPage.getNumber()); // Não há nenhum item nesta página
+            assertEquals(0 ,  findedPage.getNumberOfElements()); // Estamos na primeira página, de índice 0
+            assertEquals(1 , findedPage.getTotalPages());  // Existe uma página no resultado total, e ela está vazia
+            
         }
 
 
