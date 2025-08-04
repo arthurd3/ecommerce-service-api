@@ -2,6 +2,7 @@ package com.arthur.ecommerceapi.customers.usecases;
 
 import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
+import com.arthur.ecommerceapi.customers.exceptions.UserAlreadyHaveAddressException;
 import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
 import com.arthur.ecommerceapi.testFactory.DataTestFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +34,7 @@ class CreateAddressTest {
         @Test
         @DisplayName("Should create Address With Success")
         void shouldCreateAddressWithSuccess(){
-             
+
             final Long customerId = 1L;
             final Address address = DataTestFactory.createAddress();
             Customer customer = DataTestFactory.createCustomer();
@@ -51,5 +52,21 @@ class CreateAddressTest {
             assertEquals(address.getCustomer(), customer);
         }
 
+        @Test
+        @DisplayName("Should throw User Already Have Address Exception")
+        void shouldThrowUserAlreadyHaveAddressException(){
+            final Long customerId = 1L;
+            final Address address = DataTestFactory.createAddress();
+            Customer customer = DataTestFactory.createCustomer();
+            customer.setAddress(new Address());
+            when(findCustomer.findById(customerId)).thenReturn(customer);
+
+            UserAlreadyHaveAddressException exception = assertThrows(UserAlreadyHaveAddressException.class,
+                    () -> createAddress.create(address, customerId));
+
+            assertEquals("This User already has an address", exception.getMessage());
+
+            verify(customerGateway, never()).save(any(Customer.class));
+        }
     }
 }
