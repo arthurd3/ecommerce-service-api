@@ -1,9 +1,6 @@
 package com.arthur.ecommerceapi.shared.infrastructure.exception.handler;
 
-import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
-import com.arthur.ecommerceapi.customers.exceptions.UserAlreadyExistsException;
-import com.arthur.ecommerceapi.customers.exceptions.UserAlreadyHaveAddressException;
-import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
+import com.arthur.ecommerceapi.customers.exceptions.*;
 import com.arthur.ecommerceapi.orders.exceptions.OrderNotFoundExecption;
 import com.arthur.ecommerceapi.products.exceptions.ProductNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,6 +24,30 @@ public class RestExceptionHandler{
                 .devMsg(ex.getClass().getName())
                 .status(CONFLICT.value())
                 .title("UserAlreadyExistsException")
+                .build();
+    }
+
+    @ResponseStatus(CONFLICT)
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ExceptionFilters illegalArgumentException(EmailAlreadyExistsException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(CONFLICT.value())
+                .title("EmailAlreadyExistsException")
+                .build();
+    }
+
+    @ResponseStatus(CONFLICT)
+    @ExceptionHandler(PhoneAlreadyExistsException.class)
+    public ExceptionFilters illegalArgumentException(PhoneAlreadyExistsException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(CONFLICT.value())
+                .title("PhoneAlreadyExistsException")
                 .build();
     }
 

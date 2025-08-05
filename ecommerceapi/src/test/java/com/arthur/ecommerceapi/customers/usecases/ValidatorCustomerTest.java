@@ -44,9 +44,18 @@ class ValidatorCustomerTest {
             when(customerGateway.existsByPhone(customer.getPhone())).thenReturn(false);
 
             assertDoesNotThrow(() -> validator.validate(customer));
-            
+
             verify(customerGateway , times(1)).existsByEmail(customer.getEmail());
             verify(customerGateway , times(1)).existsByPhone(customer.getPhone());
+        }
+
+        @Test
+        @DisplayName("Should Throw Email Already Exists Exception")
+        void shouldThrowEmailAlreadyExistsException(){
+            when(customerGateway.existsByEmail(customer.getEmail())).thenReturn(true);
+            when(customerGateway.existsByPhone(customer.getPhone())).thenReturn(false);
+
+
         }
 
     }
