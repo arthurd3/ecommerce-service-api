@@ -41,7 +41,7 @@ class CustomerGatewayImplTest {
 
     @Nested
     class saveCustomer{
-        
+
         @Test
         @DisplayName("should save customer with success")
         void shouldSaveCustomerWithSuccess() {
