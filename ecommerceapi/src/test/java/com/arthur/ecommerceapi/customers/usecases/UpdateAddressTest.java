@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.customers.usecases;
 
 import com.arthur.ecommerceapi.customers.domain.model.Address;
+import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
 import com.arthur.ecommerceapi.customers.gateways.AddressGateway;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.gatewaysImpl.AddressGatewayImpl;
@@ -14,10 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 class UpdateAddressTest {
@@ -28,32 +28,44 @@ class UpdateAddressTest {
     @Mock
     private AddressGateway addressGateway;
 
-    @Mock
-    private AddressGatewayImpl  addressGatewayImpl;
-
     @Nested
     class updateAddress{
 
         private Address addressToUpdate;
 
-        private AddressEntity addressEntity;
-
         @BeforeEach
         void setUp() {
             addressToUpdate = DataTestFactory.createAddress();
-            addressEntity = DataTestFactory.createAddressEntity();
         }
 
         @Test
-        @DisplayName("should update address with success")
+        @DisplayName("Should update address with success")
         public void shouldUpdateAddressWithSuccess(){
-
-            when(addressGatewayImpl.getAddressEntity(addressToUpdate.getId())).thenReturn(addressEntity);
+            when(addressGateway.update(any(Address.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
             Address updatedAddress = updateAddress.update(addressToUpdate);
 
             assertNotNull(updatedAddress);
             assertEquals(updatedAddress.getId(), addressToUpdate.getId());
+            assertEquals(updatedAddress.getStreet(), addressToUpdate.getStreet());
+            assertEquals(updatedAddress.getCity(), addressToUpdate.getCity());
+
+            verify(addressGateway, times(1)).update(any(Address.class));
+        }
+
+        @Test
+        @DisplayName("Should Throw Address Not Found Exception")
+        public void shouldThrowAddressNotFoundException(){
+            final Long addressId = addressToUpdate.getId();
+
+            when(addressGateway.update(addressToUpdate))
+                    .thenThrow(new AddressNotFoundException("Address with id :" + addressId + " not found!"));
+
+            AddressNotFoundException exception = assertThrows(AddressNotFoundException.class,
+                    () -> updateAddress.update(addressToUpdate));
+
+            assertEquals("Address with id :" + addressId + " not found!", exception.getMessage());
+            verify(addressGateway, times(1)).update(addressToUpdate);
         }
     }
 
