@@ -21,5 +21,5 @@ public interface ProductMapper {
     ProductResponseDTO toDTO(Product product);
 
     @Mapping(target = "id" , source = "productId")
-    Product updateFromDTO(ProductPutRequestDTO dto , UUID id);
+    Product updateFromDTO(ProductPutRequestDTO dto , UUID productId);
 }

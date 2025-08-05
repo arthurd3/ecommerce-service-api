@@ -2,6 +2,7 @@ package com.arthur.ecommerceapi.testFactory;
 
 import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
+import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import org.junit.jupiter.api.DisplayName;
 
@@ -35,13 +36,24 @@ public class DataTestFactory {
 
     @DisplayName("Create a Address for Test")
     public static Address createAddress(){
-        Address findedAddress = new Address();
-        findedAddress.setId(1L);
-        findedAddress.setStreet("123 Main Street");
-        findedAddress.setCity("Main City");
-        findedAddress.setState("Main State");
-        findedAddress.setZip("12345");
-        return findedAddress;
+        Address address = new Address();
+        address.setId(1L);
+        address.setStreet("123 Main Street");
+        address.setCity("Main City");
+        address.setState("Main State");
+        address.setZip("12345");
+        return address;
+    }
+
+    @DisplayName("Create a Address Entity for Test")
+    public static AddressEntity createAddressEntity(){
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setId(1L);
+        addressEntity.setStreet("Nt Street");
+        addressEntity.setCity("New York");
+        addressEntity.setState("Paris");
+        addressEntity.setZip("1333");
+        return addressEntity;
     }
 
     @DisplayName("Create a list of 3 customers for Test")
