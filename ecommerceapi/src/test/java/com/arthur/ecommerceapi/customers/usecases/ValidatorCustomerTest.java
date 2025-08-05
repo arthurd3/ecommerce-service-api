@@ -2,6 +2,7 @@ package com.arthur.ecommerceapi.customers.usecases;
 
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.exceptions.EmailAlreadyExistsException;
+import com.arthur.ecommerceapi.customers.exceptions.PhoneAlreadyExistsException;
 import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
 import com.arthur.ecommerceapi.testFactory.DataTestFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,6 +61,21 @@ class ValidatorCustomerTest {
 
             assertEquals("Email already exists", exception.getMessage());
             verify(customerGateway , times(1)).existsByEmail(customer.getEmail());
+            verify(customerGateway, never()).existsByPhone(anyString());
+        }
+
+        @Test
+        @DisplayName("Should Throw Phone Already Exists Exception")
+        void shouldThrowPhoneAlreadyExistsException(){
+            when(customerGateway.existsByEmail(customer.getEmail())).thenReturn(false);
+            when(customerGateway.existsByPhone(customer.getPhone())).thenReturn(true);
+
+            PhoneAlreadyExistsException exception = assertThrows(
+                    PhoneAlreadyExistsException.class , () -> validator.validate(customer));
+
+            assertEquals("Phone already exists", exception.getMessage());
+            verify(customerGateway , times(1)).existsByEmail(customer.getEmail());
+            verify(customerGateway , times(1)).existsByPhone(customer.getPhone());
         }
 
     }
