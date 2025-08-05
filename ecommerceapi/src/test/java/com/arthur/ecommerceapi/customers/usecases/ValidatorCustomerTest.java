@@ -3,6 +3,7 @@ package com.arthur.ecommerceapi.customers.usecases;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.exceptions.EmailAlreadyExistsException;
 import com.arthur.ecommerceapi.customers.exceptions.PhoneAlreadyExistsException;
+import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
 import com.arthur.ecommerceapi.testFactory.DataTestFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,17 +27,15 @@ class ValidatorCustomerTest {
     @Mock
     private CustomerGateway customerGateway;
 
+    private Customer customer;
 
+    @BeforeEach
+    void setUp() {
+        customer = DataTestFactory.createCustomer();
+    }
 
     @Nested
     class validateCustomer{
-
-        private Customer customer;
-
-        @BeforeEach
-        void setUp() {
-            customer = DataTestFactory.createCustomer();
-        }
 
         @Test
         @DisplayName("Should validate customer with success")
@@ -78,6 +77,33 @@ class ValidatorCustomerTest {
             verify(customerGateway , times(1)).existsByPhone(customer.getPhone());
         }
 
+    }
+
+    @Nested
+    class validateExists{
+        @Test
+        @DisplayName("Should exist User")
+        void shouldValidateExists(){
+            when(customerGateway.existsById(customer.getId())).thenReturn(true);
+
+            assertDoesNotThrow(() -> validator.validateExists(customer.getId()));
+
+            verify(customerGateway , times(1)).existsById(customer.getId());
+        }
+
+
+        @Test
+        @DisplayName("Should exist User Not Found Exception")
+        void shouldThrowUserNotFoundException(){
+
+            when(customerGateway.existsById(customer.getId())).thenReturn(false);
+
+            UserNotFoundException exception = assertThrows(UserNotFoundException.class,
+                    () -> validator.validateExists(customer.getId()));
+
+            assertEquals("Customer not exists", exception.getMessage());
+            verify(customerGateway , times(1)).existsById(customer.getId());
+        }
     }
 
 }
