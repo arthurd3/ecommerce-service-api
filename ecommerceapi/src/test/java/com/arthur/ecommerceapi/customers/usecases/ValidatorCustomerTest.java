@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.customers.usecases;
 
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
+import com.arthur.ecommerceapi.customers.exceptions.EmailAlreadyExistsException;
 import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
 import com.arthur.ecommerceapi.testFactory.DataTestFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -53,9 +54,12 @@ class ValidatorCustomerTest {
         @DisplayName("Should Throw Email Already Exists Exception")
         void shouldThrowEmailAlreadyExistsException(){
             when(customerGateway.existsByEmail(customer.getEmail())).thenReturn(true);
-            when(customerGateway.existsByPhone(customer.getPhone())).thenReturn(false);
 
+            EmailAlreadyExistsException exception = assertThrows(
+                    EmailAlreadyExistsException.class , () -> validator.validate(customer));
 
+            assertEquals("Email already exists", exception.getMessage());
+            verify(customerGateway , times(1)).existsByEmail(customer.getEmail());
         }
 
     }
