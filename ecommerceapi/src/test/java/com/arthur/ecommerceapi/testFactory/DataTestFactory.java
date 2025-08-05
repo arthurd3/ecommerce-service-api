@@ -2,6 +2,7 @@ package com.arthur.ecommerceapi.testFactory;
 
 import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
+import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import org.junit.jupiter.api.DisplayName;
 
 import java.util.Arrays;
@@ -12,13 +13,24 @@ public class DataTestFactory {
 
     @DisplayName("Create a customer for Test")
     public static Customer createCustomer(){
-        Customer findedCustomer = new Customer();
-        findedCustomer.setId(1L);
-        findedCustomer.setEmail("jose@gmail.com");
-        findedCustomer.setName("Jose");
-        findedCustomer.setPassword("12345");
-        findedCustomer.setPhone("3241421421414");
-        return findedCustomer;
+        Customer customer = new Customer();
+        customer.setId(1L);
+        customer.setEmail("jose@gmail.com");
+        customer.setName("Jose");
+        customer.setPassword("12345");
+        customer.setPhone("3241421421414");
+        return customer;
+    }
+
+    @DisplayName("Create a customer for Test")
+    public static CustomerEntity createCustomerEntity(){
+        CustomerEntity customerEntity = new CustomerEntity();
+        customerEntity.setId(1L);
+        customerEntity.setEmail("jose@gmail.com");
+        customerEntity.setName("Jose");
+        customerEntity.setPassword("12345");
+        customerEntity.setPhone("3241421421414");
+        return customerEntity;
     }
 
     @DisplayName("Create a Address for Test")
