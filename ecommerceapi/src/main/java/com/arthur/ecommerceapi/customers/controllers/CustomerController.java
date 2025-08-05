@@ -55,9 +55,10 @@ public class CustomerController {
     }
 
     @ResponseStatus(OK)
-    @PutMapping
-    public CustomerResponseDTO update(@RequestBody @Valid final CustomerPutRequestDTO dto){
-        return mapper.toDTO(updateCustomer.update(mapper.updateFromDTO(dto)));
+    @PutMapping("{id}")
+    public CustomerResponseDTO update(@PathVariable final Long id,
+                                      @RequestBody @Valid final CustomerPutRequestDTO dto){
+        return mapper.toDTO(updateCustomer.update(mapper.updateFromDTO(dto , id)));
     }
 
 }

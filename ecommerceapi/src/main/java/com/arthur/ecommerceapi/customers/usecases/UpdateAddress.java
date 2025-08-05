@@ -13,16 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UpdateAddress {
 
     private final AddressGateway addressGateway;
-    private final AddressMapper addressMapper;
-
 
     @Transactional
-    public Address update(final Long addressId ,final AddressPutRequestDTO addressUpdate) {
-
-        Address existingAddress = addressGateway.findById(addressId);
-
-        addressMapper.updateFromDTO(addressUpdate, existingAddress);
-
-        return addressGateway.update(existingAddress);
+    public Address update(final Address address) {
+        return addressGateway.update(address);
     }
 }

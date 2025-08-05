@@ -17,5 +17,5 @@ public interface CustomerMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id" , source = "customerId")
-    Customer updateFromDTO(CustomerPutRequestDTO dto);
+    Customer updateFromDTO(CustomerPutRequestDTO dto , Long customerId);
 }
