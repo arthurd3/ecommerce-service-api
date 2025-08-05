@@ -47,9 +47,10 @@ public class ProductController {
     }
 
     @ResponseStatus(OK)
-    @PutMapping
-    public ProductResponseDTO update(@RequestBody @Valid final ProductPutRequestDTO dto){
-        return mapper.toDTO(updateProduct.update(mapper.updateFromDTO(dto)));
+    @PutMapping("{id}")
+    public ProductResponseDTO update(@PathVariable final UUID id,
+                                     @RequestBody @Valid final ProductPutRequestDTO dto){
+        return mapper.toDTO(updateProduct.update(mapper.updateFromDTO(dto , id)));
     }
 
 }

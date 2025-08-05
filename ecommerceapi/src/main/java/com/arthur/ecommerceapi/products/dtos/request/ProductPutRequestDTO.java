@@ -7,9 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record ProductPutRequestDTO(
-        @NotNull
-        UUID productId,
-
         String name,
 
         Coin price,

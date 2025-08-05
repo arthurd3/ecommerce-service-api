@@ -7,6 +7,8 @@ import com.arthur.ecommerceapi.products.dtos.response.ProductResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.UUID;
+
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 import static org.mapstruct.ReportingPolicy.IGNORE;
 
@@ -19,5 +21,5 @@ public interface ProductMapper {
     ProductResponseDTO toDTO(Product product);
 
     @Mapping(target = "id" , source = "productId")
-    Product updateFromDTO(ProductPutRequestDTO dto);
+    Product updateFromDTO(ProductPutRequestDTO dto , UUID id);
 }
