@@ -18,10 +18,12 @@ public class CustomerEntity {
 
     private String name;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String password;
 
+    @Column(unique = true, nullable = false)
     private String phone;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
