@@ -30,7 +30,9 @@ class UpdateAddressTest {
             addressToUpdate = new Address();
         }
 
+        public void shouldUpdateAddressWithSuccess(){
 
+        }
     }
 
 }

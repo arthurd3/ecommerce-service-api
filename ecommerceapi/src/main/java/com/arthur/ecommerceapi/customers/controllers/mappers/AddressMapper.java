@@ -16,7 +16,7 @@ public interface AddressMapper {
     AddressResponseDTO toDTO(Address address);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "id" , source = "addressId")
-    @Mapping(target = "customer" , ignore = true)
-    Address updateFromDTO(AddressPutRequestDTO dto);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "customer", ignore = true)
+    void updateFromDTO(AddressPutRequestDTO dto, @MappingTarget Address address);
 }

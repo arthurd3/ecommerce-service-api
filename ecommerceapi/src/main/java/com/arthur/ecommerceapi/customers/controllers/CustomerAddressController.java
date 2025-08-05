@@ -31,9 +31,10 @@ public class CustomerAddressController {
     }
 
     @ResponseStatus(OK)
-    @PutMapping
-    public AddressResponseDTO update(@RequestBody @Valid final AddressPutRequestDTO dto) {
-        return mapper.toDTO(updateAddress.update(mapper.updateFromDTO(dto)));
+    @PutMapping("/{id}")
+    public AddressResponseDTO update(@PathVariable final Long id ,
+                                     @RequestBody @Valid final AddressPutRequestDTO dto) {
+        return mapper.toDTO(updateAddress.update(id , dto));
     }
 
     @ResponseStatus(OK)
