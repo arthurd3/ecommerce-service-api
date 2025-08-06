@@ -26,11 +26,12 @@ public class DataTestFactory {
     @DisplayName("Create a customer for Test")
     public static CustomerEntity createCustomerEntity(){
         CustomerEntity customerEntity = new CustomerEntity();
-        customerEntity.setId(1L);
+        customerEntity.setId(null);
         customerEntity.setEmail("jose@gmail.com");
         customerEntity.setName("Jose");
         customerEntity.setPassword("12345");
         customerEntity.setPhone("3241421421414");
+        customerEntity.setAddress(null);
         return customerEntity;
     }
 

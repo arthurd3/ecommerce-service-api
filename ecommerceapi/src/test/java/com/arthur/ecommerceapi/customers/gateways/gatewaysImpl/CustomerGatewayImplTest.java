@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.customers.gateways.gatewaysImpl;
 
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
+import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
 import com.arthur.ecommerceapi.testFactory.DataTestFactory;
@@ -80,8 +81,7 @@ class CustomerGatewayImplTest {
 
         @BeforeEach
         void setUp() {
-            CustomerEntity existingCustomer = new CustomerEntity(null, "Jose Original", "jose@gmail.com", "123", "111", null);
-            repository.save(existingCustomer);
+            repository.save(DataTestFactory.createCustomerEntity());
             entityManager.flush();
         }
 
@@ -108,8 +108,7 @@ class CustomerGatewayImplTest {
 
         @BeforeEach
         void setUp() {
-            CustomerEntity existingCustomer = new CustomerEntity(null, "Jose Original", "jose@gmail.com", "123", "111", null);
-            repository.save(existingCustomer);
+            repository.save(DataTestFactory.createCustomerEntity());
             entityManager.flush();
         }
 
@@ -140,7 +139,7 @@ class CustomerGatewayImplTest {
             @BeforeEach
             void setUp() {
                 repository.saveAll(DataTestFactory.createCustomerEntityList());
-                repository.flush();
+                entityManager.flush();
             }
 
             @Test
@@ -181,8 +180,41 @@ class CustomerGatewayImplTest {
 
     }
 
-    @Test
-    void findById() {
+    @Nested
+    class findById {
+
+        private CustomerEntity savedCustomer;
+
+        @BeforeEach
+        void setUp() {
+            savedCustomer = repository.save(DataTestFactory.createCustomerEntity());
+            entityManager.flush();
+        }
+
+        @Test
+        @DisplayName("Should Find Customer by Id")
+        void shouldFindById() {
+
+            Long findId = savedCustomer.getId();
+
+            Customer returnedCustomer = customerGateway.findById(findId);
+
+            assertNotNull(returnedCustomer);
+            assertEquals(findId, returnedCustomer.getId());
+            assertEquals("Jose", returnedCustomer.getName());
+            assertEquals("3241421421414", returnedCustomer.getPhone());
+        }
+
+        @Test
+        @DisplayName("Should throw User Not Found Exception on find by id")
+        void shouldThrowUserNotFoundException() {
+            final Long idFind = 66L;
+
+            UserNotFoundException userNotFoundException = assertThrows(
+                    UserNotFoundException.class , () -> customerGateway.findById(idFind));
+
+            assertEquals("User not found with id: " + idFind, userNotFoundException.getMessage());
+        }
     }
 
     @Test
