@@ -31,20 +31,16 @@ class CustomerGatewayImplTest {
     @Autowired
     private EntityManager entityManager;
 
-    private Customer customer;
-
-    @BeforeEach
-    void setUp() {
-        customer = DataTestFactory.createCustomer();
-        customer.setId(null);
-    }
-
     @Nested
     class saveCustomer{
 
         @Test
         @DisplayName("should save customer with success")
         void shouldSaveCustomerWithSuccess() {
+
+            Customer customer = DataTestFactory.createCustomer();
+            customer.setId(null);
+
             Customer savedCustomer = customerGateway.save(customer);
 
             assertNotNull(savedCustomer);
@@ -57,14 +53,12 @@ class CustomerGatewayImplTest {
         }
 
         @Test
-        @DisplayName("Deve lançar DataIntegrityViolationException ao tentar salvar um email duplicado")
+        @DisplayName("Should throw DataIntegrityViolationException on save duplicated e-mail")
         void shouldThrowExceptionWhenSavingCustomerWithDuplicateEmail() {
 
             CustomerEntity existingCustomer = new CustomerEntity(null, "Jose Original", "jose@gmail.com", "123", "111", null);
             repository.save(existingCustomer);
-
             entityManager.flush();
-            entityManager.clear();
 
             Customer customerToFail = DataTestFactory.createCustomer();
             customerToFail.setEmail("jose@gmail.com");
@@ -77,8 +71,32 @@ class CustomerGatewayImplTest {
         }
     }
 
-    @Test
-    void existsByEmail() {
+    @Nested
+    class existsByEmail{
+
+        @BeforeEach
+        void setUp() {
+            CustomerEntity existingCustomer = new CustomerEntity(null, "Jose Original", "jose@gmail.com", "123", "111", null);
+            repository.save(existingCustomer);
+            entityManager.flush();
+        }
+
+
+        @Test
+        @DisplayName("Should exists customer by email")
+        void shouldExistsByEmail() {
+            Boolean existsCustomer = customerGateway.existsByEmail("jose@gmail.com");
+
+            assertTrue(existsCustomer);
+        }
+
+        @Test
+        @DisplayName("Should not exists customer by email")
+        void shouldNotExistsByEmail() {
+            Boolean existsCustomer = customerGateway.existsByEmail("jose222@gmail.com");
+
+            assertFalse(existsCustomer);
+        }
     }
 
     @Test
