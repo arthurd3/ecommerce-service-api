@@ -5,7 +5,6 @@ import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
-import com.arthur.ecommerceapi.orders.enums.OrderStatus;
 import com.arthur.ecommerceapi.orders.gateways.entities.OrderEntity;
 import com.arthur.ecommerceapi.orders.repositories.OrderRepository;
 import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
@@ -318,8 +317,6 @@ class CustomerGatewayImplTest {
         }
     }
 
-
-
     @Nested
     class updateCustomer{
         private CustomerEntity savedCustomer;
@@ -331,6 +328,7 @@ class CustomerGatewayImplTest {
         }
 
         @Test
+        @DisplayName("Should update customer with success")
         void shouldUpdate() {
             Customer updateCustomer = DataTestFactory.createCustomer();
             updateCustomer.setId(savedCustomer.getId());
@@ -339,11 +337,50 @@ class CustomerGatewayImplTest {
             entityManager.flush();
 
             Customer returnedCustomer = customerGateway.findById(savedCustomer.getId());
-            assertEquals(updateCustomer, returnedCustomer);
+            assertEquals(updateCustomer.getId(), returnedCustomer.getId());
+            assertEquals(updateCustomer.getAddress(), returnedCustomer.getAddress());
+            assertEquals(updateCustomer.getName(), returnedCustomer.getName());
+        }
+
+        @Test
+        @DisplayName("Should dont update customer with success")
+        void shouldDontUpdate() {
+            Customer updateCustomer = DataTestFactory.createCustomer();
+            updateCustomer.setId(66L);
+
+            assertThrows(UserNotFoundException.class ,
+                    () -> customerGateway.update(updateCustomer));
         }
     }
 
-    @Test
-    void findEntityById() {
+    @Nested
+    class findCustomerEntityById {
+
+        private CustomerEntity savedCustomer;
+
+        @BeforeEach
+        void setUp() {
+            savedCustomer = repository.save(DataTestFactory.createCustomerEntity());
+            entityManager.flush();
+        }
+
+        @Test
+        @DisplayName("Should find Customer Entity by Id")
+        void shouldFindEntityById() {
+            CustomerEntity returnedCustomer = customerGateway.findEntityById(savedCustomer.getId());
+
+            assertNotNull(returnedCustomer);
+
+            assertEquals(savedCustomer.getId(), returnedCustomer.getId());
+            assertEquals(savedCustomer.getAddress(), returnedCustomer.getAddress());
+            assertEquals(savedCustomer.getName(), returnedCustomer.getName());
+        }
+
+        @Test
+        @DisplayName("Should Throw User not Found exception on find Customer Entity")
+        void shouldThrowUserNotFoundException() {
+            assertThrows(UserNotFoundException.class ,
+                    () -> customerGateway.findEntityById(3123L));
+        }
     }
 }
