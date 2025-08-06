@@ -12,8 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -126,8 +130,55 @@ class CustomerGatewayImplTest {
         }
     }
 
-    @Test
-    void findAll() {
+    @Nested
+    class findAllCustomers {
+
+        @Nested
+        @DisplayName("should Find All When Customers Exist")
+        class shouldFindAllWhenCustomersExist {
+
+            @BeforeEach
+            void setUp() {
+                repository.saveAll(DataTestFactory.createCustomerEntityList());
+                repository.flush();
+            }
+
+            @Test
+            @DisplayName("Deve encontrar todos os clientes com paginação")
+            void shouldFindAll() {
+
+                PageRequest pageRequest = PageRequest.of(0, 2);
+
+                Page<Customer> returnedPage = customerGateway.findAll(pageRequest);
+
+                assertNotNull(returnedPage);
+                assertEquals(3, returnedPage.getTotalElements());
+                assertEquals(2, returnedPage.getTotalPages());
+                assertEquals(2, returnedPage.getContent().size());
+                assertEquals("Jose", returnedPage.getContent().getFirst().getName());
+            }
+        }
+
+        @Nested
+        @DisplayName("Should Find When No Customers Exist")
+        class shouldFindWhenNoCustomersExist {
+
+            @Test
+            @DisplayName("Deve retornar uma página vazia")
+            void shouldFindNoneCustomers() {
+
+                PageRequest pageRequest = PageRequest.of(0, 2);
+
+                Page<Customer> returnedPage = customerGateway.findAll(pageRequest);
+
+                assertNotNull(returnedPage);
+                assertEquals(0, returnedPage.getTotalElements());
+                assertEquals(0, returnedPage.getNumberOfElements());
+                assertEquals(1, returnedPage.getTotalPages());
+                assertTrue(returnedPage.getContent().isEmpty());
+            }
+        }
+
     }
 
     @Test

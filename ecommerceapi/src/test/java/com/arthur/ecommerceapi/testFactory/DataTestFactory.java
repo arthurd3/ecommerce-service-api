@@ -81,4 +81,31 @@ public class DataTestFactory {
 
         return Arrays.asList(customer1, customer2, customer3);
     }
+
+
+    @DisplayName("Create a list of 3 customers entities for Test")
+    public static List<CustomerEntity> createCustomerEntityList() {
+        CustomerEntity customer1 = new CustomerEntity();
+        customer1.setId(null);
+        customer1.setName("Jose");
+        customer1.setEmail("jose@gmail.com");
+        customer1.setPhone("32988887777");
+        customer1.setPassword("12345");
+
+        CustomerEntity customer2 = new CustomerEntity();
+        customer2.setId(null);
+        customer2.setName("Maria");
+        customer2.setEmail("maria@gmail.com");
+        customer2.setPhone("32977776666");
+        customer2.setPassword("abcde");
+
+        CustomerEntity customer3 = new CustomerEntity();
+        customer3.setId(null);
+        customer3.setName("Carlos");
+        customer3.setEmail("carlos@gmail.com");
+        customer3.setPhone("32966665555");
+        customer3.setPassword("zyxw");
+
+        return Arrays.asList(customer1, customer2, customer3);
+    }
 }
