@@ -4,8 +4,11 @@ import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
+import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
+import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 import org.junit.jupiter.api.DisplayName;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,30 +18,26 @@ public class DataTestFactory {
     @DisplayName("Create a customer for Test")
     public static Customer createCustomer(){
         Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setEmail("jose@gmail.com");
-        customer.setName("Jose");
-        customer.setPassword("12345");
-        customer.setPhone("3241421421414");
+        customer.setEmail("antonio@gmail.com");
+        customer.setName("Antonio");
+        customer.setPassword("1234567890");
+        customer.setPhone("512341545123");
         return customer;
     }
 
     @DisplayName("Create a customer for Test")
     public static CustomerEntity createCustomerEntity(){
         CustomerEntity customerEntity = new CustomerEntity();
-        customerEntity.setId(null);
         customerEntity.setEmail("jose@gmail.com");
         customerEntity.setName("Jose");
         customerEntity.setPassword("12345");
         customerEntity.setPhone("3241421421414");
-        customerEntity.setAddress(null);
         return customerEntity;
     }
 
     @DisplayName("Create a Address for Test")
     public static Address createAddress(){
         Address address = new Address();
-        address.setId(1L);
         address.setStreet("123 Main Street");
         address.setCity("Main City");
         address.setState("Main State");
@@ -49,32 +48,42 @@ public class DataTestFactory {
     @DisplayName("Create a Address Entity for Test")
     public static AddressEntity createAddressEntity(){
         AddressEntity addressEntity = new AddressEntity();
-        addressEntity.setId(1L);
         addressEntity.setStreet("Nt Street");
         addressEntity.setCity("New York");
         addressEntity.setState("Paris");
         addressEntity.setZip("1333");
+        addressEntity.setCountry("USA");
         return addressEntity;
+    }
+
+
+    @DisplayName("Create a Address Entity for Test")
+    public static ProductEntity createProductEntity(){
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setName("HotWellsCar");
+        productEntity.setCategory(ProductCategory.TOYS_AND_GAMES);
+        productEntity.setPrice(new BigDecimal(200));
+        productEntity.setDescription("Red car");
+        productEntity.setQuantity(2);
+        productEntity.setAvailableToDiscount(false);
+        return productEntity;
     }
 
     @DisplayName("Create a list of 3 customers for Test")
     public static List<Customer> createCustomerList() {
         Customer customer1 = new Customer();
-        customer1.setId(1L);
         customer1.setName("Jose");
         customer1.setEmail("jose@gmail.com");
         customer1.setPhone("32988887777");
         customer1.setPassword("12345");
 
         Customer customer2 = new Customer();
-        customer2.setId(2L);
         customer2.setName("Maria");
         customer2.setEmail("maria@gmail.com");
         customer2.setPhone("32977776666");
         customer2.setPassword("abcde");
 
         Customer customer3 = new Customer();
-        customer3.setId(3L);
         customer3.setName("Carlos");
         customer3.setEmail("carlos@gmail.com");
         customer3.setPhone("32966665555");
@@ -87,21 +96,18 @@ public class DataTestFactory {
     @DisplayName("Create a list of 3 customers entities for Test")
     public static List<CustomerEntity> createCustomerEntityList() {
         CustomerEntity customer1 = new CustomerEntity();
-        customer1.setId(null);
         customer1.setName("Jose");
         customer1.setEmail("jose@gmail.com");
         customer1.setPhone("32988887777");
         customer1.setPassword("12345");
 
         CustomerEntity customer2 = new CustomerEntity();
-        customer2.setId(null);
         customer2.setName("Maria");
         customer2.setEmail("maria@gmail.com");
         customer2.setPhone("32977776666");
         customer2.setPassword("abcde");
 
         CustomerEntity customer3 = new CustomerEntity();
-        customer3.setId(null);
         customer3.setName("Carlos");
         customer3.setEmail("carlos@gmail.com");
         customer3.setPhone("32966665555");

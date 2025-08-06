@@ -2,8 +2,14 @@ package com.arthur.ecommerceapi.customers.gateways.gatewaysImpl;
 
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
+import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
+import com.arthur.ecommerceapi.orders.enums.OrderStatus;
+import com.arthur.ecommerceapi.orders.gateways.entities.OrderEntity;
+import com.arthur.ecommerceapi.orders.repositories.OrderRepository;
+import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
+import com.arthur.ecommerceapi.products.repositories.ProductRepository;
 import com.arthur.ecommerceapi.testFactory.DataTestFactory;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,6 +39,12 @@ class CustomerGatewayImplTest {
 
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Nested
     class saveCustomer{
@@ -77,7 +87,7 @@ class CustomerGatewayImplTest {
     }
 
     @Nested
-    class existsByEmail{
+    class existsCustomerByEmail{
 
         @BeforeEach
         void setUp() {
@@ -104,18 +114,22 @@ class CustomerGatewayImplTest {
     }
 
     @Nested
-    class existsByPhone{
+    class existsCustomerByPhone{
+
+        private CustomerEntity customerEntity;
 
         @BeforeEach
         void setUp() {
-            repository.save(DataTestFactory.createCustomerEntity());
+            customerEntity = repository.save(DataTestFactory.createCustomerEntity());
             entityManager.flush();
         }
 
         @Test
         @DisplayName("Should exists by Phone")
         void shouldExistsByPhone() {
-            Boolean existsCustomer = customerGateway.existsByPhone("111");
+            String phone = customerEntity.getPhone();
+
+            Boolean existsCustomer = customerGateway.existsByPhone(phone);
 
             assertTrue(existsCustomer);
         }
@@ -123,7 +137,7 @@ class CustomerGatewayImplTest {
         @Test
         @DisplayName("Should Not exists by Phone")
         void shouldNotExistsByPhone() {
-            Boolean existsCustomer = customerGateway.existsByPhone("123567");
+            Boolean existsCustomer = customerGateway.existsByPhone("5121231562223");
 
             assertFalse(existsCustomer);
         }
@@ -143,7 +157,6 @@ class CustomerGatewayImplTest {
             }
 
             @Test
-            @DisplayName("Deve encontrar todos os clientes com paginação")
             void shouldFindAll() {
 
                 PageRequest pageRequest = PageRequest.of(0, 2);
@@ -163,7 +176,6 @@ class CustomerGatewayImplTest {
         class shouldFindWhenNoCustomersExist {
 
             @Test
-            @DisplayName("Deve retornar uma página vazia")
             void shouldFindNoneCustomers() {
 
                 PageRequest pageRequest = PageRequest.of(0, 2);
@@ -173,7 +185,7 @@ class CustomerGatewayImplTest {
                 assertNotNull(returnedPage);
                 assertEquals(0, returnedPage.getTotalElements());
                 assertEquals(0, returnedPage.getNumberOfElements());
-                assertEquals(1, returnedPage.getTotalPages());
+                assertEquals(0, returnedPage.getTotalPages());
                 assertTrue(returnedPage.getContent().isEmpty());
             }
         }
@@ -181,7 +193,7 @@ class CustomerGatewayImplTest {
     }
 
     @Nested
-    class findById {
+    class findCustomerById {
 
         private CustomerEntity savedCustomer;
 
@@ -217,12 +229,118 @@ class CustomerGatewayImplTest {
         }
     }
 
-    @Test
-    void existsById() {
+    @Nested
+    class existsCustomerById {
+
+        private CustomerEntity savedCustomer;
+
+        @BeforeEach
+        void setUp() {
+            savedCustomer = repository.save(DataTestFactory.createCustomerEntity());
+            entityManager.flush();
+        }
+
+        @Test
+        void shouldExistsById() {
+            final Long idFind = savedCustomer.getId();
+
+            boolean existsById = customerGateway.existsById(idFind);
+
+            assertTrue(existsById);
+        }
+
+
+        @Test
+        void shouldNotExistsById() {
+            final Long idFind = 65L;
+
+            boolean existsById = customerGateway.existsById(idFind);
+
+            assertFalse(existsById);
+        }
+
     }
 
-    @Test
-    void update() {
+    @Nested
+    class deleteCustomerById {
+
+        private CustomerEntity savedCustomer;
+
+        @BeforeEach
+        void setUp() {
+            CustomerEntity customer = DataTestFactory.createCustomerEntity();
+            AddressEntity address = DataTestFactory.createAddressEntity();
+
+            customer.setAddress(address);
+            address.setCustomer(customer);
+
+            savedCustomer = repository.save(customer);
+            entityManager.flush();
+        }
+
+        @Test
+        @DisplayName("Should delete Customer by Id")
+        void shouldDeleteById() {
+            Long idToDelete = savedCustomer.getId();
+
+            customerGateway.delete(idToDelete);
+
+            entityManager.flush();
+
+            assertFalse(customerGateway.existsById(idToDelete));
+        }
+
+        @Test
+        @DisplayName("Should throw DataIntegrityViolationException on trying to delete a customer with orders")
+        void shouldThrowExceptionWhenDeletingCustomerWithOrders() {
+
+            ProductEntity product = DataTestFactory.createProductEntity();
+            product = productRepository.save(product);
+            entityManager.flush();
+
+            CustomerEntity customerFromDb = repository.findById(savedCustomer.getId()).orElseThrow();
+            entityManager.flush();
+            
+            OrderEntity order = OrderEntity.createObj(product, customerFromDb, customerFromDb.getAddress(), "Sem capa");
+            order = orderRepository.save(order);
+            entityManager.flush();
+
+            entityManager.clear();
+
+            Exception exception = assertThrows(Exception.class, () -> {
+                repository.deleteById(savedCustomer.getId());
+                entityManager.flush();
+            });
+            
+            assertTrue(exception instanceof DataIntegrityViolationException ||
+                      exception instanceof org.hibernate.exception.ConstraintViolationException,
+                      "Expected DataIntegrityViolationException or ConstraintViolationException, but got: " + exception.getClass());
+        }
+    }
+
+
+
+    @Nested
+    class updateCustomer{
+        private CustomerEntity savedCustomer;
+
+        @BeforeEach
+        void setUp() {
+            savedCustomer = repository.save(DataTestFactory.createCustomerEntity());
+            entityManager.flush();
+        }
+
+        @Test
+        void shouldUpdate() {
+            Customer updateCustomer = DataTestFactory.createCustomer();
+            updateCustomer.setId(savedCustomer.getId());
+
+            customerGateway.update(updateCustomer);
+            entityManager.flush();
+
+            Customer returnedCustomer = customerGateway.findById(savedCustomer.getId());
+            assertEquals(updateCustomer, returnedCustomer);
+        }
     }
 
     @Test
