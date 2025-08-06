@@ -99,8 +99,31 @@ class CustomerGatewayImplTest {
         }
     }
 
-    @Test
-    void existsByPhone() {
+    @Nested
+    class existsByPhone{
+
+        @BeforeEach
+        void setUp() {
+            CustomerEntity existingCustomer = new CustomerEntity(null, "Jose Original", "jose@gmail.com", "123", "111", null);
+            repository.save(existingCustomer);
+            entityManager.flush();
+        }
+
+        @Test
+        @DisplayName("Should exists by Phone")
+        void shouldExistsByPhone() {
+            Boolean existsCustomer = customerGateway.existsByPhone("111");
+
+            assertTrue(existsCustomer);
+        }
+
+        @Test
+        @DisplayName("Should Not exists by Phone")
+        void shouldNotExistsByPhone() {
+            Boolean existsCustomer = customerGateway.existsByPhone("123567");
+
+            assertFalse(existsCustomer);
+        }
     }
 
     @Test
