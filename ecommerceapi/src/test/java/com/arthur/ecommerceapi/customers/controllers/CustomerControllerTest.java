@@ -15,11 +15,11 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -40,22 +40,22 @@ class CustomerControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @MockBean
+    @MockitoBean
     private CustomerMapper mapper;
-    
-    @MockBean
+
+    @MockitoBean
     private CreateCustomer createCustomer;
-    
-    @MockBean
+
+    @MockitoBean
     private FindCustomer findCustomer;
-    
-    @MockBean
+
+    @MockitoBean
     private DeleteCustomer deleteCustomer;
-    
-    @MockBean
+
+    @MockitoBean
     private FindAllCustomer findAllCustomer;
-    
-    @MockBean
+
+    @MockitoBean
     private UpdateCustomer updateCustomer;
 
     @Nested
