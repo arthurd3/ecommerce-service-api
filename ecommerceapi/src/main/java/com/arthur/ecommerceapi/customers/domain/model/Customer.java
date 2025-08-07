@@ -14,13 +14,12 @@ public class Customer {
     private Address address;
 
     public void defineAddress(Address address) {
-        if (address == null) {
-            if (this.address != null) {
-                this.address.setCustomer(null);
-            }
-        } else {
-            address.setCustomer(this);
-        }
+        if(address == null)
+            throw new NullPointerException("Address is null");
         this.address = address;
+
+        if (address.getCustomer() != this) {
+            address.defineCustomer(this);
+        }
     }
 }

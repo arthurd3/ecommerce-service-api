@@ -53,7 +53,6 @@ class CustomerGatewayImplTest {
         void shouldSaveCustomerWithSuccess() {
 
             Customer customer = DataTestFactory.createCustomer();
-            customer.setId(null);
 
             Customer savedCustomer = customerGateway.save(customer);
 
