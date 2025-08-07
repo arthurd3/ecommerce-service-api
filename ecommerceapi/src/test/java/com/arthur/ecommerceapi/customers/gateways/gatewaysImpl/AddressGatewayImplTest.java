@@ -147,20 +147,18 @@ class AddressGatewayImplTest {
             customer = customerRepository.saveAndFlush(customer);
             savedAddress = customer.getAddress();
             entityManager.clear();
+
+            addressId = address.getId();
         }
 
         @Test
         @DisplayName("Should verify exists Address By Id")
         void shouldVerifyExistsAddressById() {
-
-            Long addressId = savedAddress.getId();
-
             Address foundAddress = addressGateway.findById(addressId);
 
             assertNotNull(foundAddress);
             assertEquals(addressId, foundAddress.getId());
             assertEquals(savedAddress.getCity(), foundAddress.getCity());
-
         }
 
         @Test
@@ -172,6 +170,54 @@ class AddressGatewayImplTest {
                     () -> addressGateway.findById(NON_EXISTENT_ID));
         }
 
+
+    }
+
+    @Nested
+    @DisplayName("Should update address by id")
+    class updateAddressById {
+
+        private Address originalAddress;
+
+        @BeforeEach
+        void setUp() {
+            CustomerEntity originalCustomer = CustomerTestBuilder.aCustomer().withUniqueEmail().buildEntity();
+            AddressEntity address = AddressTestBuilder.anAddress().buildEntity();
+
+            originalCustomer.setAddress(address);
+            address.setCustomer(originalCustomer);
+
+            originalCustomer = customerRepository.saveAndFlush(originalCustomer);
+
+            entityManager.clear();
+
+            originalAddress = addressGateway.findById(originalCustomer.getAddress().getId());
+        }
+
+        @Test
+        @DisplayName("Should update address and dont change Customer with success")
+        void shouldUpdateAddressAndDontChangeCustomerWithSuccess() {
+
+            Address addressWithUpdates = AddressTestBuilder.anAddress()
+                    .withId(originalAddress.getId())
+                    .withStreet("Nova Rua 456")
+                    .withCity("Nova Cidade")
+                    .withCustomer(null)
+                    .buildDomain();
+
+            Address updatedAddress = addressGateway.update(addressWithUpdates);
+
+            assertNotNull(updatedAddress);
+            assertEquals("Nova Rua 456", updatedAddress.getStreet());
+            assertEquals("Nova Cidade", updatedAddress.getCity());
+            assertEquals(originalAddress.getZip(), updatedAddress.getZip());
+
+            assertNotNull(updatedAddress.getCustomer());
+            assertEquals(originalAddress.getCustomer().getId(), updatedAddress.getCustomer().getId());
+            assertEquals(originalAddress.getCustomer().getName(), updatedAddress.getCustomer().getName());
+            assertEquals(originalAddress.getCustomer().getPhone(), updatedAddress.getCustomer().getPhone());
+            assertEquals(originalAddress.getCustomer().getEmail(), updatedAddress.getCustomer().getEmail());
+        }
 
     }
 

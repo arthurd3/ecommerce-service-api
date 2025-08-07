@@ -25,6 +25,11 @@ public class AddressTestBuilder {
         return this;
     }
 
+    public AddressTestBuilder withId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public AddressTestBuilder withCity(String city) {
         this.city = city;
         return this;
