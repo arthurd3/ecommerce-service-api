@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreateAddress {
 
     private final FindCustomer findCustomer;
-    private final CustomerGateway customerGateway;
+//    private final CustomerGateway customerGateway;
 
     @Transactional
     public Address create(final Address address , final Long customerId) {
@@ -27,8 +27,8 @@ public class CreateAddress {
         customer.defineAddress(address);
         address.defineCustomer(customer);
 
-        Customer savedCustomer = customerGateway.save(customer);
+//        Customer savedCustomer = customerGateway.save(customer);
 
-        return savedCustomer.getAddress();
+        return customer.getAddress();
     }
 }
