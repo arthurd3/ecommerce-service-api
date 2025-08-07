@@ -26,15 +26,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * Testes do CustomerController - Camada de Apresentação
- * Testa apenas a camada web, isolando as dependências com mocks
- */
 @WebMvcTest(CustomerController.class)
 @DisplayName("CustomerController Web Layer Tests")
 class CustomerControllerTest {
@@ -105,7 +100,6 @@ class CustomerControllerTest {
                     .andExpect(jsonPath("$.name").value("João Silva"))
                     .andExpect(jsonPath("$.email").value("joao@test.com"));
 
-            // Verify interactions
             verify(mapper).toDomain(requestDto);
             verify(createCustomer).create(domainCustomer);
             verify(mapper).toDTO(savedCustomer);
@@ -141,7 +135,6 @@ class CustomerControllerTest {
 
             when(findAllCustomer.findAll(any(PageRequest.class))).thenReturn(customerPage);
 
-            // Then: Execute request
             mockMvc.perform(get("/api/v1/customer")
                             .param("page", "0")
                             .param("size", "10"))
