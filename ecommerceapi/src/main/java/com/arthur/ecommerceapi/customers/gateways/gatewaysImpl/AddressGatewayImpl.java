@@ -24,21 +24,21 @@ public class AddressGatewayImpl implements AddressGateway {
 
     @Override
     public Address findById(final Long addressId) {
-        var updateAddress = getAddressEntity(addressId);
+        var updateAddress = findAddressEntity(addressId);
 
         return mapper.addressToDomain(updateAddress);
     }
 
     @Override
     public Address update(final Address addressWithChanges) {
-        AddressEntity entityToUpdate = getAddressEntity(addressWithChanges.getId());
+        AddressEntity entityToUpdate = findAddressEntity(addressWithChanges.getId());
 
         mapper.editAddressEntityFromDomain(addressWithChanges, entityToUpdate);
 
         return mapper.addressToDomain(repository.save(entityToUpdate));
     }
 
-    public AddressEntity getAddressEntity(final Long addressId) {
+    public AddressEntity findAddressEntity(final Long addressId) {
         return repository.findById(addressId)
                 .orElseThrow(() -> new AddressNotFoundException("Addres with id :" + addressId + " not found!"));
     }

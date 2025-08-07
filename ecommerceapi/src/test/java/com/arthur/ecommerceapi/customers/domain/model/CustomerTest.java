@@ -26,7 +26,6 @@ class CustomerTest {
         assertEquals(address, customer.getAddress());
     }
 
-
     @Test
     @DisplayName("Should Throw NullPointerException on define null address")
     public void shouldThrowNullPointerException() {

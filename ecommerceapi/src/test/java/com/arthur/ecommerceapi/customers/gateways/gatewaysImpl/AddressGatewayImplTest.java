@@ -219,6 +219,61 @@ class AddressGatewayImplTest {
             assertEquals(originalAddress.getCustomer().getEmail(), updatedAddress.getCustomer().getEmail());
         }
 
+        @Test
+        @DisplayName("Should Throw Exception on update non exists address")
+        void shouldThrowExceptionOnUpdateNonExistentAddress() {
+            final Long NON_EXISTENT_ID = 999L;
+            Address addressWithUpdates = AddressTestBuilder.anAddress()
+                    .withStreet("Nova Rua 456")
+                    .withCity("Nova Cidade")
+                    .withCustomer(null)
+                    .withId(NON_EXISTENT_ID)
+                    .buildDomain();
+
+            assertThrows(AddressNotFoundException.class,
+                    () -> addressGateway.update(addressWithUpdates));
+        }
+
     }
 
+    @Nested
+    @DisplayName("Should get Address Entity with success")
+    class findAddressEntityWithSuccess {
+        private AddressEntity originalAddress;
+
+        @BeforeEach
+        void setUp() {
+            CustomerEntity originalCustomer = CustomerTestBuilder.aCustomer().withUniqueEmail().buildEntity();
+            originalAddress = AddressTestBuilder.anAddress().buildEntity();
+            originalCustomer.setAddress(originalAddress);
+            originalAddress.setCustomer(originalCustomer);
+
+            customerRepository.saveAndFlush(originalCustomer);
+            entityManager.clear();
+        }
+
+        @Test
+        @DisplayName("Should find address entity with success")
+        void shouldFindAddressEntityWithSuccess() {
+            AddressEntity address = addressGateway.findAddressEntity(originalAddress.getId());
+
+            assertNotNull(address);
+
+            assertEquals(originalAddress.getId(), address.getId());
+            assertEquals(originalAddress.getStreet(), address.getStreet());
+            assertEquals(originalAddress.getCity(), address.getCity());
+            assertEquals(originalAddress.getZip(), address.getZip());
+        }
+
+        @Test
+        @DisplayName("Should find address entity with success")
+        void shouldThrowAddressNotFoundException() {
+            final Long NON_EXISTENT_ID = 999L;
+
+            assertThrows(AddressNotFoundException.class ,
+                    () -> addressGateway.findAddressEntity(NON_EXISTENT_ID));
+        }
+
+    }
+    
 }
