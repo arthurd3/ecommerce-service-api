@@ -1,12 +1,16 @@
 package com.arthur.ecommerceapi.customers.gateways.gatewaysImpl;
 
 import com.arthur.ecommerceapi.customers.domain.model.Address;
+import com.arthur.ecommerceapi.customers.domain.model.Customer;
+import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
+import com.arthur.ecommerceapi.testFactory.DataTestFactory;
 import com.arthur.ecommerceapi.testFactory.builders.AddressTestBuilder;
 import com.arthur.ecommerceapi.testFactory.builders.CustomerTestBuilder;
 import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -112,8 +116,7 @@ class AddressGatewayImplTest {
                             .buildDomain())
                     .buildDomain();
 
-            DataIntegrityViolationException exception = assertThrows(
-                    DataIntegrityViolationException.class, 
+            DataIntegrityViolationException exception = assertThrows( DataIntegrityViolationException.class,
                     () -> {
                         addressGateway.save(secondAddress);
                         entityManager.flush();
@@ -127,4 +130,49 @@ class AddressGatewayImplTest {
         }
 
     }
+
+    @Nested
+    @DisplayName("Should find address by id")
+    class findAddressById {
+
+        private AddressEntity savedAddress;
+        private Long addressId;
+
+        @BeforeEach
+        void setUp() {
+            CustomerEntity customer = CustomerTestBuilder.aCustomer().withUniqueEmail().buildEntity();
+            AddressEntity address = AddressTestBuilder.anAddress().buildEntity();
+            customer.setAddress(address);
+
+            customer = customerRepository.saveAndFlush(customer);
+            savedAddress = customer.getAddress();
+            entityManager.clear();
+        }
+
+        @Test
+        @DisplayName("Should verify exists Address By Id")
+        void shouldVerifyExistsAddressById() {
+
+            Long addressId = savedAddress.getId();
+
+            Address foundAddress = addressGateway.findById(addressId);
+
+            assertNotNull(foundAddress);
+            assertEquals(addressId, foundAddress.getId());
+            assertEquals(savedAddress.getCity(), foundAddress.getCity());
+
+        }
+
+        @Test
+        @DisplayName("Should throw execpiton on non exist address by id")
+        void shouldThrowExceptionWithNonExistentAddressById() {
+            final Long NON_EXISTENT_ID = 999L;
+
+            assertThrows(AddressNotFoundException.class,
+                    () -> addressGateway.findById(NON_EXISTENT_ID));
+        }
+
+
+    }
+
 }

@@ -23,11 +23,6 @@ public class AddressGatewayImpl implements AddressGateway {
     }
 
     @Override
-    public Boolean existsByCustomerId(final Long customerId) {
-        return repository.existsByCustomer_Id(customerId);
-    }
-
-    @Override
     public Address findById(final Long addressId) {
         var updateAddress = getAddressEntity(addressId);
 
