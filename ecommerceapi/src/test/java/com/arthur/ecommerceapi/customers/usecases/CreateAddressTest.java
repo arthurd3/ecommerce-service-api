@@ -42,7 +42,6 @@ class CreateAddressTest {
             address = DataTestFactory.createAddress();
         }
 
-
         @Test
         @DisplayName("Should create Address With Success")
         void shouldCreateAddressWithSuccess(){

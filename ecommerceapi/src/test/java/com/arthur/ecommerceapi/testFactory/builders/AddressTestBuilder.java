@@ -5,9 +5,6 @@ import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 
-/**
- * Test Builder para Address seguindo padrões Senior
- */
 public class AddressTestBuilder {
     
     private String street = "Default Street, 123";

@@ -1,11 +1,9 @@
 package com.arthur.ecommerceapi.customers.gateways.gatewaysImpl;
 
 import com.arthur.ecommerceapi.customers.domain.model.Address;
-import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
-import com.arthur.ecommerceapi.testFactory.DataTestFactory;
 import com.arthur.ecommerceapi.testFactory.builders.AddressTestBuilder;
 import com.arthur.ecommerceapi.testFactory.builders.CustomerTestBuilder;
 import jakarta.persistence.EntityManager;
@@ -37,6 +35,7 @@ class AddressGatewayImplTest {
         @Test
         @DisplayName("Should create Address with Success")
         void shouldSaveAddressSuccessfully() {
+
             CustomerEntity existingCustomer = CustomerTestBuilder.aCustomer()
                     .withUniqueEmail()
                     .withUniquePhone()
@@ -65,6 +64,7 @@ class AddressGatewayImplTest {
         @Test
         @DisplayName("Should throw DataIntegrityViolationException when customer does not exist")
         void shouldThrowExceptionWhenSavingAddressWithNonExistentCustomer() {
+
             final Long NON_EXISTENT_CUSTOMER_ID = 999L;
             
             Address addressToFail = AddressTestBuilder.anAddress()
@@ -87,6 +87,7 @@ class AddressGatewayImplTest {
         @Test
         @DisplayName("Should throw DataIntegrityViolationException when saving second address for same customer")
         void shouldThrowExceptionWhenSavingSecondAddressForSameCustomer() {
+
             CustomerEntity customer = CustomerTestBuilder.aCustomer()
                     .withUniqueEmail()
                     .withUniquePhone()
