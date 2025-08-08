@@ -15,31 +15,38 @@ public class AddressDTOBuilder {
         return new AddressDTOBuilder();
     }
 
-    public void withCustomerId(Long customerId){
+    public AddressDTOBuilder withCustomerId(Long customerId){
         this.customerId = customerId;
+        return this;
     }
 
-    public void withStreet(String street){
+    public AddressDTOBuilder withStreet(String street){
         this.street = street;
+        return this;
     }
 
-    public void withCity(String city){
+    public AddressDTOBuilder withCity(String city){
         this.city = city;
+        return this;
     }
 
-    public void withState(String state){
+    public AddressDTOBuilder withState(String state){
         this.state = state;
+        return this;
     }
 
-    public void withZip(String zip){
+    public AddressDTOBuilder withZip(String zip){
         this.zip = zip;
+        return this;
     }
 
-    public void withCountry(String country){
+    public AddressDTOBuilder withCountry(String country){
         this.country = country;
+        return this;
     }
 
     public AddressRequestDTO buildAddressRequestDTO(){
         return new AddressRequestDTO(customerId, street, city, state, zip, country);
     }
+
 }

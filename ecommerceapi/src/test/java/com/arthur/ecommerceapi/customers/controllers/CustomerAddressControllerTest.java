@@ -1,9 +1,11 @@
 package com.arthur.ecommerceapi.customers.controllers;
 
 import com.arthur.ecommerceapi.customers.controllers.mappers.AddressMapper;
+import com.arthur.ecommerceapi.customers.dtos.request.AddressRequestDTO;
 import com.arthur.ecommerceapi.customers.usecases.CreateAddress;
 import com.arthur.ecommerceapi.customers.usecases.FindAddress;
 import com.arthur.ecommerceapi.customers.usecases.UpdateAddress;
+import com.arthur.ecommerceapi.testFactory.builders.AddressDTOBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,16 @@ class CustomerAddressControllerTest {
 
         @Test
         void create() {
+            var addressRequest = AddressDTOBuilder.aAddressReqDTO().withCity("Juiz de Fora")
+                    .withCustomerId(1L)
+                    .withCountry("Brazil")
+                    .withStreet("St Frangos")
+                    .withZip("12345")
+                    .buildAddressRequestDTO();
+
+            
+
+
         }
     }
 
