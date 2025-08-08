@@ -3,13 +3,11 @@ package com.arthur.ecommerceapi.customers.controllers;
 import com.arthur.ecommerceapi.customers.controllers.mappers.AddressMapper;
 import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.dtos.request.AddressRequestDTO;
-import com.arthur.ecommerceapi.customers.dtos.request.AddressPutRequestDTO;
 import com.arthur.ecommerceapi.customers.dtos.response.AddressResponseDTO;
-import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
-import com.arthur.ecommerceapi.customers.exceptions.UserAlreadyHaveAddressException;
 import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.customers.usecases.CreateAddress;
 import com.arthur.ecommerceapi.customers.usecases.FindAddress;
+import com.arthur.ecommerceapi.customers.usecases.FindCustomer;
 import com.arthur.ecommerceapi.customers.usecases.UpdateAddress;
 import com.arthur.ecommerceapi.testFactory.builders.AddressTestBuilder;
 import com.arthur.ecommerceapi.testFactory.builders.CustomerTestBuilder;
@@ -25,7 +23,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -44,6 +41,9 @@ class CustomerAddressControllerTest {
 
     @MockitoBean
     private CreateAddress createAddress;
+
+    @MockitoBean
+    private FindCustomer findCustomer;
 
     @MockitoBean
     private UpdateAddress updateAddress;
@@ -130,7 +130,48 @@ class CustomerAddressControllerTest {
             verify(createAddress).create(domainAddress, CUSTOMER_ID);
             verify(addressMapper).toDTO(savedAddress);
         }
+
+        @Test
+        @DisplayName("Should return 404 error on create with blank attribute")
+        void shouldReturn400BadRequestWhenRequiredAttributeIsBlank() throws Exception {
+            var invalidRequest = AddressTestBuilder.anAddress()
+                    .withStreet("Rua das Flores, 123")
+                    .withCity("")
+                    .withState("SP")
+                    .withZip(null)
+                    .withCountry("Brazil")
+                    .buildAddressRequestDTO();
+
+            mockMvc.perform(post("/api/v1/address/customer/{id}" , CUSTOMER_ID)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(invalidRequest)))
+                    .andExpect(status().isBadRequest());
+
+            verify(createAddress, never()).create(any() , any());
+        }
+
+
+        @Test
+        @DisplayName("Should Return 404 With Customer Not Exists")
+        void shouldReturn404WithCustomerNotExists() throws Exception {
+                final Long INVALID_ID = 999L;
+
+                when(addressMapper.toDomain(validRequest)).thenReturn(domainAddress);
+                when(createAddress.create(any(Address.class), eq(INVALID_ID)))
+                        .thenThrow(new UserNotFoundException("User not found with id: " + INVALID_ID));
+
+                mockMvc.perform(post("/api/v1/address/customer/{id}", INVALID_ID)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(validRequest)))
+                        .andExpect(status().isNotFound())
+                        .andExpect(jsonPath("$.status").value(404))
+                        .andExpect(jsonPath("$.details").value("User not found with id: " + INVALID_ID));
+
+                verify(createAddress).create(any(Address.class), eq(INVALID_ID));
+        }
+
     }
+
     @Test
     void update() {
     }
