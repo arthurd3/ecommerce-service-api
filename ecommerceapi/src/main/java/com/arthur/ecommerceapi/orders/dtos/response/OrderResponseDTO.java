@@ -5,8 +5,8 @@ import com.arthur.ecommerceapi.products.dtos.response.ProductResponseDTO;
 import java.util.UUID;
 
 public record OrderResponseDTO (UUID oderId ,
-                                CustomerResponseDTO customer ,
-                                AddressResponseDTO toAddress ,
+                                CustomerOderResponseDTO customer ,
+                                AddressOrderResponseDTO toAddress ,
                                 String specification ,
                                 ProductResponseDTO product
 ) {}

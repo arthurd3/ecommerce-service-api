@@ -3,9 +3,10 @@ package com.arthur.ecommerceapi.testFactory.builders;
 import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.dtos.request.AddressRequestDTO;
+import com.arthur.ecommerceapi.customers.dtos.response.AddressResponseDTO;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
-import com.arthur.ecommerceapi.orders.dtos.response.AddressResponseDTO;
+import com.arthur.ecommerceapi.orders.dtos.response.AddressOrderResponseDTO;
 
 public class AddressTestBuilder {
     
@@ -16,6 +17,7 @@ public class AddressTestBuilder {
     private String country = "Brazil";
     private Customer customer;
     private CustomerEntity customerEntity;
+    private Long customerId;
     private Long id;
 
     public static AddressTestBuilder anAddress() {
@@ -62,6 +64,11 @@ public class AddressTestBuilder {
         return this;
     }
 
+    public AddressTestBuilder withCustomerId(Long customerId) {
+        this.customerId = customerId;
+        return this;
+    }
+
     public Address buildDomain() {
         Address address = new Address();
         address.setId(id);
@@ -95,6 +102,6 @@ public class AddressTestBuilder {
     }
 
     public AddressResponseDTO buildAddressResponseDTO(){
-        return new AddressResponseDTO(customer.getId(), street, city, state, zip, country);
+        return new AddressResponseDTO(customerId, street, city, state, zip, country);
     }
 }

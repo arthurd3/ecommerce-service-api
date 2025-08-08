@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
@@ -23,12 +24,12 @@ public class CustomerAddressController {
     private final UpdateAddress updateAddress;
     private final FindAddress findAddress;
 
-    @ResponseStatus(OK)
+    @ResponseStatus(CREATED)
     @PostMapping("{id}")
     public AddressResponseDTO create(@PathVariable(name = "id") final Long customerId ,
                                      @RequestBody @Valid final AddressRequestDTO dto) {
-        final var address = mapper.toDomain(dto , customerId);
-        return mapper.toDTO(createAddress.create(address));
+        final var address = mapper.toDomain(dto);
+        return mapper.toDTO(createAddress.create(address , customerId));
     }
 
     @ResponseStatus(OK)

@@ -50,7 +50,8 @@ class CreateAddressTest {
             when(findCustomer.findById(customerId)).thenReturn(customer);
             when(customerGateway.save(any(Customer.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-            Address addressReturn = createAddress.create(address);
+            Address addressReturn = createAddress.create(address , customerId);
+
 
             verify(findCustomer, times(1)).findById(customerId);
 
@@ -68,7 +69,7 @@ class CreateAddressTest {
             when(findCustomer.findById(customerId)).thenReturn(customer);
 
             UserAlreadyHaveAddressException exception = assertThrows(UserAlreadyHaveAddressException.class,
-                    () -> createAddress.create(address));
+                    () -> createAddress.create(address , customerId));
 
             assertEquals("This User already has an address", exception.getMessage());
 

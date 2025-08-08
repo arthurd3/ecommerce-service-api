@@ -1,6 +1,6 @@
 package com.arthur.ecommerceapi.orders.dtos.response;
 
-public record AddressResponseDTO(
+public record AddressOrderResponseDTO(
         Long addressId,
         String street,
         String city,

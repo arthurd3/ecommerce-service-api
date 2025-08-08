@@ -1,7 +1,7 @@
 package com.arthur.ecommerceapi.orders.controllers.mapppers;
 
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
-import com.arthur.ecommerceapi.orders.dtos.response.CustomerResponseDTO;
+import com.arthur.ecommerceapi.orders.dtos.response.CustomerOderResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -12,5 +12,5 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 public interface CustomerResponseMapper {
 
     @Mapping(target = "customerId" , source = "id")
-    CustomerResponseDTO toDto(Customer customer);
+    CustomerOderResponseDTO toDto(Customer customer);
 }

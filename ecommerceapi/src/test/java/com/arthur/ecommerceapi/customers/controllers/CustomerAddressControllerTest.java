@@ -3,25 +3,44 @@ package com.arthur.ecommerceapi.customers.controllers;
 import com.arthur.ecommerceapi.customers.controllers.mappers.AddressMapper;
 import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.dtos.request.AddressRequestDTO;
+import com.arthur.ecommerceapi.customers.dtos.request.AddressPutRequestDTO;
+import com.arthur.ecommerceapi.customers.dtos.response.AddressResponseDTO;
+import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
+import com.arthur.ecommerceapi.customers.exceptions.UserAlreadyHaveAddressException;
+import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.customers.usecases.CreateAddress;
 import com.arthur.ecommerceapi.customers.usecases.FindAddress;
 import com.arthur.ecommerceapi.customers.usecases.UpdateAddress;
-import com.arthur.ecommerceapi.orders.dtos.response.AddressResponseDTO;
 import com.arthur.ecommerceapi.testFactory.builders.AddressTestBuilder;
+import com.arthur.ecommerceapi.testFactory.builders.CustomerTestBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(CustomerAddressControllerTest.class)
+@WebMvcTest(CustomerAddressController.class)
 class CustomerAddressControllerTest {
 
     @Autowired
-    private AddressMapper mapper;
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @MockitoBean
+    private AddressMapper addressMapper;
 
     @MockitoBean
     private CreateAddress createAddress;
@@ -32,45 +51,86 @@ class CustomerAddressControllerTest {
     @MockitoBean
     private FindAddress findAddress;
 
+    private static final Long CUSTOMER_ID = 1L;
+    private static final Long ADDRESS_ID = 1L;
+
     @Nested
-    @DisplayName("Create Address with success")
-    class CreateAddressWithSuccess{
+    @DisplayName("POST /api/v1/address/customer/{customerId} - Create Address")
+    class CreateAddressEndpoint {
+
+        private AddressRequestDTO validRequest;
+        private Address domainAddress;
+        private Address savedAddress;
+        private AddressResponseDTO expectedResponse;
+
+        @BeforeEach
+        void setUp() {
+            validRequest = AddressTestBuilder.anAddress()
+                    .withStreet("Rua das Flores, 123")
+                    .withCity("São Paulo")
+                    .withState("SP")
+                    .withZip("01234-567")
+                    .withCountry("Brazil")
+                    .buildAddressRequestDTO();
+
+            domainAddress = AddressTestBuilder.anAddress()
+                    .withStreet("Rua das Flores, 123")
+                    .withCity("São Paulo")
+                    .withState("SP")
+                    .withZip("01234-567")
+                    .withCountry("Brazil")
+                    .withCustomer(CustomerTestBuilder.aCustomer()
+                            .withId(CUSTOMER_ID)
+                            .buildDomain())
+                    .buildDomain();
+
+            savedAddress = AddressTestBuilder.anAddress()
+                    .withId(ADDRESS_ID)
+                    .withStreet("Rua das Flores, 123")
+                    .withCity("São Paulo")
+                    .withState("SP")
+                    .withZip("01234-567")
+                    .withCountry("Brazil")
+                    .withCustomer(CustomerTestBuilder.aCustomer()
+                            .withId(CUSTOMER_ID)
+                            .buildDomain())
+                    .buildDomain();
+
+            expectedResponse = AddressTestBuilder.anAddress()
+                    .withId(ADDRESS_ID)
+                    .withStreet("Rua das Flores, 123")
+                    .withCity("São Paulo")
+                    .withState("SP")
+                    .withZip("01234-567")
+                    .withCountry("Brazil")
+                    .buildAddressResponseDTO();
+        }
+
 
         @Test
-        void create() {
-//            AddressRequestDTO addressRequest = AddressTestBuilder.anAddress()
-//                    .withCity("Juiz de Fora")
-//                    .withCustomer(null)
-//                    .withCountry("Brazil")
-//                    .withStreet("St francos")
-//                    .withZip("12345")
-//                    .withState("Minas Gerais")
-//                    .buildAddressRequestDTO();
-//
-//            Address addressDomain = AddressTestBuilder.anAddress()
-//                    .withCustomer(null)
-//                    .withCountry("Brazil")
-//                    .withStreet("St francos")
-//                    .withZip("12345")
-//                    .withState("Minas Gerais")
-//                    .buildDomain();
-//
-//            AddressResponseDTO responseAddressDto = AddressTestBuilder.anAddress()
-//                    .withCustomer(null)
-//                    .withCountry("Brazil")
-//                    .withStreet("St francos")
-//                    .withZip("12345")
-//                    .withState("Minas Gerais")
-//                    .buildAddressResponseDTO();
-//
-//            when(mapper.toDomain(addressRequest)).thenReturn(addressDomain);
-//            when(createAddress.create(addressDomain)).
-//
-//
+        @DisplayName("Should create address successfully")
+        void shouldCreateAddressSuccessfully() throws Exception {
+            when(addressMapper.toDomain(validRequest)).thenReturn(domainAddress);
+            when(createAddress.create(domainAddress, CUSTOMER_ID)).thenReturn(savedAddress);
+            when(addressMapper.toDTO(savedAddress)).thenReturn(expectedResponse);
 
+            mockMvc.perform(post("/api/v1/address/customer/{customerId}", CUSTOMER_ID)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(validRequest)))
+                    .andExpect(status().isCreated())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(jsonPath("$.id").value(ADDRESS_ID))
+                    .andExpect(jsonPath("$.street").value("Rua das Flores, 123"))
+                    .andExpect(jsonPath("$.city").value("São Paulo"))
+                    .andExpect(jsonPath("$.state").value("SP"))
+                    .andExpect(jsonPath("$.zip").value("01234-567"))
+                    .andExpect(jsonPath("$.country").value("Brazil"));
+
+            verify(addressMapper).toDomain(validRequest);
+            verify(createAddress).create(domainAddress, CUSTOMER_ID);
+            verify(addressMapper).toDTO(savedAddress);
         }
     }
-
     @Test
     void update() {
     }
