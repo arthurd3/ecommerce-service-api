@@ -106,7 +106,6 @@ class CustomerAddressControllerTest {
                     .buildAddressResponseDTO();
         }
 
-
         @Test
         @DisplayName("Should create address successfully")
         void shouldCreateAddressSuccessfully() throws Exception {
@@ -172,8 +171,12 @@ class CustomerAddressControllerTest {
 
     }
 
-    @Test
-    void update() {
+    @Nested
+    @DisplayName("PUT /api/v1/address/customer/{customerId} - Update Address")
+    class UpdateAddressEndpoint {
+        @Test
+        void update() {
+        }
     }
 
     @Test
