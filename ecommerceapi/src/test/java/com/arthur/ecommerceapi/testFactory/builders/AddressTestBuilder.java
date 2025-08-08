@@ -2,6 +2,7 @@ package com.arthur.ecommerceapi.testFactory.builders;
 
 import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
+import com.arthur.ecommerceapi.customers.dtos.request.AddressRequestDTO;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 
@@ -22,6 +23,16 @@ public class AddressTestBuilder {
 
     public AddressTestBuilder withStreet(String street) {
         this.street = street;
+        return this;
+    }
+
+    public AddressTestBuilder withZip(String zip) {
+        this.zip = zip;
+        return this;
+    }
+
+    public AddressTestBuilder withState(String state) {
+        this.state = state;
         return this;
     }
 
@@ -76,5 +87,9 @@ public class AddressTestBuilder {
         entity.setCountry(country);
         entity.setCustomer(customerEntity);
         return entity;
+    }
+
+    public AddressRequestDTO buildAddressRequestDTO(){
+        return new AddressRequestDTO(customer.getId(), street, city, state, zip, country);
     }
 }
