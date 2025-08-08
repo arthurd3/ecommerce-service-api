@@ -30,7 +30,7 @@ class CreateCustomerTest {
     private ValidatorCustomer validatorCustomer;
 
     @Nested
-    class createCustomer{
+    class CreateCustomerModel{
 
         private Customer customer;
 

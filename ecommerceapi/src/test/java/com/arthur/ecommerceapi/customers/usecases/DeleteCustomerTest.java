@@ -35,7 +35,7 @@ class DeleteCustomerTest {
     private ValidatorCustomer validatorCustomer;
 
     @Nested
-    class deleteCustomer {
+    class DeleteCustomerModel {
 
         private Customer customer;
 

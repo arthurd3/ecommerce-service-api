@@ -30,7 +30,7 @@ class CreateAddressTest {
     private CustomerGateway customerGateway;
 
     @Nested
-    class createAddress{
+    class CreateAddressModel{
 
         private Address address;
         private final Long customerId = 1L;

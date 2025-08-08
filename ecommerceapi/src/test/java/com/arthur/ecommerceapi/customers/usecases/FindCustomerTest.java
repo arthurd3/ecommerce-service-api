@@ -27,7 +27,7 @@ class FindCustomerTest {
     private CustomerGateway customerGateway;
 
     @Nested
-    class findCustomer{
+    class FindCustomerModel{
 
         private Customer customer;
 

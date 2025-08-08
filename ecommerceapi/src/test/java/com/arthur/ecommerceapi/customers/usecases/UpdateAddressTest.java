@@ -29,7 +29,7 @@ class UpdateAddressTest {
     private AddressGateway addressGateway;
 
     @Nested
-    class updateAddress{
+    class UpdateAddressModel{
 
         private Address addressToUpdate;
 

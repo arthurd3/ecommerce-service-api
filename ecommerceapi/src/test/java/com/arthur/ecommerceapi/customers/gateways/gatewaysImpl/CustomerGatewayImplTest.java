@@ -46,7 +46,7 @@ class CustomerGatewayImplTest {
     private OrderRepository orderRepository;
 
     @Nested
-    class saveCustomer{
+    class SaveCustomer{
 
         @Test
         @DisplayName("should save customer with success")
@@ -85,7 +85,7 @@ class CustomerGatewayImplTest {
     }
 
     @Nested
-    class existsCustomerByEmail{
+    class ExistsCustomerByEmail{
 
         @BeforeEach
         void setUp() {
@@ -112,7 +112,7 @@ class CustomerGatewayImplTest {
     }
 
     @Nested
-    class existsCustomerByPhone{
+    class ExistsCustomerByPhone{
 
         private CustomerEntity customerEntity;
 
@@ -142,7 +142,7 @@ class CustomerGatewayImplTest {
     }
 
     @Nested
-    class findAllCustomers {
+    class FindAllCustomers {
 
         @Nested
         @DisplayName("should Find All When Customers Exist")
@@ -191,7 +191,7 @@ class CustomerGatewayImplTest {
     }
 
     @Nested
-    class findCustomerById {
+    class FindCustomerById {
 
         private CustomerEntity savedCustomer;
 
@@ -228,7 +228,7 @@ class CustomerGatewayImplTest {
     }
 
     @Nested
-    class existsCustomerById {
+    class ExistsCustomerById {
 
         private CustomerEntity savedCustomer;
 
@@ -260,7 +260,7 @@ class CustomerGatewayImplTest {
     }
 
     @Nested
-    class deleteCustomerById {
+    class DeleteCustomerById {
 
         private CustomerEntity savedCustomer;
 
@@ -317,7 +317,7 @@ class CustomerGatewayImplTest {
     }
 
     @Nested
-    class updateCustomer{
+    class UpdateCustomer{
         private CustomerEntity savedCustomer;
 
         @BeforeEach
@@ -353,7 +353,7 @@ class CustomerGatewayImplTest {
     }
 
     @Nested
-    class findCustomerEntityById {
+    class FindCustomerEntityById {
 
         private CustomerEntity savedCustomer;
 

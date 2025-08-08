@@ -33,7 +33,7 @@ class FindAllCustomerTest {
     private CustomerGateway customerGateway;
 
     @Nested
-    class findAllCustomers{
+    class FindAllCustomersModel{
 
         private List<Customer> customers;
         final int pageNumber = 0;

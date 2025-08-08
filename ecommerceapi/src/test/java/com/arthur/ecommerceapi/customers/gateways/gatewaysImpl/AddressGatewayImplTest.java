@@ -34,7 +34,7 @@ class AddressGatewayImplTest {
 
     @Nested
     @DisplayName("Should save address (Create)")
-    class saveAddress {
+    class SaveAddress {
 
         @Test
         @DisplayName("Should create Address with Success")
@@ -133,7 +133,7 @@ class AddressGatewayImplTest {
 
     @Nested
     @DisplayName("Should find address by id")
-    class findAddressById {
+    class FindAddressById {
 
         private AddressEntity savedAddress;
         private Long addressId;
@@ -175,7 +175,7 @@ class AddressGatewayImplTest {
 
     @Nested
     @DisplayName("Should update address by id")
-    class updateAddressById {
+    class UpdateAddressById {
 
         private Address originalAddress;
 
@@ -238,7 +238,7 @@ class AddressGatewayImplTest {
 
     @Nested
     @DisplayName("Should get Address Entity with success")
-    class findAddressEntityWithSuccess {
+    class FindAddressEntityWithSuccess {
         private AddressEntity originalAddress;
 
         @BeforeEach

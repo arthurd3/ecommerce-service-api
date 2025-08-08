@@ -29,7 +29,7 @@ class FindCustomerEntityTest {
     private CustomerGateway customerGateway;
 
     @Nested
-    class findCustomerEntity{
+    class FindCustomerEntityUseCase{
 
         private CustomerEntity customer;
 

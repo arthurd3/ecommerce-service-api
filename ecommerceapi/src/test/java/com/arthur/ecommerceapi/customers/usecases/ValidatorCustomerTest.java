@@ -35,7 +35,7 @@ class ValidatorCustomerTest {
     }
 
     @Nested
-    class validateCustomer{
+    class ValidateCustomerModel{
 
         @Test
         @DisplayName("Should validate customer with success")
@@ -80,7 +80,7 @@ class ValidatorCustomerTest {
     }
 
     @Nested
-    class validateExists{
+    class ValidateExistsCustomer{
         @Test
         @DisplayName("Should exist User")
         void shouldValidateExists(){

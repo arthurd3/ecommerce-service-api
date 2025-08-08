@@ -27,7 +27,7 @@ class FindAddressTest {
     private AddressGateway addressGateway;
 
     @Nested
-    class findAddress{
+    class FindAddressModel{
 
         private Address address;
 
