@@ -23,7 +23,7 @@ public class CustomerController {
     private final CreateCustomer createCustomer;
     private final FindCustomer findCustomer;
     private final DeleteCustomer deleteCustomer;
-    private final FindAllCustomer findAllCustomer;
+    private final FindAllCustomers findAllCustomers;
     private final UpdateCustomer updateCustomer;
 
 
@@ -39,7 +39,7 @@ public class CustomerController {
     public Page<CustomerResponseDTO> findAll(@RequestParam @Min(0)final Integer page,
                                              @RequestParam @Min(1)final Integer size){
         final var pageRequest = PageRequest.of(page, size);
-        return findAllCustomer.findAll(pageRequest).map(mapper::toDTO);
+        return findAllCustomers.findAll(pageRequest).map(mapper::toDTO);
     }
 
     @ResponseStatus(OK)

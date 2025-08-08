@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class FindAllCustomer {
+public class FindAllCustomers {
 
     private final CustomerGateway customerGateway;
 

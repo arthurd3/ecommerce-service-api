@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -24,10 +23,10 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class FindAllCustomerTest {
+class FindAllCustomersTest {
 
     @InjectMocks
-    private FindAllCustomer findAllCustomer;
+    private FindAllCustomers findAllCustomers;
 
     @Mock
     private CustomerGateway customerGateway;
@@ -54,7 +53,7 @@ class FindAllCustomerTest {
 
             when(customerGateway.findAll(pageRequest)).thenReturn(fakePage);
 
-            Page<Customer> findedPage = findAllCustomer.findAll(pageRequest);
+            Page<Customer> findedPage = findAllCustomers.findAll(pageRequest);
 
             assertNotNull(findedPage);
 
@@ -74,7 +73,7 @@ class FindAllCustomerTest {
 
             when(customerGateway.findAll(pageRequest)).thenReturn(Page.empty());
 
-            Page<Customer> findedPage = findAllCustomer.findAll(pageRequest);
+            Page<Customer> findedPage = findAllCustomers.findAll(pageRequest);
 
             assertNotNull(findedPage);
 

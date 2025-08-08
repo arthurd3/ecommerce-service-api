@@ -29,9 +29,9 @@ class CustomerAddressControllerTest {
     private FindAddress findAddress;
 
     @Nested
-    @DisplayName("Create Address with succes")
+    @DisplayName("Create Address with success")
     class CreateAddressWithSuccess{
-
+        
         @Test
         void create() {
         }

@@ -52,7 +52,7 @@ class CustomerControllerTest {
     private DeleteCustomer deleteCustomer;
 
     @MockitoBean
-    private FindAllCustomer findAllCustomer;
+    private FindAllCustomers findAllCustomers;
 
     @MockitoBean
     private UpdateCustomer updateCustomer;
@@ -132,7 +132,7 @@ class CustomerControllerTest {
             
             Page<Customer> customerPage = new PageImpl<>(customers, PageRequest.of(0, 10), 2);
 
-            when(findAllCustomer.findAll(any(PageRequest.class))).thenReturn(customerPage);
+            when(findAllCustomers.findAll(any(PageRequest.class))).thenReturn(customerPage);
 
             mockMvc.perform(get("/api/v1/customer")
                             .param("page", "0")
@@ -142,7 +142,7 @@ class CustomerControllerTest {
                     .andExpect(jsonPath("$.content.length()").value(2))
                     .andExpect(jsonPath("$.totalElements").value(2));
 
-            verify(findAllCustomer).findAll(PageRequest.of(0, 10));
+            verify(findAllCustomers).findAll(PageRequest.of(0, 10));
         }
 
         @Test
@@ -153,7 +153,7 @@ class CustomerControllerTest {
                             .param("size", "0"))  
                     .andExpect(status().isBadRequest());
 
-            verify(findAllCustomer, never()).findAll(any());
+            verify(findAllCustomers, never()).findAll(any());
         }
     }
 
