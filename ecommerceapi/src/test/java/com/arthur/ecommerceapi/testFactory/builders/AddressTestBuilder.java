@@ -9,7 +9,8 @@ import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.orders.dtos.response.AddressOrderResponseDTO;
 
 public class AddressTestBuilder {
-    
+
+    private Long id;
     private String street = "Default Street, 123";
     private String city = "Default City";
     private String state = "Default State";
@@ -17,8 +18,6 @@ public class AddressTestBuilder {
     private String country = "Brazil";
     private Customer customer;
     private CustomerEntity customerEntity;
-    private Long customerId;
-    private Long id;
 
     public static AddressTestBuilder anAddress() {
         return new AddressTestBuilder();
@@ -64,11 +63,6 @@ public class AddressTestBuilder {
         return this;
     }
 
-    public AddressTestBuilder withCustomerId(Long customerId) {
-        this.customerId = customerId;
-        return this;
-    }
-
     public Address buildDomain() {
         Address address = new Address();
         address.setId(id);
@@ -102,6 +96,6 @@ public class AddressTestBuilder {
     }
 
     public AddressResponseDTO buildAddressResponseDTO(){
-        return new AddressResponseDTO(customerId, street, city, state, zip, country);
+        return new AddressResponseDTO(id, street, city, state, zip, country);
     }
 }

@@ -114,7 +114,7 @@ class CustomerAddressControllerTest {
             when(createAddress.create(domainAddress, CUSTOMER_ID)).thenReturn(savedAddress);
             when(addressMapper.toDTO(savedAddress)).thenReturn(expectedResponse);
 
-            mockMvc.perform(post("/api/v1/address/customer/{customerId}", CUSTOMER_ID)
+            mockMvc.perform(post("/api/v1/address/customer/{id}", CUSTOMER_ID)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(validRequest)))
                     .andExpect(status().isCreated())
