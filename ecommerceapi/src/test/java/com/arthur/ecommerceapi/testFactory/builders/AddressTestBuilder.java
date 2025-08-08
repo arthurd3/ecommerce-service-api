@@ -91,7 +91,7 @@ public class AddressTestBuilder {
     }
 
     public AddressRequestDTO buildAddressRequestDTO(){
-        return new AddressRequestDTO(customer.getId(), street, city, state, zip, country);
+        return new AddressRequestDTO( street, city, state, zip, country);
     }
 
     public AddressResponseDTO buildAddressResponseDTO(){

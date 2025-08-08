@@ -38,35 +38,35 @@ class CustomerAddressControllerTest {
 
         @Test
         void create() {
-            AddressRequestDTO addressRequest = AddressTestBuilder.anAddress()
-                    .withCity("Juiz de Fora")
-                    .withCustomer(null)
-                    .withCountry("Brazil")
-                    .withStreet("St francos")
-                    .withZip("12345")
-                    .withState("Minas Gerais")
-                    .buildAddressRequestDTO();
-
-            Address addressDomain = AddressTestBuilder.anAddress()
-                    .withCustomer(null)
-                    .withCountry("Brazil")
-                    .withStreet("St francos")
-                    .withZip("12345")
-                    .withState("Minas Gerais")
-                    .buildDomain();
-
-            AddressResponseDTO responseAddressDto = AddressTestBuilder.anAddress()
-                    .withCustomer(null)
-                    .withCountry("Brazil")
-                    .withStreet("St francos")
-                    .withZip("12345")
-                    .withState("Minas Gerais")
-                    .buildAddressResponseDTO();
-
-            when(mapper.toDomain(addressRequest)).thenReturn(addressDomain);
-            when(createAddress.create(addressDomain)).
-
-
+//            AddressRequestDTO addressRequest = AddressTestBuilder.anAddress()
+//                    .withCity("Juiz de Fora")
+//                    .withCustomer(null)
+//                    .withCountry("Brazil")
+//                    .withStreet("St francos")
+//                    .withZip("12345")
+//                    .withState("Minas Gerais")
+//                    .buildAddressRequestDTO();
+//
+//            Address addressDomain = AddressTestBuilder.anAddress()
+//                    .withCustomer(null)
+//                    .withCountry("Brazil")
+//                    .withStreet("St francos")
+//                    .withZip("12345")
+//                    .withState("Minas Gerais")
+//                    .buildDomain();
+//
+//            AddressResponseDTO responseAddressDto = AddressTestBuilder.anAddress()
+//                    .withCustomer(null)
+//                    .withCountry("Brazil")
+//                    .withStreet("St francos")
+//                    .withZip("12345")
+//                    .withState("Minas Gerais")
+//                    .buildAddressResponseDTO();
+//
+//            when(mapper.toDomain(addressRequest)).thenReturn(addressDomain);
+//            when(createAddress.create(addressDomain)).
+//
+//
 
         }
     }
