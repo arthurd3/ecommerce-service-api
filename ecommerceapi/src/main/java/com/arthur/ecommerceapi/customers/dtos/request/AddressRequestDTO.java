@@ -4,8 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record AddressRequestDTO (
-        @NotNull
-        Long customerId,
         @NotBlank
         String street,
         @NotBlank

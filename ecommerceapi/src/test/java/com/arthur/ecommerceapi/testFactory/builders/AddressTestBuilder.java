@@ -5,6 +5,7 @@ import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.dtos.request.AddressRequestDTO;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
+import com.arthur.ecommerceapi.orders.dtos.response.AddressResponseDTO;
 
 public class AddressTestBuilder {
     
@@ -91,5 +92,9 @@ public class AddressTestBuilder {
 
     public AddressRequestDTO buildAddressRequestDTO(){
         return new AddressRequestDTO(customer.getId(), street, city, state, zip, country);
+    }
+
+    public AddressResponseDTO buildAddressResponseDTO(){
+        return new AddressResponseDTO(customer.getId(), street, city, state, zip, country);
     }
 }

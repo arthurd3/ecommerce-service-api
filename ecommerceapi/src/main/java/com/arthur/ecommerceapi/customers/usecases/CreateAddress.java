@@ -16,7 +16,8 @@ public class CreateAddress {
     private final CustomerGateway customerGateway;
 
     @Transactional
-    public Address create(final Address address , final Long customerId) {
+    public Address create(final Address address) {
+        final Long customerId = address.getCustomer().getId();
 
         Customer customer = findCustomer.findById(customerId);
 

@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import static org.mockito.Mockito.when;
+
 @WebMvcTest(CustomerAddressControllerTest.class)
 class CustomerAddressControllerTest {
 
@@ -53,8 +55,16 @@ class CustomerAddressControllerTest {
                     .withState("Minas Gerais")
                     .buildDomain();
 
-            AddressResponseDTO responseAddressDto =
+            AddressResponseDTO responseAddressDto = AddressTestBuilder.anAddress()
+                    .withCustomer(null)
+                    .withCountry("Brazil")
+                    .withStreet("St francos")
+                    .withZip("12345")
+                    .withState("Minas Gerais")
+                    .buildAddressResponseDTO();
 
+            when(mapper.toDomain(addressRequest)).thenReturn(addressDomain);
+            when(createAddress.create(addressDomain)).
 
 
 

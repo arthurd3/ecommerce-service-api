@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/api/v1/customer/address")
+@RequestMapping("/api/v1/address/customer")
 @RequiredArgsConstructor
 public class CustomerAddressController {
 
@@ -24,21 +24,23 @@ public class CustomerAddressController {
     private final FindAddress findAddress;
 
     @ResponseStatus(OK)
-    @PostMapping
-    public AddressResponseDTO create(@RequestBody @Valid final AddressRequestDTO dto) {
-        final var address = mapper.toDomain(dto);
-        return mapper.toDTO(createAddress.create(address , dto.customerId()));
+    @PostMapping("{id}")
+    public AddressResponseDTO create(@PathVariable(name = "id") final Long customerId ,
+                                     @RequestBody @Valid final AddressRequestDTO dto) {
+        final var address = mapper.toDomain(dto , customerId);
+        return mapper.toDTO(createAddress.create(address));
     }
 
     @ResponseStatus(OK)
     @PutMapping("{id}")
-    public AddressResponseDTO update(@PathVariable final Long id ,
+    public AddressResponseDTO update(@PathVariable(name = "id") final Long customerId ,
                                      @RequestBody @Valid final AddressPutRequestDTO dto) {
-        return mapper.toDTO(updateAddress.update(mapper.updateFromDTO(dto , id)));
+        final var addressChanged = mapper.updateFromDTO(dto , customerId);
+        return mapper.toDTO(updateAddress.update(addressChanged));
     }
 
     @ResponseStatus(OK)
-    @GetMapping("{id}")
+    @GetMapping("/findAddress/{id}")
     public AddressResponseDTO findById(@PathVariable final Long id) {
         return mapper.toDTO(findAddress.findById(id));
     }

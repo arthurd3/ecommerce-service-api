@@ -11,7 +11,8 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 @Mapper(componentModel = "spring" , unmappedTargetPolicy = IGNORE)
 public interface AddressMapper {
 
-    Address toDomain(AddressRequestDTO addressRequestDTO);
+    @Mapping(target = "customer.id" , source = "customerId")
+    Address toDomain(AddressRequestDTO addressRequestDTO , final Long customerId);
 
     AddressResponseDTO toDTO(Address address);
 
