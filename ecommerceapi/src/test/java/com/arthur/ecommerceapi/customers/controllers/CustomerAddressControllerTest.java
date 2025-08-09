@@ -45,9 +45,6 @@ class CustomerAddressControllerTest {
     private CreateAddress createAddress;
 
     @MockitoBean
-    private FindCustomer findCustomer;
-
-    @MockitoBean
     private UpdateAddress updateAddress;
 
     @MockitoBean
@@ -264,7 +261,17 @@ class CustomerAddressControllerTest {
         }
     }
 
-    @Test
-    void findById() {
+
+    @Nested
+    @DisplayName("GET /api/v1/address/customer/{id} - Update Address")
+    class FindAddressEndpoint {
+
+        @Test
+        @DisplayName("Should find address by id with success")
+        void shouldFindAddressById() {
+
+
+
+        }
     }
 }
