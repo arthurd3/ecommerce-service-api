@@ -53,60 +53,76 @@ class CustomerAddressControllerTest {
     private static final Long CUSTOMER_ID = 1L;
     private static final Long ADDRESS_ID = 1L;
 
+    private AddressRequestDTO validRequest;
+    private Address domainAddress;
+    private Address savedAddress;
+    private AddressResponseDTO expectedResponse;
+    private AddressPutRequestDTO putRequestDTO;
+    private Address updatedAddress;
+
+    @BeforeEach
+    void setUp() {
+        validRequest = AddressTestBuilder.anAddress()
+                .withStreet("Rua das Flores, 123")
+                .withCity("São Paulo")
+                .withState("SP")
+                .withZip("01234-567")
+                .withCountry("Brazil")
+                .buildAddressRequestDTO();
+
+        domainAddress = AddressTestBuilder.anAddress()
+                .withStreet("Rua das Flores, 123")
+                .withCity("São Paulo")
+                .withState("SP")
+                .withZip("01234-567")
+                .withCountry("Brazil")
+                .withCustomer(CustomerTestBuilder.aCustomer()
+                        .withId(CUSTOMER_ID)
+                        .buildDomain())
+                .buildDomain();
+
+        savedAddress = AddressTestBuilder.anAddress()
+                .withId(ADDRESS_ID)
+                .withStreet("Rua das Flores, 123")
+                .withCity("São Paulo")
+                .withState("SP")
+                .withZip("01234-567")
+                .withCountry("Brazil")
+                .withCustomer(CustomerTestBuilder.aCustomer()
+                        .withId(CUSTOMER_ID)
+                        .buildDomain())
+                .buildDomain();
+
+        expectedResponse = AddressTestBuilder.anAddress()
+                .withId(ADDRESS_ID)
+                .withStreet("Rua das Flores, 123")
+                .withCity("São Paulo")
+                .withState("SP")
+                .withZip("01234-567")
+                .withCountry("Brazil")
+                .buildAddressResponseDTO();
+
+        putRequestDTO = AddressTestBuilder.anAddress()
+                .withCity("Juiz de Updated")
+                .withCountry("Portugal Updated")
+                .withState("Minas Unicas Updated")
+                .withStreet("Rua das Flores, 127")
+                .withZip("01234-567")
+                .buildAddressPutRequestDTO();
+
+        updatedAddress = AddressTestBuilder.anAddress()
+                .withId(ADDRESS_ID)
+                .withCity("Juiz de Updated")
+                .withStreet("Rua das Flores, 127")
+                .withCountry("Portugal Updated")
+                .withState("Minas Unicas Updated")
+                .withZip("01234-567")
+                .buildDomain();
+    }
+
     @Nested
     @DisplayName("POST /api/v1/address/customer/{id} - Create Address")
     class CreateAddressEndpoint {
-
-        private AddressRequestDTO validRequest;
-
-        private Address domainAddress;
-
-        private Address savedAddress;
-
-        private AddressResponseDTO expectedResponse;
-
-        @BeforeEach
-        void setUp() {
-            validRequest = AddressTestBuilder.anAddress()
-                    .withStreet("Rua das Flores, 123")
-                    .withCity("São Paulo")
-                    .withState("SP")
-                    .withZip("01234-567")
-                    .withCountry("Brazil")
-                    .buildAddressRequestDTO();
-
-            domainAddress = AddressTestBuilder.anAddress()
-                    .withStreet("Rua das Flores, 123")
-                    .withCity("São Paulo")
-                    .withState("SP")
-                    .withZip("01234-567")
-                    .withCountry("Brazil")
-                    .withCustomer(CustomerTestBuilder.aCustomer()
-                            .withId(CUSTOMER_ID)
-                            .buildDomain())
-                    .buildDomain();
-
-            savedAddress = AddressTestBuilder.anAddress()
-                    .withId(ADDRESS_ID)
-                    .withStreet("Rua das Flores, 123")
-                    .withCity("São Paulo")
-                    .withState("SP")
-                    .withZip("01234-567")
-                    .withCountry("Brazil")
-                    .withCustomer(CustomerTestBuilder.aCustomer()
-                            .withId(CUSTOMER_ID)
-                            .buildDomain())
-                    .buildDomain();
-
-            expectedResponse = AddressTestBuilder.anAddress()
-                    .withId(ADDRESS_ID)
-                    .withStreet("Rua das Flores, 123")
-                    .withCity("São Paulo")
-                    .withState("SP")
-                    .withZip("01234-567")
-                    .withCountry("Brazil")
-                    .buildAddressResponseDTO();
-        }
 
         @Test
         @DisplayName("Should create address successfully")
@@ -170,62 +186,38 @@ class CustomerAddressControllerTest {
 
                 verify(createAddress).create(any(Address.class), eq(INVALID_ID));
         }
-
     }
 
     @Nested
     @DisplayName("PUT /api/v1/address/customer/{id} - Update Address")
     class UpdateAddressEndpoint {
 
-        private AddressPutRequestDTO putRequestDTO;
-        private Address domainAddress;
-        private Address updatedAddress;
-        private AddressResponseDTO  expectedResponse;
-
-        @BeforeEach
-        void setUp() {
-            putRequestDTO = AddressTestBuilder.anAddress()
-                    .withCity("Juiz de Updated")
-                    .withCountry("Portugal Updated")
-                    .withState("Minas Unicas Updated")
-                    .withZip("01234-567")
-                    .buildAddressPutRequestDTO();
-
-            domainAddress = AddressTestBuilder.anAddress()
-                    .withId(ADDRESS_ID)
-                    .withCity("Juiz de Updated")
-                    .withCountry("Portugal Updated")
-                    .withState("Minas Unicas Updated")
-                    .withZip("01234-567")
-                    .buildDomain();
-
-            updatedAddress = AddressTestBuilder.anAddress()
-                    .withId(ADDRESS_ID)
-                    .withCity("Juiz de Updated")
-                    .withStreet("Rua das Flores, 123")
-                    .withCountry("Portugal Updated")
-                    .withState("Minas Unicas Updated")
-                    .withZip("01234-567")
-                    .buildDomain();
-
-            expectedResponse = AddressTestBuilder.anAddress()
-                    .withId(ADDRESS_ID)
-                    .withCity("Juiz de Updated")
-                    .withStreet("Rua das Flores, 123")
-                    .withCountry("Portugal Updated")
-                    .withState("Minas Unicas Updated")
-                    .withZip("01234-567")
-                    .buildAddressResponseDTO();
-
-        }
-
         @Test
         @DisplayName("Should update address with success")
         void shouldUpdateAddressWithSuccess() throws Exception {
+            var domainUpdateAddress = AddressTestBuilder.anAddress()
+                    .withCity("Juiz de Updated")
+                    .withCountry("Portugal Updated")
+                    .withState("Minas Unicas Updated")
+                    .withStreet("Rua das Flores, 127")
+                    .withZip("01234-567")
+                    .withCustomer(CustomerTestBuilder.aCustomer()
+                            .withId(CUSTOMER_ID)
+                            .buildDomain())
+                    .buildDomain();
 
-            when(addressMapper.updateFromDTO(putRequestDTO , ADDRESS_ID)).thenReturn(domainAddress);
-            when(updateAddress.update(domainAddress)).thenReturn(updatedAddress);
-            when(addressMapper.toDTO(updatedAddress)).thenReturn(expectedResponse);
+            var expectedUpdateResponse = AddressTestBuilder.anAddress()
+                    .withId(ADDRESS_ID)
+                    .withCity("Juiz de Updated")
+                    .withCountry("Portugal Updated")
+                    .withState("Minas Unicas Updated")
+                    .withStreet("Rua das Flores, 127")
+                    .withZip("01234-567")
+                    .buildAddressResponseDTO();
+
+            when(addressMapper.updateFromDTO(putRequestDTO , ADDRESS_ID)).thenReturn(domainUpdateAddress);
+            when(updateAddress.update(domainUpdateAddress)).thenReturn(updatedAddress);
+            when(addressMapper.toDTO(updatedAddress)).thenReturn(expectedUpdateResponse);
 
             mockMvc.perform(put("/api/v1/address/customer/{id}" , CUSTOMER_ID)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -233,11 +225,11 @@ class CustomerAddressControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(ADDRESS_ID))
                 .andExpect(jsonPath("$.state").value(putRequestDTO.state()))
-                .andExpect(jsonPath("$.street").value(updatedAddress.getStreet()))
+                .andExpect(jsonPath("$.street").value(putRequestDTO.street()))
                 .andExpect(jsonPath("$.city").value(putRequestDTO.city()));
 
             verify(addressMapper).updateFromDTO(putRequestDTO , ADDRESS_ID);
-            verify(updateAddress).update(domainAddress);
+            verify(updateAddress).update(any(Address.class));
         }
 
 
