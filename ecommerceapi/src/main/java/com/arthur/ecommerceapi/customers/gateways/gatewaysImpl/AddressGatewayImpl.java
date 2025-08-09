@@ -40,7 +40,7 @@ public class AddressGatewayImpl implements AddressGateway {
 
     public AddressEntity findAddressEntity(final Long addressId) {
         return repository.findById(addressId)
-                .orElseThrow(() -> new AddressNotFoundException("Addres with id :" + addressId + " not found!"));
+                .orElseThrow(() -> new AddressNotFoundException("Address with id :" + addressId + " not found!"));
     }
 
 }

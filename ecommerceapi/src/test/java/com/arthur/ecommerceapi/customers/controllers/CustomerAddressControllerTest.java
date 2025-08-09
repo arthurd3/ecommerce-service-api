@@ -5,6 +5,7 @@ import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.dtos.request.AddressPutRequestDTO;
 import com.arthur.ecommerceapi.customers.dtos.request.AddressRequestDTO;
 import com.arthur.ecommerceapi.customers.dtos.response.AddressResponseDTO;
+import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
 import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.customers.usecases.CreateAddress;
 import com.arthur.ecommerceapi.customers.usecases.FindAddress;
@@ -259,7 +260,7 @@ class CustomerAddressControllerTest {
 
         @Test
         @DisplayName("Should find address by id with success")
-        void shouldFindAddressById() throws Exception {
+        void shouldFindAddressByIdWithSuccess() throws Exception {
 
             when(findAddress.findById(ADDRESS_ID)).thenReturn(domainAddress);
             when(addressMapper.toDTO(domainAddress)).thenReturn(expectedResponse);
@@ -270,6 +271,25 @@ class CustomerAddressControllerTest {
                 .andExpect(jsonPath("$.street").value(domainAddress.getStreet()))
                 .andExpect(jsonPath("$.city").value(domainAddress.getCity()))
                 .andExpect(jsonPath("$.country").value(domainAddress.getCountry()));
+
+            verify(findAddress).findById(ADDRESS_ID);
+        }
+
+        @Test
+        @DisplayName("Should Throw Address not found")
+        void shouldThrowAddressNotFoundWithCustomerNotExists() throws Exception {
+            when(findAddress.findById(ADDRESS_ID))
+                    .thenThrow(new AddressNotFoundException("Address with id :" + ADDRESS_ID + " not found!"));
+
+            mockMvc.perform(get("/api/v1/address/customer/findAddress/{id}" , ADDRESS_ID))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.status").value(404))
+                    .andExpect(jsonPath("$.details").value("Address with id :" + ADDRESS_ID + " not found!"))
+                    .andExpect(jsonPath("$.title").value("AddressNotFoundException"));
+
+            verify(findAddress).findById(ADDRESS_ID);
         }
     }
+
+
 }

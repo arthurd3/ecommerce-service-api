@@ -71,7 +71,7 @@ public class RestExceptionHandler{
                 .details(ex.getMessage())
                 .devMsg(ex.getClass().getName())
                 .status(NOT_FOUND.value())
-                .title("UserNotFoundException")
+                .title("AddressNotFoundException")
                 .build();
     }
 
