@@ -2,6 +2,7 @@ package com.arthur.ecommerceapi.customers.controllers;
 
 import com.arthur.ecommerceapi.customers.controllers.mappers.AddressMapper;
 import com.arthur.ecommerceapi.customers.domain.model.Address;
+import com.arthur.ecommerceapi.customers.dtos.request.AddressPutRequestDTO;
 import com.arthur.ecommerceapi.customers.dtos.request.AddressRequestDTO;
 import com.arthur.ecommerceapi.customers.dtos.response.AddressResponseDTO;
 import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
@@ -11,6 +12,7 @@ import com.arthur.ecommerceapi.customers.usecases.FindCustomer;
 import com.arthur.ecommerceapi.customers.usecases.UpdateAddress;
 import com.arthur.ecommerceapi.testFactory.builders.AddressTestBuilder;
 import com.arthur.ecommerceapi.testFactory.builders.CustomerTestBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -55,7 +57,7 @@ class CustomerAddressControllerTest {
     private static final Long ADDRESS_ID = 1L;
 
     @Nested
-    @DisplayName("POST /api/v1/address/customer/{customerId} - Create Address")
+    @DisplayName("POST /api/v1/address/customer/{id} - Create Address")
     class CreateAddressEndpoint {
 
         private AddressRequestDTO validRequest;
@@ -175,19 +177,70 @@ class CustomerAddressControllerTest {
     }
 
     @Nested
-    @DisplayName("PUT /api/v1/address/customer/{customerId} - Update Address")
+    @DisplayName("PUT /api/v1/address/customer/{id} - Update Address")
     class UpdateAddressEndpoint {
 
-        private Address updateAddress;
+        private AddressPutRequestDTO putRequestDTO;
+        private Address domainAddress;
+        private Address updatedAddress;
+        private AddressResponseDTO  expectedResponse;
 
         @BeforeEach
         void setUp() {
+            putRequestDTO = AddressTestBuilder.anAddress()
+                    .withCity("Juiz de Updated")
+                    .withCountry("Portugal Updated")
+                    .withState("Minas Unicas Updated")
+                    .withZip("01234-567")
+                    .buildAddressPutRequestDTO();
 
+            domainAddress = AddressTestBuilder.anAddress()
+                    .withId(ADDRESS_ID)
+                    .withCity("Juiz de Updated")
+                    .withCountry("Portugal Updated")
+                    .withState("Minas Unicas Updated")
+                    .withZip("01234-567")
+                    .buildDomain();
+
+            updatedAddress = AddressTestBuilder.anAddress()
+                    .withId(ADDRESS_ID)
+                    .withCity("Juiz de Updated")
+                    .withStreet("Rua das Flores, 123")
+                    .withCountry("Portugal Updated")
+                    .withState("Minas Unicas Updated")
+                    .withZip("01234-567")
+                    .buildDomain();
+
+            expectedResponse = AddressTestBuilder.anAddress()
+                    .withId(ADDRESS_ID)
+                    .withCity("Juiz de Updated")
+                    .withStreet("Rua das Flores, 123")
+                    .withCountry("Portugal Updated")
+                    .withState("Minas Unicas Updated")
+                    .withZip("01234-567")
+                    .buildAddressResponseDTO();
 
         }
 
         @Test
-        void update() {
+        @DisplayName("Should update address with success")
+        void shouldUpdateAddressWithSuccess() throws Exception {
+
+            when(addressMapper.updateFromDTO(putRequestDTO , ADDRESS_ID)).thenReturn(domainAddress);
+            when(updateAddress.update(domainAddress)).thenReturn(updatedAddress);
+            when(addressMapper.toDTO(updatedAddress)).thenReturn(expectedResponse);
+
+            mockMvc.perform(put("/api/v1/address/customer/{id}" , ADDRESS_ID)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(putRequestDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(ADDRESS_ID))
+                .andExpect(jsonPath("$.state").value(putRequestDTO.state()))
+                .andExpect(jsonPath("$.street").value(updatedAddress.getStreet()))
+                .andExpect(jsonPath("$.city").value(putRequestDTO.city()));
+
+            verify(addressMapper).updateFromDTO(putRequestDTO , ADDRESS_ID);
+            verify(updateAddress).update(domainAddress);
         }
     }
 
