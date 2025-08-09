@@ -253,17 +253,23 @@ class CustomerAddressControllerTest {
         }
     }
 
-
     @Nested
-    @DisplayName("GET /api/v1/address/customer/{id} - Update Address")
+    @DisplayName("GET /api/v1/address/customer/{id} - Get Address")
     class FindAddressEndpoint {
 
         @Test
         @DisplayName("Should find address by id with success")
-        void shouldFindAddressById() {
+        void shouldFindAddressById() throws Exception {
 
+            when(findAddress.findById(ADDRESS_ID)).thenReturn(domainAddress);
+            when(addressMapper.toDTO(domainAddress)).thenReturn(expectedResponse);
 
-
+            mockMvc.perform(get("/api/v1/address/customer/findAddress/{id}" , ADDRESS_ID))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(ADDRESS_ID))
+                .andExpect(jsonPath("$.street").value(domainAddress.getStreet()))
+                .andExpect(jsonPath("$.city").value(domainAddress.getCity()))
+                .andExpect(jsonPath("$.country").value(domainAddress.getCountry()));
         }
     }
 }

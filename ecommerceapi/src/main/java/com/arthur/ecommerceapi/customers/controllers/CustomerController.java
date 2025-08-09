@@ -26,7 +26,6 @@ public class CustomerController {
     private final FindAllCustomers findAllCustomers;
     private final UpdateCustomer updateCustomer;
 
-
     @ResponseStatus(CREATED)
     @PostMapping
     public CustomerResponseDTO save(@RequestBody @Valid final CustomerRequestDTO dto){

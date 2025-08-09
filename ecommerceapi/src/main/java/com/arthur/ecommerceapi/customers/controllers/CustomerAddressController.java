@@ -42,8 +42,8 @@ public class CustomerAddressController {
 
     @ResponseStatus(OK)
     @GetMapping("/findAddress/{id}")
-    public AddressResponseDTO findById(@PathVariable final Long id) {
-        return mapper.toDTO(findAddress.findById(id));
+    public AddressResponseDTO findById(@PathVariable(name = "id") final Long addressId) {
+        return mapper.toDTO(findAddress.findById(addressId));
     }
 
 }
