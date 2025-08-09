@@ -230,7 +230,7 @@ class CustomerAddressControllerTest {
             when(updateAddress.update(domainAddress)).thenReturn(updatedAddress);
             when(addressMapper.toDTO(updatedAddress)).thenReturn(expectedResponse);
 
-            mockMvc.perform(put("/api/v1/address/customer/{id}" , ADDRESS_ID)
+            mockMvc.perform(put("/api/v1/address/customer/{id}" , CUSTOMER_ID)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(putRequestDTO)))
                 .andExpect(status().isOk())
@@ -241,6 +241,26 @@ class CustomerAddressControllerTest {
 
             verify(addressMapper).updateFromDTO(putRequestDTO , ADDRESS_ID);
             verify(updateAddress).update(domainAddress);
+        }
+
+
+        @Test
+        @DisplayName("Should update address with success")
+        void shouldReturn404WithCustomerNotExists() throws Exception {
+            final long INVALID_USER_ID = 33333L;
+
+            when(addressMapper.updateFromDTO(putRequestDTO , ADDRESS_ID)).thenReturn(domainAddress);
+            when(updateAddress.update(domainAddress))
+                    .thenThrow(new UserNotFoundException("User not found with id: " + INVALID_USER_ID));
+
+            mockMvc.perform(put("/api/v1/address/customer/{id}" , CUSTOMER_ID)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(putRequestDTO)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.details").value("User not found with id: " + INVALID_USER_ID));
+
+            verify(updateAddress).update(any(Address.class));
         }
     }
 
