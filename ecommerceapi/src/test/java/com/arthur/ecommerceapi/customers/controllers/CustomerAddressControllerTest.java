@@ -166,7 +166,6 @@ class CustomerAddressControllerTest {
             verify(createAddress, never()).create(any() , any());
         }
 
-
         @Test
         @DisplayName("Should Return 404 With Customer Not Exists")
         void shouldReturn404WithCustomerNotExists() throws Exception {
@@ -231,7 +230,6 @@ class CustomerAddressControllerTest {
             verify(updateAddress).update(any(Address.class));
         }
 
-
         @Test
         @DisplayName("Should throw Customer not found on update address")
         void shouldReturn404WithCustomerNotExists() throws Exception {
@@ -288,6 +286,5 @@ class CustomerAddressControllerTest {
             verify(findAddress).findById(ADDRESS_ID);
         }
     }
-
-
+    
 }
