@@ -9,11 +9,9 @@ import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
 import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.customers.usecases.CreateAddress;
 import com.arthur.ecommerceapi.customers.usecases.FindAddress;
-import com.arthur.ecommerceapi.customers.usecases.FindCustomer;
 import com.arthur.ecommerceapi.customers.usecases.UpdateAddress;
 import com.arthur.ecommerceapi.testFactory.builders.AddressTestBuilder;
 import com.arthur.ecommerceapi.testFactory.builders.CustomerTestBuilder;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -150,7 +148,7 @@ class CustomerAddressControllerTest {
         }
 
         @Test
-        @DisplayName("Should return 404 error on create with blank attribute")
+        @DisplayName("Should return 400 error on create with blank attribute")
         void shouldReturn400BadRequestWhenRequiredAttributeIsBlank() throws Exception {
             var invalidRequest = AddressTestBuilder.anAddress()
                     .withStreet("Rua das Flores, 123")
@@ -235,15 +233,15 @@ class CustomerAddressControllerTest {
 
 
         @Test
-        @DisplayName("Should update address with success")
+        @DisplayName("Should throw Customer not found on update address")
         void shouldReturn404WithCustomerNotExists() throws Exception {
             final long INVALID_USER_ID = 33333L;
 
-            when(addressMapper.updateFromDTO(putRequestDTO , ADDRESS_ID)).thenReturn(domainAddress);
+            when(addressMapper.updateFromDTO(putRequestDTO , INVALID_USER_ID)).thenReturn(domainAddress);
             when(updateAddress.update(domainAddress))
                     .thenThrow(new UserNotFoundException("User not found with id: " + INVALID_USER_ID));
 
-            mockMvc.perform(put("/api/v1/address/customer/{id}" , CUSTOMER_ID)
+            mockMvc.perform(put("/api/v1/address/customer/{id}" , INVALID_USER_ID)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(putRequestDTO)))
                 .andExpect(status().isNotFound())
