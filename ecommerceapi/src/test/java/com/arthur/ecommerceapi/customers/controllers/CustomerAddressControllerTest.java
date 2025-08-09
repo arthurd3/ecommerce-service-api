@@ -59,8 +59,11 @@ class CustomerAddressControllerTest {
     class CreateAddressEndpoint {
 
         private AddressRequestDTO validRequest;
+
         private Address domainAddress;
+
         private Address savedAddress;
+
         private AddressResponseDTO expectedResponse;
 
         @BeforeEach
@@ -174,6 +177,15 @@ class CustomerAddressControllerTest {
     @Nested
     @DisplayName("PUT /api/v1/address/customer/{customerId} - Update Address")
     class UpdateAddressEndpoint {
+
+        private Address updateAddress;
+
+        @BeforeEach
+        void setUp() {
+
+
+        }
+
         @Test
         void update() {
         }
