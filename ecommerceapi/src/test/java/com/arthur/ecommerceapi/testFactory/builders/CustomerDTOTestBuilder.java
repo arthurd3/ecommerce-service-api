@@ -46,6 +46,7 @@ public class CustomerDTOTestBuilder {
         return this;
     }
 
+
     public CustomerRequestDTO buildRequestDTO() {
         return new CustomerRequestDTO(name, email, phone, password);
     }

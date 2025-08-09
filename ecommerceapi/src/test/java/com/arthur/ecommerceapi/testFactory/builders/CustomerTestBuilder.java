@@ -45,6 +45,7 @@ public class CustomerTestBuilder {
         return this;
     }
 
+
     public Customer buildDomain() {
         Customer customer = new Customer();
         customer.setId(id);
