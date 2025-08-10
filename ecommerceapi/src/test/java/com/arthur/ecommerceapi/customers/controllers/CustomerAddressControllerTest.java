@@ -61,7 +61,7 @@ class CustomerAddressControllerTest {
 
     @BeforeEach
     void setUp() {
-        validRequest = AddressTestBuilder.anAddress()
+        validRequest = AddressTestBuilder.aAddress()
                 .withStreet("Rua das Flores, 123")
                 .withCity("São Paulo")
                 .withState("SP")
@@ -69,7 +69,7 @@ class CustomerAddressControllerTest {
                 .withCountry("Brazil")
                 .buildAddressRequestDTO();
 
-        domainAddress = AddressTestBuilder.anAddress()
+        domainAddress = AddressTestBuilder.aAddress()
                 .withStreet("Rua das Flores, 123")
                 .withCity("São Paulo")
                 .withState("SP")
@@ -80,7 +80,7 @@ class CustomerAddressControllerTest {
                         .buildDomain())
                 .buildDomain();
 
-        savedAddress = AddressTestBuilder.anAddress()
+        savedAddress = AddressTestBuilder.aAddress()
                 .withId(ADDRESS_ID)
                 .withStreet("Rua das Flores, 123")
                 .withCity("São Paulo")
@@ -92,7 +92,7 @@ class CustomerAddressControllerTest {
                         .buildDomain())
                 .buildDomain();
 
-        expectedResponse = AddressTestBuilder.anAddress()
+        expectedResponse = AddressTestBuilder.aAddress()
                 .withId(ADDRESS_ID)
                 .withStreet("Rua das Flores, 123")
                 .withCity("São Paulo")
@@ -101,7 +101,7 @@ class CustomerAddressControllerTest {
                 .withCountry("Brazil")
                 .buildAddressResponseDTO();
 
-        putRequestDTO = AddressTestBuilder.anAddress()
+        putRequestDTO = AddressTestBuilder.aAddress()
                 .withCity("Juiz de Updated")
                 .withCountry("Portugal Updated")
                 .withState("Minas Unicas Updated")
@@ -109,7 +109,7 @@ class CustomerAddressControllerTest {
                 .withZip("01234-567")
                 .buildAddressPutRequestDTO();
 
-        updatedAddress = AddressTestBuilder.anAddress()
+        updatedAddress = AddressTestBuilder.aAddress()
                 .withId(ADDRESS_ID)
                 .withCity("Juiz de Updated")
                 .withStreet("Rua das Flores, 127")
@@ -150,7 +150,7 @@ class CustomerAddressControllerTest {
         @Test
         @DisplayName("Should return 400 error on create with blank attribute")
         void shouldReturn400BadRequestWhenRequiredAttributeIsBlank() throws Exception {
-            var invalidRequest = AddressTestBuilder.anAddress()
+            var invalidRequest = AddressTestBuilder.aAddress()
                     .withStreet("Rua das Flores, 123")
                     .withCity("")
                     .withState("SP")
@@ -193,7 +193,7 @@ class CustomerAddressControllerTest {
         @Test
         @DisplayName("Should update address with success")
         void shouldUpdateAddressWithSuccess() throws Exception {
-            var domainUpdateAddress = AddressTestBuilder.anAddress()
+            var domainUpdateAddress = AddressTestBuilder.aAddress()
                     .withCity("Juiz de Updated")
                     .withCountry("Portugal Updated")
                     .withState("Minas Unicas Updated")
@@ -204,7 +204,7 @@ class CustomerAddressControllerTest {
                             .buildDomain())
                     .buildDomain();
 
-            var expectedUpdateResponse = AddressTestBuilder.anAddress()
+            var expectedUpdateResponse = AddressTestBuilder.aAddress()
                     .withId(ADDRESS_ID)
                     .withCity("Juiz de Updated")
                     .withCountry("Portugal Updated")

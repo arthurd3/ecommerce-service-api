@@ -1,12 +1,10 @@
 package com.arthur.ecommerceapi.customers.gateways.gatewaysImpl;
 
 import com.arthur.ecommerceapi.customers.domain.model.Address;
-import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
-import com.arthur.ecommerceapi.testFactory.DataTestFactory;
 import com.arthur.ecommerceapi.testFactory.builders.AddressTestBuilder;
 import com.arthur.ecommerceapi.testFactory.builders.CustomerTestBuilder;
 import jakarta.persistence.EntityManager;
@@ -46,7 +44,7 @@ class AddressGatewayImplTest {
                     .buildEntity();
             customerRepository.saveAndFlush(existingCustomer);
 
-            Address newAddress = AddressTestBuilder.anAddress()
+            Address newAddress = AddressTestBuilder.aAddress()
                     .withStreet("Rua das Flores, 456")
                     .withCity("São Paulo")
                     .withCustomer(CustomerTestBuilder.aCustomer()
@@ -71,7 +69,7 @@ class AddressGatewayImplTest {
 
             final Long NON_EXISTENT_CUSTOMER_ID = 999L;
             
-            Address addressToFail = AddressTestBuilder.anAddress()
+            Address addressToFail = AddressTestBuilder.aAddress()
                     .withCustomer(CustomerTestBuilder.aCustomer()
                             .withId(NON_EXISTENT_CUSTOMER_ID)
                             .buildDomain())
@@ -97,7 +95,7 @@ class AddressGatewayImplTest {
                     .withUniquePhone()
                     .buildEntity();
             
-            AddressEntity address1 = AddressTestBuilder.anAddress()
+            AddressEntity address1 = AddressTestBuilder.aAddress()
                     .withStreet("Primeiro Endereço, 123")
                     .withCustomerEntity(customer)
                     .buildEntity();
@@ -109,7 +107,7 @@ class AddressGatewayImplTest {
             entityManager.flush();
             entityManager.clear();
 
-            Address secondAddress = AddressTestBuilder.anAddress()
+            Address secondAddress = AddressTestBuilder.aAddress()
                     .withStreet("Segundo Endereço, 456")
                     .withCustomer(CustomerTestBuilder.aCustomer()
                             .withId(customer.getId())
@@ -141,7 +139,7 @@ class AddressGatewayImplTest {
         @BeforeEach
         void setUp() {
             CustomerEntity customer = CustomerTestBuilder.aCustomer().withUniqueEmail().buildEntity();
-            AddressEntity address = AddressTestBuilder.anAddress().buildEntity();
+            AddressEntity address = AddressTestBuilder.aAddress().buildEntity();
             customer.setAddress(address);
 
             customer = customerRepository.saveAndFlush(customer);
@@ -182,7 +180,7 @@ class AddressGatewayImplTest {
         @BeforeEach
         void setUp() {
             CustomerEntity originalCustomer = CustomerTestBuilder.aCustomer().withUniqueEmail().buildEntity();
-            AddressEntity address = AddressTestBuilder.anAddress().buildEntity();
+            AddressEntity address = AddressTestBuilder.aAddress().buildEntity();
 
             originalCustomer.setAddress(address);
             address.setCustomer(originalCustomer);
@@ -198,7 +196,7 @@ class AddressGatewayImplTest {
         @DisplayName("Should update address and dont change Customer with success")
         void shouldUpdateAddressAndDontChangeCustomerWithSuccess() {
 
-            Address addressWithUpdates = AddressTestBuilder.anAddress()
+            Address addressWithUpdates = AddressTestBuilder.aAddress()
                     .withId(originalAddress.getId())
                     .withStreet("Nova Rua 456")
                     .withCity("Nova Cidade")
@@ -223,7 +221,7 @@ class AddressGatewayImplTest {
         @DisplayName("Should Throw Exception on update non exists address")
         void shouldThrowExceptionOnUpdateNonExistentAddress() {
             final Long NON_EXISTENT_ID = 999L;
-            Address addressWithUpdates = AddressTestBuilder.anAddress()
+            Address addressWithUpdates = AddressTestBuilder.aAddress()
                     .withStreet("Nova Rua 456")
                     .withCity("Nova Cidade")
                     .withCustomer(null)
@@ -244,7 +242,7 @@ class AddressGatewayImplTest {
         @BeforeEach
         void setUp() {
             CustomerEntity originalCustomer = CustomerTestBuilder.aCustomer().withUniqueEmail().buildEntity();
-            originalAddress = AddressTestBuilder.anAddress().buildEntity();
+            originalAddress = AddressTestBuilder.aAddress().buildEntity();
             originalCustomer.setAddress(originalAddress);
             originalAddress.setCustomer(originalCustomer);
 

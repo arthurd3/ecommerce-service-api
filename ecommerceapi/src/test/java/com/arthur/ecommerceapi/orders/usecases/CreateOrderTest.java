@@ -39,6 +39,8 @@ class CreateOrderTest {
         customerEntity = CustomerTestBuilder.aCustomer().buildEntity();
         productEntity = ProductTestBuilder.aProduct().buildEntity();
         addressEntity = AddressTestBuilder.aAddress().buildEntity();
+
+        
     }
 
     @Test

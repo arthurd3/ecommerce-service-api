@@ -7,7 +7,6 @@ import com.arthur.ecommerceapi.customers.dtos.request.AddressRequestDTO;
 import com.arthur.ecommerceapi.customers.dtos.response.AddressResponseDTO;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
-import com.arthur.ecommerceapi.orders.dtos.response.AddressOrderResponseDTO;
 
 public class AddressTestBuilder {
 
@@ -20,7 +19,7 @@ public class AddressTestBuilder {
     private Customer customer;
     private CustomerEntity customerEntity;
 
-    public static AddressTestBuilder anAddress() {
+    public static AddressTestBuilder aAddress() {
         return new AddressTestBuilder();
     }
 
