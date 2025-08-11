@@ -10,6 +10,7 @@ import com.arthur.ecommerceapi.orders.dtos.response.OrderResponseDTO;
 import com.arthur.ecommerceapi.orders.enums.OrderStatus;
 import com.arthur.ecommerceapi.orders.usecases.CreateOrder;
 import com.arthur.ecommerceapi.orders.usecases.FindOrder;
+import com.arthur.ecommerceapi.products.dtos.response.ProductResponseDTO;
 import com.arthur.ecommerceapi.testFactory.DataTestFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static org.apache.kafka.common.security.oauthbearer.internals.secured.HttpAccessTokenRetriever.post;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -65,6 +67,7 @@ class OrderControllerTest {
             var customer = DataTestFactory.createCustomer();
             customer.setId(1L);
             var address = DataTestFactory.createAddress();
+            address.setId(1L);
             var product = DataTestFactory.createProduct();
 
             final var ORDER_ID = UUID.randomUUID();
@@ -76,10 +79,30 @@ class OrderControllerTest {
                     requestDto.specification() ,
                     OrderStatus.PENDING_PAYMENT );
 
-            CustomerOderResponseDTO customerOderResponseDTO  = new CustomerOderResponseDTO();
-            AddressOrderResponseDTO toAddressResponseDTO = new AddressOrderResponseDTO();
+            CustomerOderResponseDTO customerOderResponseDTO  = new CustomerOderResponseDTO(customer.getId() ,
+                    customer.getName(),
+                    customer.getEmail() ,
+                    customer.getPhone());
 
-            responseDto = new OrderResponseDTO()
+            AddressOrderResponseDTO toAddressResponseDTO = new AddressOrderResponseDTO(address.getId() ,
+                    address.getStreet() ,
+                    address.getCity() ,
+                    address.getState() ,
+                    address.getZip() ,
+                    address.getCountry());
+
+            ProductResponseDTO productResponseDTO = new ProductResponseDTO(product.getId() ,
+                    product.getName() ,
+                    product.getPrice().getFormatedValue() ,
+                    product.getDescription() ,
+                    product.getCategory() ,
+                    product.getQuantity());
+
+            responseDto = new OrderResponseDTO(createdOrder.getOrderId() ,
+                    customerOderResponseDTO ,
+                    toAddressResponseDTO ,
+                    createdOrder.getSpecification() ,
+                    productResponseDTO);
         }
 
 
@@ -87,9 +110,10 @@ class OrderControllerTest {
         @DisplayName("Should create order with success")
         void shouldCreateOrderWithSuccess() throws Exception {
 
-
             when(createOrder.create(requestDto)).thenReturn(createdOrder);
             when(mapper.toDto(createdOrder)).thenReturn(responseDto);
+
+            mockMvc.perform(post("/api/v1/orders"))
 
         }
 
