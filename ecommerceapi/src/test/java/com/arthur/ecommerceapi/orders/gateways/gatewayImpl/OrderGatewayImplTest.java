@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import jakarta.persistence.EntityManager;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -28,9 +29,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 class OrderGatewayImplTest {
-
-    @Autowired
-    private OrderGateway orderGateway;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -98,6 +96,24 @@ class OrderGatewayImplTest {
             assertEquals(OrderStatus.PENDING_PAYMENT, savedOrder.getStatus());
             assertEquals(productEntity, savedOrder.getProduct());
 
+        }
+
+        @Test
+        @DisplayName("Should throw DataIntegrityViolationException error on create order")
+        void shouldThrowDataIntegrityViolationExceptionOnCreateOrder() {
+            
+            IllegalArgumentException exception = assertThrows(
+                    IllegalArgumentException.class,
+                    () -> {
+                        OrderEntity.createObj(
+                                null ,
+                                null ,
+                                null ,
+                                "I Hate integration tests");
+                    }
+            );
+
+            assertNotNull(exception.getMessage());
         }
 
     }
