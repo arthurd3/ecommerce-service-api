@@ -9,7 +9,5 @@ public record OrderRequestDTO(
         @NotNull
         Long customerId ,
         @NotNull
-        UUID productId ,
-        @NotNull
-        Long toAddressId
+        UUID productId
 ) {}

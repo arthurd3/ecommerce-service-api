@@ -27,7 +27,10 @@ public class CreateOrder {
         ProductEntity product = orderSystemGateway
                 .findProductEntityById(dto.productId());
 
-        OrderEntity orderSave = OrderEntity.createObj(product, customer, customer.getAddress(), dto.specification());
+        OrderEntity orderSave = OrderEntity.createObj(product,
+                customer,
+                customer.getAddress(),
+                dto.specification());
 
         return orderGateway.create(orderSave);
     }

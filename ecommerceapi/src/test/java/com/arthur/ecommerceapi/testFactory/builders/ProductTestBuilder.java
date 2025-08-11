@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.testFactory.builders;
 
 import com.arthur.ecommerceapi.products.domain.models.Money;
+import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
 import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 
@@ -58,6 +59,10 @@ public class ProductTestBuilder {
 
     public ProductEntity buildEntity() {
         return new ProductEntity(id , name , price.getValue() , description , category , quantity , availableToDiscount);
+    }
+
+    public Product buildDomain() {
+        return new Product(id , name , new Money(price.getValue().toString()) , description , category , quantity , availableToDiscount);
     }
     
 }

@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.products.domain.models;
 
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class Product {
 
     private UUID id;

@@ -31,14 +31,14 @@ public class Order {
         this.status = status;
     }
 
-    public static Order createOrder(OrderEntity order , Product product, Customer customer, Address address) {
+    public static Order createOrder(UUID orderId , Product product, Customer customer, Address address , String specification , OrderStatus status) {
         return new Order (
-                order.getId(),
+                orderId,
                 product,
                 customer,
                 address,
-                order.getSpecification(),
-                order.getStatus()
+                specification,
+                status
         );
     }
 

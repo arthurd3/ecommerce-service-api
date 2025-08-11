@@ -23,25 +23,28 @@ public class OrderGatewayImpl implements OrderGateway {
     @Override
     public Order create(final OrderEntity order) {
         OrderEntity savedOrder = repository.save(order);
+
         productMapper.toDomain(order.getProduct());
                 gatewayMapper.customerToDomain(order.getCustomer());
                 gatewayMapper.addressToDomain(order.getToAddress());
-        return createOrder(savedOrder);
+
+        return orderToDomain(savedOrder);
     }
 
     @Override
     public Order findById(final UUID orderId) {
-         return createOrder(repository.findById(orderId)
+         return orderToDomain(repository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundExecption("Order with id "+ orderId +" not found!!")));
     }
 
-    //Create Order
-    private Order createOrder(OrderEntity order) {
+    private Order orderToDomain(OrderEntity order) {
         return Order.createOrder(
-                order,
+                order.getId(),
                 productMapper.toDomain(order.getProduct()),
                 gatewayMapper.customerToDomain(order.getCustomer()),
-                gatewayMapper.addressToDomain(order.getToAddress())
+                gatewayMapper.addressToDomain(order.getToAddress()),
+                order.getSpecification(),
+                order.getStatus()
         );
     }
 
