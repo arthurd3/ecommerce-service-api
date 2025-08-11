@@ -4,6 +4,8 @@ import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
+import com.arthur.ecommerceapi.products.domain.models.Money;
+import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
 import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 import org.junit.jupiter.api.DisplayName;
@@ -57,7 +59,7 @@ public class DataTestFactory {
     }
 
 
-    @DisplayName("Create a Address Entity for Test")
+    @DisplayName("Create a Product Entity for Test")
     public static ProductEntity createProductEntity(){
         ProductEntity productEntity = new ProductEntity();
         productEntity.setName("HotWellsCar");
@@ -67,6 +69,18 @@ public class DataTestFactory {
         productEntity.setQuantity(2);
         productEntity.setAvailableToDiscount(false);
         return productEntity;
+    }
+
+    @DisplayName("Create a Product for Test")
+    public static Product createProduct(){
+        Product product = new Product();
+        product.setName("HotWellsCar");
+        product.setCategory(ProductCategory.TOYS_AND_GAMES);
+        product.setPrice(new Money("200"));
+        product.setDescription("Red car");
+        product.setQuantity(2);
+        product.setAvailableToDiscount(false);
+        return product;
     }
 
     @DisplayName("Create a list of 3 customers for Test")
