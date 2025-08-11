@@ -13,7 +13,7 @@ public class Product {
 
     private UUID id;
     private String name;
-    private Coin price;
+    private Money price;
     private String description;
     private ProductCategory category;
     private Integer quantity;

@@ -3,14 +3,14 @@ package com.arthur.ecommerceapi.products.domain.models;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
-public class Coin {
+public class Money {
 
     private BigDecimal value;
     private static final String MONETARY_UNIT = "R$";
     private static final DecimalFormat FORMAT = new DecimalFormat(MONETARY_UNIT + " #,###,##0.00");
 
 
-    public Coin(final String valor){
+    public Money(final String valor){
         this.value = new BigDecimal(valor);
     }
 

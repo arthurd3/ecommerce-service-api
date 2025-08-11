@@ -1,7 +1,6 @@
 package com.arthur.ecommerceapi.testFactory.builders;
 
-import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
-import com.arthur.ecommerceapi.products.domain.models.Coin;
+import com.arthur.ecommerceapi.products.domain.models.Money;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
 import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 
@@ -11,7 +10,7 @@ public class ProductTestBuilder {
 
     private UUID id;
     private String name;
-    private Coin price;
+    private Money price;
     private String description;
     private ProductCategory category;
     private Integer quantity;
@@ -31,7 +30,7 @@ public class ProductTestBuilder {
         return this;
     }
 
-    public ProductTestBuilder withPrice(Coin price) {
+    public ProductTestBuilder withPrice(Money price) {
         this.price = price;
         return this;
     }

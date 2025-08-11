@@ -1,10 +1,8 @@
 package com.arthur.ecommerceapi.orders.usecases;
 
-import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.orders.domain.model.Order;
 import com.arthur.ecommerceapi.orders.dtos.request.OrderRequestDTO;
-import com.arthur.ecommerceapi.orders.enums.OrderStatus;
 import com.arthur.ecommerceapi.orders.gateways.OrderGateway;
 import com.arthur.ecommerceapi.orders.gateways.OrderSystemGateway;
 import com.arthur.ecommerceapi.orders.gateways.entities.OrderEntity;

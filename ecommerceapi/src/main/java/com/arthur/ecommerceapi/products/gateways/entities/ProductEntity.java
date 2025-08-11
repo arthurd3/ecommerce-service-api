@@ -1,6 +1,6 @@
 package com.arthur.ecommerceapi.products.gateways.entities;
 
-import com.arthur.ecommerceapi.products.domain.models.Coin;
+import com.arthur.ecommerceapi.products.domain.models.Money;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,8 +33,8 @@ public class ProductEntity {
     @Column(name = "available_to_discount")
     private Boolean availableToDiscount;
 
-    public Coin productPrice() {
-        return new Coin(price.toString());
+    public Money productPrice() {
+        return new Money(price.toString());
     }
 
 }
