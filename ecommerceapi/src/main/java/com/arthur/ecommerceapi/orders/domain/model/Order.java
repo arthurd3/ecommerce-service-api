@@ -42,8 +42,6 @@ public class Order {
         );
     }
 
-
-
     public void approve() {
         if (this.status != OrderStatus.PENDING_PAYMENT) {
             throw new IllegalStateException("Pending Payment Order has been approved.");
@@ -67,15 +65,5 @@ public class Order {
 
     public void updateSpecification(String newSpecification) {
         this.specification = newSpecification;
-    }
-
-    public Address getAddress(Address address) {
-        final Long originalAddress = this.toAddress.getId();
-
-        if (address == null || !address.getId().equals(originalAddress)) {
-            throw new RuntimeException("Address is not valid");
-        }
-
-        return this.toAddress;
     }
 }
