@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(CustomerAddressController.class)
+@WebMvcTest(OrderController.class)
 class OrderControllerTest {
 
     @Autowired
@@ -70,6 +70,7 @@ class OrderControllerTest {
             var address = DataTestFactory.createAddress();
             address.setId(1L);
             var product = DataTestFactory.createProduct();
+            product.setId(UUID.randomUUID());
 
             final var ORDER_ID = UUID.randomUUID();
 
@@ -92,7 +93,8 @@ class OrderControllerTest {
                     address.getZip() ,
                     address.getCountry());
 
-            ProductResponseDTO productResponseDTO = new ProductResponseDTO(product.getId() ,
+            ProductResponseDTO productResponseDTO = new ProductResponseDTO(
+                    product.getId() ,
                     product.getName() ,
                     product.getPrice().getFormatedValue() ,
                     product.getDescription() ,
@@ -117,12 +119,12 @@ class OrderControllerTest {
             mockMvc.perform(post("/api/v1/orders")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(createdOrder.getOrderId()))
-                .andExpect(jsonPath("$.customer.id").value(createdOrder.getCustomer().getId()))
-                .andExpect(jsonPath("$.product.id").value(createdOrder.getProduct().getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.oderId").value(createdOrder.getOrderId().toString()))
+                .andExpect(jsonPath("$.customer.customerId").value(createdOrder.getCustomer().getId()))
+                .andExpect(jsonPath("$.product.id").value(createdOrder.getProduct().getId().toString()))
                 .andExpect(jsonPath("$.specification").value(createdOrder.getSpecification()))
-                .andExpect(jsonPath("$.address.id").value(createdOrder.getToAddress().getId()));
+                .andExpect(jsonPath("$.toAddress.addressId").value(createdOrder.getToAddress().getId()));
         }
 
     }
