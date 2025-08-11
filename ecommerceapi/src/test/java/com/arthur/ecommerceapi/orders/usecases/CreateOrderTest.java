@@ -1,16 +1,17 @@
 package com.arthur.ecommerceapi.orders.usecases;
 
+import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.orders.domain.model.Order;
 import com.arthur.ecommerceapi.orders.dtos.request.OrderRequestDTO;
 import com.arthur.ecommerceapi.orders.enums.OrderStatus;
 import com.arthur.ecommerceapi.orders.gateways.OrderGateway;
-import com.arthur.ecommerceapi.orders.gateways.OrderSystemGateway;
 import com.arthur.ecommerceapi.orders.gateways.entities.OrderEntity;
 
 import com.arthur.ecommerceapi.products.domain.models.Money;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
+import com.arthur.ecommerceapi.products.gateways.ProductGateway;
 import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 import com.arthur.ecommerceapi.testFactory.builders.AddressTestBuilder;
 import com.arthur.ecommerceapi.testFactory.builders.CustomerTestBuilder;
@@ -41,7 +42,10 @@ class CreateOrderTest {
     private OrderGateway orderGateway;
 
     @Mock
-    private OrderSystemGateway orderSystemGateway;
+    private ProductGateway productGateway;
+
+    @Mock
+    private CustomerGateway customerGateway;
 
     private CustomerEntity customerEntity;
     private ProductEntity productEntity;
@@ -112,8 +116,8 @@ class CreateOrderTest {
                     OrderStatus.PENDING_PAYMENT
             );
 
-            when(orderSystemGateway.findCustomerEntityById(customerEntity.getId())).thenReturn(customerEntity);
-            when(orderSystemGateway.findProductEntityById(productEntity.getId())).thenReturn(productEntity);
+            when(customerGateway.findEntityById(customerEntity.getId())).thenReturn(customerEntity);
+            when(productGateway.findEntityById(productEntity.getId())).thenReturn(productEntity);
             when(orderGateway.create(any(OrderEntity.class))).thenReturn(expectedOrder);
 
             Order createdOrder = createOrder.create(dto);
@@ -124,10 +128,10 @@ class CreateOrderTest {
             assertEquals(expectedAddress.getStreet(), createdOrder.getToAddress().getStreet());
             assertEquals(dto.specification(), createdOrder.getSpecification());
 
-            verify(orderSystemGateway).findCustomerEntityById(customerEntity.getId());
-            verify(orderSystemGateway).findProductEntityById(productEntity.getId());
+            verify(customerGateway).findEntityById(customerEntity.getId());
+            verify(productGateway).findEntityById(productEntity.getId());
             verify(orderGateway).create(any(OrderEntity.class));
-            
+
         }
     }
 }
