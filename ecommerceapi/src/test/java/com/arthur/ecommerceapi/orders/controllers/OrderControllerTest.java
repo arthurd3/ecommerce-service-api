@@ -19,34 +19,35 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
-import static org.apache.kafka.common.security.oauthbearer.internals.secured.HttpAccessTokenRetriever.post;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CustomerAddressController.class)
 class OrderControllerTest {
 
     @Autowired
-    private OrderController orderController;
+    private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
+    @MockitoBean
     private CreateOrder createOrder;
 
-    @Autowired
+    @MockitoBean
     private OrderMapper mapper;
 
-    @Autowired
+    @MockitoBean
     private FindOrder findOrder;
 
-    @Autowired
-    private MockMvc mockMvc;
 
 
     @Nested
@@ -113,8 +114,15 @@ class OrderControllerTest {
             when(createOrder.create(requestDto)).thenReturn(createdOrder);
             when(mapper.toDto(createdOrder)).thenReturn(responseDto);
 
-            mockMvc.perform(post("/api/v1/orders"))
-
+            mockMvc.perform(post("/api/v1/orders")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(requestDto)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(createdOrder.getOrderId()))
+                .andExpect(jsonPath("$.customer.id").value(createdOrder.getCustomer().getId()))
+                .andExpect(jsonPath("$.product.id").value(createdOrder.getProduct().getId()))
+                .andExpect(jsonPath("$.specification").value(createdOrder.getSpecification()))
+                .andExpect(jsonPath("$.address.id").value(createdOrder.getToAddress().getId()));
         }
 
     }
