@@ -50,12 +50,14 @@ class OrderGatewayImplTest {
     private EntityManager entityManager;
 
     private ProductEntity productEntity;
+    private CustomerEntity customerEntity;
+    private AddressEntity addressEntity;
     private OrderEntity orderExists;
 
     @BeforeEach
     void setUp() {
 
-        CustomerEntity customerEntity = CustomerTestBuilder.aCustomer()
+        customerEntity = CustomerTestBuilder.aCustomer()
                 .withName("John")
                 .withEmail("john@gmail.com")
                 .withPhone("123456789")
@@ -70,7 +72,7 @@ class OrderGatewayImplTest {
             .withPrice(new Money("199"))
             .buildEntity();
 
-        AddressEntity addressEntity = AddressTestBuilder.aAddress()
+        addressEntity = AddressTestBuilder.aAddress()
                 .withStreet("123 Main St")
                 .withCity("New York")
                 .withCustomerEntity(customerEntity)
@@ -90,7 +92,6 @@ class OrderGatewayImplTest {
                 customerEntity,
                 addressEntity,
                 "I Hate integration tests");
-
     }
 
     @Nested
@@ -100,15 +101,23 @@ class OrderGatewayImplTest {
         @DisplayName("Should create order with success")
         void shouldCreateOrderWithSuccess() {
 
-            OrderEntity savedOrder = orderRepository.save(orderExists);
+            var orderToCreate = OrderEntity.createObj(
+                    productEntity ,
+                    customerEntity,
+                    addressEntity,
+                    "I Hate integration tests");
+
+
+            Order savedOrder = orderGateway.create(orderToCreate);
 
             entityManager.flush();
 
             assertNotNull(savedOrder);
-            assertNotNull(savedOrder.getId());
+            assertNotNull(savedOrder.getOrderId());
             assertEquals(OrderStatus.PENDING_PAYMENT, savedOrder.getStatus());
-            assertEquals(productEntity, savedOrder.getProduct());
-
+            assertEquals(savedOrder.getCustomer().getEmail(), orderToCreate.getCustomer().getEmail());
+            assertEquals(savedOrder.getCustomer().getPhone(), orderToCreate.getCustomer().getPhone());
+            assertEquals(savedOrder.getToAddress().getId() , orderToCreate.getToAddress().getId());
         }
 
         @Test
