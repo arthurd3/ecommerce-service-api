@@ -1,10 +1,8 @@
 package com.arthur.ecommerceapi.products.usecases;
 
-import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.products.domain.models.Money;
 import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
-import com.arthur.ecommerceapi.products.dtos.request.ProductPutRequestDTO;
 import com.arthur.ecommerceapi.products.exceptions.ProductNotFoundException;
 import com.arthur.ecommerceapi.products.gateways.ProductGateway;
 import com.arthur.ecommerceapi.testFactory.builders.ProductTestBuilder;
