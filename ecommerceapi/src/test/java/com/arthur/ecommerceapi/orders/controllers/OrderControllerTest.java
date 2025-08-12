@@ -48,8 +48,6 @@ class OrderControllerTest {
     @MockitoBean
     private FindOrder findOrder;
 
-
-
     @Nested
     @DisplayName("POST /api/v1/orders - Create Order")
     class createOrderWithSuccess{
@@ -125,6 +123,8 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.product.id").value(createdOrder.getProduct().getId().toString()))
                 .andExpect(jsonPath("$.specification").value(createdOrder.getSpecification()))
                 .andExpect(jsonPath("$.toAddress.addressId").value(createdOrder.getToAddress().getId()));
+
+            verify(createOrder, times(1)).create(requestDto);
         }
 
     }
