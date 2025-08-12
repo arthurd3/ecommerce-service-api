@@ -3,6 +3,7 @@ package com.arthur.ecommerceapi.testFactory.builders;
 import com.arthur.ecommerceapi.products.domain.models.Money;
 import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
+import com.arthur.ecommerceapi.products.dtos.request.ProductPutRequestDTO;
 import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 
 import java.util.UUID;
@@ -64,5 +65,8 @@ public class ProductTestBuilder {
     public Product buildDomain() {
         return new Product(id , name , new Money(price.getValue().toString()) , description , category , quantity , availableToDiscount);
     }
-    
+
+    public ProductPutRequestDTO buildPutRequestDTO() {
+        return new ProductPutRequestDTO(name , new Money(price.getValue().toString()) , description , category , quantity , availableToDiscount);
+    }
 }
