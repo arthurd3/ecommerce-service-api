@@ -3,6 +3,7 @@ package com.arthur.ecommerceapi.products.usecases;
 import com.arthur.ecommerceapi.products.domain.models.Money;
 import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
+import com.arthur.ecommerceapi.products.exceptions.ProductNotFoundException;
 import com.arthur.ecommerceapi.products.gateways.ProductGateway;
 import com.arthur.ecommerceapi.testFactory.builders.ProductTestBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +29,6 @@ class DeleteProductTest {
 
     @Mock
     private ProductGateway productGateway;
-
 
     @Nested
     @DisplayName("Should existent product with success")
@@ -58,5 +58,15 @@ class DeleteProductTest {
             verify(productGateway , times(1)).delete(createdProduct.getId());
         }
 
+        @Test
+        @DisplayName("Should throw product not found Exception")
+        void shouldThrowProductNotFoundException() {
+            when(productGateway.exists(createdProduct.getId())).thenReturn(false);
+
+            assertThrows(ProductNotFoundException.class , () ->
+                    deleteProduct.delete(createdProduct.getId()));
+            
+            verify(productGateway , times(0)).delete(createdProduct.getId());
+        }
     }
 }

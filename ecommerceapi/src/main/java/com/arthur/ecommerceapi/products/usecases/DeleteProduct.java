@@ -1,5 +1,6 @@
 package com.arthur.ecommerceapi.products.usecases;
 
+import com.arthur.ecommerceapi.products.exceptions.ProductNotFoundException;
 import com.arthur.ecommerceapi.products.gateways.ProductGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,11 @@ public class DeleteProduct {
     private final ProductGateway productGateway;
 
     public void delete(final UUID uuid) {
-        if(productGateway.exists(uuid))
+        if(productGateway.exists(uuid)) {
             productGateway.delete(uuid);
+        }
+        else {
+            throw new ProductNotFoundException("Product with :" + uuid + " not exists!!");
+        }
     }
 }
