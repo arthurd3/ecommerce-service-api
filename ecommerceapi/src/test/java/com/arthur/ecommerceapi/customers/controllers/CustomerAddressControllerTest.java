@@ -193,6 +193,7 @@ class CustomerAddressControllerTest {
         @Test
         @DisplayName("Should update address with success")
         void shouldUpdateAddressWithSuccess() throws Exception {
+
             var domainUpdateAddress = AddressTestBuilder.aAddress()
                     .withCity("Juiz de Updated")
                     .withCountry("Portugal Updated")
