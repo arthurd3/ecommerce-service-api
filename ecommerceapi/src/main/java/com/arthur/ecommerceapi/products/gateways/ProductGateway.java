@@ -17,4 +17,6 @@ public interface ProductGateway {
 
     ProductEntity findEntityById(final UUID uuid);
 
+    boolean exists(final UUID uuid);
+
 }

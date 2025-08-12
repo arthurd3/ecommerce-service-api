@@ -49,4 +49,9 @@ public class ProductGatewayImpl implements ProductGateway {
         return repository.findById(uuid)
                 .orElseThrow(() -> new ProductNotFoundException("Product with "+ uuid +" not found!"));
     }
+
+    @Override
+    public boolean exists(UUID uuid) {
+        return repository.findById(uuid).isPresent();
+    }
 }
