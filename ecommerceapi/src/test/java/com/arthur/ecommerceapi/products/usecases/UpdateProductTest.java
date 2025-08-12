@@ -5,6 +5,7 @@ import com.arthur.ecommerceapi.products.domain.models.Money;
 import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
 import com.arthur.ecommerceapi.products.dtos.request.ProductPutRequestDTO;
+import com.arthur.ecommerceapi.products.exceptions.ProductNotFoundException;
 import com.arthur.ecommerceapi.products.gateways.ProductGateway;
 import com.arthur.ecommerceapi.testFactory.builders.ProductTestBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +37,7 @@ class UpdateProductTest {
     class updateProduct{
 
         private Product toUpdateProduct;
-        
+
         @BeforeEach
         void setUp() {
             final UUID id = UUID.randomUUID();
@@ -69,6 +70,27 @@ class UpdateProductTest {
             assertEquals(toUpdateProduct.getQuantity(), updatedProduct.getQuantity());
             assertEquals(toUpdateProduct.getPrice(), updatedProduct.getPrice());
 
+        }
+
+
+        @Test
+        @DisplayName("Should Update product with success")
+        void shouldThrow() {
+            var erroUpdateProduct = ProductTestBuilder.aProduct()
+                    .withId(UUID.randomUUID())
+                    .withName("Product 1")
+                    .withAvailableToDiscount(true)
+                    .withCategory(ProductCategory.ELECTRONICS)
+                    .withDescription("Product 1 from Electronics")
+                    .withQuantity(1000)
+                    .withPrice(new Money("199"))
+                    .buildDomain();
+
+            when(productGateway.update(erroUpdateProduct))
+                    .thenThrow(new ProductNotFoundException("Product with "+ erroUpdateProduct.getId() +" not found!"));
+
+            assertThrows(ProductNotFoundException.class,
+                    () -> updateProduct.update(erroUpdateProduct));
         }
     }
 
