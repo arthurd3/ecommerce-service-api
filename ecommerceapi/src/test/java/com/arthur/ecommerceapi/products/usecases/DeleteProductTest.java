@@ -18,7 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DeleteProductTest {
@@ -49,8 +49,13 @@ class DeleteProductTest {
         }
 
         @Test
-        void delete() {
-            when(productGateway.findById(createdProduct.getId())).thenReturn(True);
+        @DisplayName("Should delete when exists with success")
+        void shouldDeleteWhenExists() {
+            when(productGateway.exists(createdProduct.getId())).thenReturn(true);
+
+            deleteProduct.delete(createdProduct.getId());
+
+            verify(productGateway , times(1)).delete(createdProduct.getId());
         }
 
     }

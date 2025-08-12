@@ -13,7 +13,7 @@ public class DeleteProduct {
     private final ProductGateway productGateway;
 
     public void delete(final UUID uuid) {
-        if(productGateway.findById(uuid) != null)
+        if(productGateway.exists(uuid))
             productGateway.delete(uuid);
     }
 }
