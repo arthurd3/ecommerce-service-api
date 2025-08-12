@@ -1,6 +1,8 @@
 package com.arthur.ecommerceapi.orders.controllers;
 
 import com.arthur.ecommerceapi.customers.controllers.CustomerAddressController;
+import com.arthur.ecommerceapi.customers.domain.model.Address;
+import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.orders.controllers.mapppers.OrderMapper;
 import com.arthur.ecommerceapi.orders.domain.model.Order;
@@ -11,6 +13,7 @@ import com.arthur.ecommerceapi.orders.dtos.response.OrderResponseDTO;
 import com.arthur.ecommerceapi.orders.enums.OrderStatus;
 import com.arthur.ecommerceapi.orders.usecases.CreateOrder;
 import com.arthur.ecommerceapi.orders.usecases.FindOrder;
+import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.dtos.response.ProductResponseDTO;
 import com.arthur.ecommerceapi.products.exceptions.ProductNotFoundException;
 import com.arthur.ecommerceapi.testFactory.DataTestFactory;
@@ -19,6 +22,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -26,8 +32,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
+import java.util.stream.Stream;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -108,12 +115,9 @@ class OrderControllerTest {
                     productResponseDTO);
         }
 
-
         @Test
         @DisplayName("Should create order with success")
         void shouldCreateOrderWithSuccess() throws Exception {
-
-
 
             when(createOrder.create(requestDto)).thenReturn(createdOrder);
             when(mapper.toDto(createdOrder)).thenReturn(responseDto);
@@ -131,36 +135,62 @@ class OrderControllerTest {
             verify(createOrder, times(1)).create(requestDto);
         }
 
-
-        @Test
-        @DisplayName("Should create order with success")
-        void shouldThrowNotFoundException() throws Exception {
-            final Long FAKE_CUSTOMER_ID = 9999L;
-            final UUID FAKE_PRODUCT_ID = UUID.randomUUID();
-            requestDto = new OrderRequestDTO(
-                    "I HATE E2E TESTS" ,
-                    FAKE_CUSTOMER_ID ,
-                    FAKE_PRODUCT_ID);
-
-            when(createOrder.create(requestDto))
-                    .thenThrow(new UserNotFoundException("User not found with id: " + FAKE_CUSTOMER_ID));
-
-//            when(createOrder.create(requestDto))
-//                    .thenThrow(new ProductNotFoundException("Product with "+ FAKE_PRODUCT_ID +" not found!"));
+        @DisplayName("Deve retornar 404 quando uma dependência não for encontrada")
+        @ParameterizedTest
+        @MethodSource("notFoundExceptions")
+        void shouldReturn404WhenDependencyIsNotFound(RuntimeException exceptionToThrow, String expectedMessage) throws Exception {
+            requestDto = new OrderRequestDTO("I HATE E2E TESTS", 999L, UUID.randomUUID());
+            when(createOrder.create(requestDto)).thenThrow(exceptionToThrow);
 
             mockMvc.perform(post("/api/v1/orders")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(requestDto)))
                     .andExpect(status().isNotFound())
-                    .andExpect(jsonPath("$.status").value(404))
-                    .andExpect(jsonPath("$.details").value("User not found with id: " + FAKE_CUSTOMER_ID));
+                    .andExpect(jsonPath("$.details").value(expectedMessage));
+        }
 
-            verify(createOrder, times(1)).create(requestDto);
+        static Stream<Arguments> notFoundExceptions() {
+            final Long FAKE_CUSTOMER_ID = 999L;
+            final UUID FAKE_PRODUCT_ID = UUID.randomUUID();
+            return Stream.of(
+                    arguments(new UserNotFoundException("User not found with id: " + FAKE_CUSTOMER_ID), "User not found with id: " + FAKE_CUSTOMER_ID),
+                    arguments(new ProductNotFoundException("Product with " + FAKE_PRODUCT_ID + " not found!"), "Product with " + FAKE_PRODUCT_ID + " not found!")
+            );
         }
 
     }
 
-    @Test
-    void findById() {
+    @Nested
+    @DisplayName("GET /api/v1/orders/{id} - Find Order by Id")
+    class findOrderByIdWithSuccess {
+
+        @Test
+        @DisplayName("Should find order by id with success")
+        void shouldFindById() throws Exception {
+
+            final var ORDER_ID = UUID.randomUUID();
+
+            var orderFounded = Order.createOrder(ORDER_ID ,
+                    new Product() ,
+                    new Customer(),
+                    new Address(),
+                    "Sem pelicula" ,
+                    OrderStatus.PENDING_PAYMENT );
+
+            var responseDto = new OrderResponseDTO(orderFounded.getOrderId() ,
+                    new CustomerOderResponseDTO(null , null , null , null) ,
+                    new AddressOrderResponseDTO(null , null , null ,  null , null , null) ,
+                    orderFounded.getSpecification() ,
+                    new ProductResponseDTO(null , null, null , null , null, null));
+
+
+            when(findOrder.findById(orderFounded.getOrderId())).thenReturn(orderFounded);
+            when(mapper.toDto(orderFounded)).thenReturn(responseDto);
+
+            mockMvc.perform(get("/api/v1/orders/{id}" , ORDER_ID)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.oderId").value(orderFounded.getOrderId().toString()));
+        }
     }
 }

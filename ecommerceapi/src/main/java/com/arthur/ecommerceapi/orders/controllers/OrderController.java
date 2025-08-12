@@ -29,8 +29,8 @@ public class OrderController {
     }
 
     @ResponseStatus(OK)
-    @GetMapping
-    public OrderResponseDTO findById(@RequestParam @Valid UUID orderId){
+    @GetMapping("{id}")
+    public OrderResponseDTO findById(@PathVariable(name = "id") UUID orderId){
         return mapper.toDto(findOrder.findById(orderId));
     }
 }
