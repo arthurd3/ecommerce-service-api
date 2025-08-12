@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.orders.controllers;
 
 import com.arthur.ecommerceapi.customers.controllers.CustomerAddressController;
+import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.orders.controllers.mapppers.OrderMapper;
 import com.arthur.ecommerceapi.orders.domain.model.Order;
 import com.arthur.ecommerceapi.orders.dtos.request.OrderRequestDTO;
@@ -11,6 +12,7 @@ import com.arthur.ecommerceapi.orders.enums.OrderStatus;
 import com.arthur.ecommerceapi.orders.usecases.CreateOrder;
 import com.arthur.ecommerceapi.orders.usecases.FindOrder;
 import com.arthur.ecommerceapi.products.dtos.response.ProductResponseDTO;
+import com.arthur.ecommerceapi.products.exceptions.ProductNotFoundException;
 import com.arthur.ecommerceapi.testFactory.DataTestFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -111,6 +113,8 @@ class OrderControllerTest {
         @DisplayName("Should create order with success")
         void shouldCreateOrderWithSuccess() throws Exception {
 
+
+
             when(createOrder.create(requestDto)).thenReturn(createdOrder);
             when(mapper.toDto(createdOrder)).thenReturn(responseDto);
 
@@ -123,6 +127,33 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.product.id").value(createdOrder.getProduct().getId().toString()))
                 .andExpect(jsonPath("$.specification").value(createdOrder.getSpecification()))
                 .andExpect(jsonPath("$.toAddress.addressId").value(createdOrder.getToAddress().getId()));
+
+            verify(createOrder, times(1)).create(requestDto);
+        }
+
+
+        @Test
+        @DisplayName("Should create order with success")
+        void shouldThrowNotFoundException() throws Exception {
+            final Long FAKE_CUSTOMER_ID = 9999L;
+            final UUID FAKE_PRODUCT_ID = UUID.randomUUID();
+            requestDto = new OrderRequestDTO(
+                    "I HATE E2E TESTS" ,
+                    FAKE_CUSTOMER_ID ,
+                    FAKE_PRODUCT_ID);
+
+            when(createOrder.create(requestDto))
+                    .thenThrow(new UserNotFoundException("User not found with id: " + FAKE_CUSTOMER_ID));
+
+//            when(createOrder.create(requestDto))
+//                    .thenThrow(new ProductNotFoundException("Product with "+ FAKE_PRODUCT_ID +" not found!"));
+
+            mockMvc.perform(post("/api/v1/orders")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(requestDto)))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.status").value(404))
+                    .andExpect(jsonPath("$.details").value("User not found with id: " + FAKE_CUSTOMER_ID));
 
             verify(createOrder, times(1)).create(requestDto);
         }
