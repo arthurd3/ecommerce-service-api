@@ -3,6 +3,7 @@ package com.arthur.ecommerceapi.products.usecases;
 import com.arthur.ecommerceapi.products.domain.models.Money;
 import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
+import com.arthur.ecommerceapi.products.exceptions.ProductNotFoundException;
 import com.arthur.ecommerceapi.products.gateways.ProductGateway;
 import com.arthur.ecommerceapi.testFactory.builders.ProductTestBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class FindProductTest {
@@ -59,6 +60,20 @@ class FindProductTest {
             assertEquals(foundProduct.getQuantity(), product.getQuantity());
             assertEquals(foundProduct.getPrice(), product.getPrice());
             assertEquals(foundProduct.getId(), product.getId());
+        }
+
+        @Test
+        @DisplayName("Should Throw product not found exception on find product with not exists")
+        void shouldThrowProductNotFoundException() {
+            final UUID FAKE_UUID = UUID.randomUUID();
+
+            when(productGateway.findById(FAKE_UUID))
+                    .thenThrow(new ProductNotFoundException("Product with "+ FAKE_UUID +" not found!"));
+
+            assertThrows(ProductNotFoundException.class,
+                    () -> findProduct.findById(FAKE_UUID));
+
+            verify(productGateway , times(1)).findById(FAKE_UUID);
         }
     }
 }
