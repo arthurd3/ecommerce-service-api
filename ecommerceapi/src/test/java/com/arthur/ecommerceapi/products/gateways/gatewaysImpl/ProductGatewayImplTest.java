@@ -21,8 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @Transactional
@@ -152,7 +150,6 @@ class ProductGatewayImplTest {
 
     }
 
-
     @Nested
     @DisplayName("Exists Product return boolean")
     class existsProductReturnBoolean {
@@ -168,6 +165,6 @@ class ProductGatewayImplTest {
         void existsFalse() {
             assertFalse(productGateway.exists(UUID.randomUUID()));
         }
-        
+
     }
 }
