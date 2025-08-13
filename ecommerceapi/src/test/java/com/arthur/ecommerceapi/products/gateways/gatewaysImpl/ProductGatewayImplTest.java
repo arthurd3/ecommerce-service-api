@@ -1,7 +1,9 @@
 package com.arthur.ecommerceapi.products.gateways.gatewaysImpl;
 
 import com.arthur.ecommerceapi.products.domain.models.Money;
+import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
+import com.arthur.ecommerceapi.products.exceptions.ProductNotFoundException;
 import com.arthur.ecommerceapi.products.gateways.ProductGateway;
 import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 import com.arthur.ecommerceapi.products.repositories.ProductRepository;
@@ -14,7 +16,6 @@ import jakarta.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
@@ -50,7 +51,6 @@ class ProductGatewayImplTest {
         entityManager.flush();
     }
 
-
     @Nested
     @DisplayName("Delete Product")
     class deleteProductTest {
@@ -75,14 +75,52 @@ class ProductGatewayImplTest {
                 productGateway.delete(nonExistentId);
                 entityManager.flush();
             });
-            
+
             assertEquals(countBeforeDelete, productRepository.count());
         }
 
     }
 
-    @Test
-    void update() {
+    @Nested
+    @DisplayName("Update Product")
+    class updateProductTest {
+
+        @Test
+        @DisplayName("Should Update Product with success")
+        void shouldUpdateProductWithSuccess() {
+            Product productToChange = ProductTestBuilder.aProduct()
+                    .withId(originalProduct.getId())
+                    .withDescription("Eletronico")
+                    .withAvailableToDiscount(false)
+                    .withPrice(new Money("50"))
+                    .buildDomain();
+
+            productGateway.update(productToChange);
+
+            ProductEntity changedProduct = productRepository.findById(productToChange.getId())
+                    .orElseThrow();
+
+            assertEquals(changedProduct.getId(), originalProduct.getId());
+            assertEquals(changedProduct.getDescription(), productToChange.getDescription());
+            assertEquals(changedProduct.getAvailableToDiscount(), productToChange.getAvailableToDiscount());
+            assertEquals(changedProduct.getPrice(), productToChange.getPrice().getValue());
+            assertEquals(changedProduct.getQuantity(), originalProduct.getQuantity());
+        }
+
+        @Test
+        @DisplayName("Should not update With Success")
+        void shouldNotUpdateProductWithSuccess() {
+            Product productToChange = ProductTestBuilder.aProduct()
+                    .withId(UUID.randomUUID())
+                    .withDescription("Eletronico")
+                    .withAvailableToDiscount(false)
+                    .withPrice(new Money("50"))
+                    .buildDomain();
+
+            assertThrows(ProductNotFoundException.class,
+                    () -> productGateway.update(productToChange));
+        }
+
     }
 
     @Test
