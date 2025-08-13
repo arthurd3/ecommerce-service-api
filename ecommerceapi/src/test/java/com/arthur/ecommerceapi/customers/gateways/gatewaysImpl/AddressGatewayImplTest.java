@@ -2,6 +2,7 @@ package com.arthur.ecommerceapi.customers.gateways.gatewaysImpl;
 
 import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
+import com.arthur.ecommerceapi.customers.gateways.AddressGateway;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
@@ -24,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AddressGatewayImplTest {
 
     @Autowired
-    private AddressGatewayImpl addressGateway;
+    private AddressGateway addressGateway;
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired

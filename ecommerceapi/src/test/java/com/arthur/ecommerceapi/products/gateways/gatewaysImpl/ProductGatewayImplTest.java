@@ -52,6 +52,63 @@ class ProductGatewayImplTest {
     }
 
     @Nested
+    @DisplayName("Create Product")
+    class createProductTest {
+
+        @Test
+        @DisplayName("Create Product")
+        void shouldCreateProductWithSuccess() {
+
+            Product productToCreate = ProductTestBuilder.aProduct()
+                    .withCategory(ProductCategory.ELECTRONICS)
+                    .withDescription("Eletronico Domestico")
+                    .withAvailableToDiscount(true)
+                    .withQuantity(100)
+                    .withPrice(new Money("100"))
+                    .buildDomain();
+
+            var createdProduct = productGateway.create(productToCreate);
+
+            ProductEntity productEntity = productRepository.findById(createdProduct.getId())
+                    .orElseThrow();
+
+            assertNotNull(productEntity.getId());
+            assertEquals(productToCreate.getCategory(), productEntity.getCategory());
+            assertEquals(productToCreate.getDescription(), productEntity.getDescription());
+            assertEquals(productToCreate.getAvailableToDiscount(), productEntity.getAvailableToDiscount());
+            assertEquals(productToCreate.getQuantity(), productEntity.getQuantity());
+            assertEquals(productToCreate.getPrice().getValue(), productEntity.getPrice());
+
+        }
+
+        @Test
+        @DisplayName("Should Create product with error")
+        void shouldCreateProductWithError() {
+
+            Product productToCreate = ProductTestBuilder.aProduct()
+                    .withCategory(ProductCategory.ELECTRONICS)
+                    .withDescription("Eletronico Domestico")
+                    .withAvailableToDiscount(true)
+                    .withQuantity(100)
+                    .withPrice(new Money("100"))
+                    .buildDomain();
+
+            var createdProduct = productGateway.create(productToCreate);
+
+            ProductEntity productEntity = productRepository.findById(createdProduct.getId())
+                    .orElseThrow();
+
+            assertNotNull(productEntity.getId());
+            assertEquals(productToCreate.getCategory(), productEntity.getCategory());
+            assertEquals(productToCreate.getDescription(), productEntity.getDescription());
+            assertEquals(productToCreate.getAvailableToDiscount(), productEntity.getAvailableToDiscount());
+            assertEquals(productToCreate.getQuantity(), productEntity.getQuantity());
+            assertEquals(productToCreate.getPrice().getValue(), productEntity.getPrice());
+
+        }
+    }
+
+    @Nested
     @DisplayName("Delete Product")
     class deleteProductTest {
 

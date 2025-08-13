@@ -6,6 +6,7 @@ import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
 import com.arthur.ecommerceapi.orders.domain.model.Order;
 import com.arthur.ecommerceapi.orders.enums.OrderStatus;
 import com.arthur.ecommerceapi.orders.exceptions.OrderNotFoundExecption;
+import com.arthur.ecommerceapi.orders.gateways.OrderGateway;
 import com.arthur.ecommerceapi.orders.gateways.entities.OrderEntity;
 import com.arthur.ecommerceapi.orders.repositories.OrderRepository;
 import com.arthur.ecommerceapi.products.domain.models.Money;
@@ -35,7 +36,7 @@ import static org.mockito.Mockito.when;
 class OrderGatewayImplTest {
 
     @Autowired
-    private OrderGatewayImpl orderGateway;
+    private OrderGateway orderGateway;
 
     @Autowired
     private OrderRepository orderRepository;

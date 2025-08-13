@@ -38,6 +38,7 @@ public class AddressGatewayImpl implements AddressGateway {
         return mapper.addressToDomain(repository.save(entityToUpdate));
     }
 
+    @Override
     public AddressEntity findAddressEntity(final Long addressId) {
         return repository.findById(addressId)
                 .orElseThrow(() -> new AddressNotFoundException("Address with id :" + addressId + " not found!"));

@@ -2,6 +2,7 @@ package com.arthur.ecommerceapi.customers.gateways.gatewaysImpl;
 
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
+import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
@@ -31,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CustomerGatewayImplTest {
 
     @Autowired
-    private CustomerGatewayImpl customerGateway;
+    private CustomerGateway customerGateway;
 
     @Autowired
     private CustomerRepository repository;
