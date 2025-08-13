@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @Transactional
@@ -123,10 +125,39 @@ class ProductGatewayImplTest {
 
     }
 
-    @Test
-    void findEntityById() {
+    @Nested
+    @DisplayName("Find Product Entity by Id")
+    class findProductByIdTest {
+
+        @Test
+        @DisplayName("Should Find entity by Id")
+        void shouldFindProductEntityById() {
+
+            Product findedProduct = productGateway.findById(originalProduct.getId());
+
+            assertEquals(originalProduct.getId(), findedProduct.getId());
+            assertEquals(originalProduct.getDescription(), findedProduct.getDescription());
+            assertEquals(originalProduct.getAvailableToDiscount(), findedProduct.getAvailableToDiscount());
+            assertEquals(originalProduct.getPrice(), findedProduct.getPrice().getValue());
+            assertEquals(originalProduct.getQuantity(), findedProduct.getQuantity());
+            assertEquals(originalProduct.getCategory(), findedProduct.getCategory());
+        }
+
+        @Test
+        @DisplayName("Should Throw Product not found on find entity by Id")
+        void shouldThrowProductNotFoundException() {
+            assertThrows(ProductNotFoundException.class ,
+                    () -> productGateway.findById(UUID.randomUUID()));
+        }
+
     }
 
+
+    @Nested
+    @DisplayName("Exists Product return boolean")
+    class existsProductReturnBoolean {
+
+    }
     @Test
     void exists() {
     }
