@@ -22,15 +22,24 @@ public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private BigDecimal price;
+
+    @Column(nullable = false)
     private String description;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ProductCategory category;
+
+    @Column(nullable = false)
     private Integer quantity;
 
-    @Column(name = "available_to_discount")
+    @Column(name = "available_to_discount" , nullable = false)
     private Boolean availableToDiscount;
 
     public Money productPrice() {
