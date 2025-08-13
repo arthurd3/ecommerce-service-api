@@ -157,8 +157,17 @@ class ProductGatewayImplTest {
     @DisplayName("Exists Product return boolean")
     class existsProductReturnBoolean {
 
-    }
-    @Test
-    void exists() {
+        @Test
+        @DisplayName("Exists True")
+        void existsTrue() {
+            assertTrue(productGateway.exists(originalProduct.getId()));
+        }
+
+        @Test
+        @DisplayName("Exists False")
+        void existsFalse() {
+            assertFalse(productGateway.exists(UUID.randomUUID()));
+        }
+        
     }
 }
