@@ -116,7 +116,7 @@ class ProductControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(requestProduct)))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.id").value(responseProduct.id()))
+                    .andExpect(jsonPath("$.id").value(responseProduct.id().toString()))
                     .andExpect(jsonPath("$.name").value(responseProduct.name()))
                     .andExpect(jsonPath("$.formatedPrice").value(responseProduct.formatedPrice()))
                     .andExpect(jsonPath("$.description").value(responseProduct.description()))

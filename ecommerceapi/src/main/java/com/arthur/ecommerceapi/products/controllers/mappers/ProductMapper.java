@@ -18,7 +18,7 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 public interface ProductMapper {
 
     default Money map(BigDecimal value) {
-        return value != null ? new Money(value) : null;
+        return new Money(String.valueOf(value));
     }
 
     Product toDomain(ProductRequestDTO dto);

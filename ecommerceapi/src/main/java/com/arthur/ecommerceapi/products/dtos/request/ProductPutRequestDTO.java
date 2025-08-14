@@ -1,12 +1,13 @@
 package com.arthur.ecommerceapi.products.dtos.request;
 
-import com.arthur.ecommerceapi.products.domain.models.Money;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
+
+import java.math.BigDecimal;
 
 public record ProductPutRequestDTO(
         String name,
 
-        Money price,
+        BigDecimal price,
 
         String description,
 

@@ -69,7 +69,7 @@ public class ProductTestBuilder {
     }
 
     public ProductPutRequestDTO buildPutRequestDTO() {
-        return new ProductPutRequestDTO(name , new Money(price.getValue().toString()) , description , category , quantity , availableToDiscount);
+        return new ProductPutRequestDTO(name , price.getValue() , description , category , quantity , availableToDiscount);
     }
 
     public ProductRequestDTO buildRequestDTO() {
