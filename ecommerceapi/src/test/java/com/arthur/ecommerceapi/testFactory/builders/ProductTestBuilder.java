@@ -4,6 +4,8 @@ import com.arthur.ecommerceapi.products.domain.models.Money;
 import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
 import com.arthur.ecommerceapi.products.dtos.request.ProductPutRequestDTO;
+import com.arthur.ecommerceapi.products.dtos.request.ProductRequestDTO;
+import com.arthur.ecommerceapi.products.dtos.response.ProductResponseDTO;
 import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 
 import java.util.UUID;
@@ -68,5 +70,13 @@ public class ProductTestBuilder {
 
     public ProductPutRequestDTO buildPutRequestDTO() {
         return new ProductPutRequestDTO(name , new Money(price.getValue().toString()) , description , category , quantity , availableToDiscount);
+    }
+
+    public ProductRequestDTO buildRequestDTO() {
+        return new ProductRequestDTO(name , price.getValue(), description , category , quantity , availableToDiscount);
+    }
+
+    public ProductResponseDTO buildResponseDTO() {
+        return new ProductResponseDTO(id , name , price.getFormatedValue() , description , category , quantity);
     }
 }

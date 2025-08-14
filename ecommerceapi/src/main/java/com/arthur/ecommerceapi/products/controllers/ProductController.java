@@ -18,8 +18,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/api/v1/product")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/product")
 public class ProductController {
 
     private final ProductMapper mapper;
@@ -47,10 +47,10 @@ public class ProductController {
     }
 
     @ResponseStatus(OK)
-    @PutMapping("{id}")
-    public ProductResponseDTO update(@PathVariable final UUID id,
+    @PutMapping("{uuid}")
+    public ProductResponseDTO update(@PathVariable final UUID uuid,
                                      @RequestBody @Valid final ProductPutRequestDTO dto){
-        return mapper.toDTO(updateProduct.update(mapper.updateFromDTO(dto , id)));
+        return mapper.toDTO(updateProduct.update(mapper.updateFromDTO(dto , uuid)));
     }
 
 }
