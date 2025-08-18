@@ -6,6 +6,7 @@ import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
 import com.arthur.ecommerceapi.products.dtos.request.ProductRequestDTO;
 import com.arthur.ecommerceapi.products.dtos.response.ProductResponseDTO;
+import com.arthur.ecommerceapi.products.exceptions.ProductNotFoundException;
 import com.arthur.ecommerceapi.products.usecases.CreateProduct;
 import com.arthur.ecommerceapi.products.usecases.DeleteProduct;
 import com.arthur.ecommerceapi.products.usecases.FindProduct;
@@ -128,7 +129,6 @@ class ProductControllerTest {
             verify(mapper).toDTO(returnProduct);
         }
 
-
         @Test
         @DisplayName("Should create product with Error and return 400 Invalid request")
         void shouldCreateProductWithError400() throws Exception {
@@ -147,8 +147,39 @@ class ProductControllerTest {
 
     }
 
-    @Test
-    void delete() {
+
+    @Nested
+    @DisplayName("DELETE , /api/v1/product/{uuid} , Delete Product ")
+    class deleteProductWithSuccess {
+
+        @Test
+        @DisplayName("Should Delete Product with success")
+        void shouldDeleteProductWithSuccess() throws Exception {
+            final UUID idToDelete = UUID.randomUUID();
+
+            doNothing().when(deleteProduct).delete(idToDelete);
+
+            mockMvc.perform(delete("/api/v1/product/{uuid}" , idToDelete))
+                    .andExpect(status().isOk());
+
+            verify(deleteProduct , times(1)).delete(idToDelete);
+
+        }
+        
+        @Test
+        @DisplayName("Should Delete Product with 400 Error")
+        void shouldDeleteProductWith400Error() throws Exception {
+            final UUID invalidId = UUID.randomUUID();
+
+            doThrow(new ProductNotFoundException("Product with :" + invalidId + " not exists!!"))
+                    .when(deleteProduct).delete(invalidId);
+
+            mockMvc.perform(delete("/api/v1/product/{uuid}" , invalidId))
+                    .andExpect(status().isNotFound());
+
+            verify(deleteProduct).delete(invalidId);
+
+        }
     }
 
     @Test

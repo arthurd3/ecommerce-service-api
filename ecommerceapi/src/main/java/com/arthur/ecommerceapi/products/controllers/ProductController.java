@@ -34,8 +34,8 @@ public class ProductController {
         return mapper.toDTO(createProduct.create(mapper.toDomain(dto)));
     }
 
-    @ResponseStatus(NOT_FOUND)
-    @PostMapping("/{uuid}")
+    @ResponseStatus(OK)
+    @DeleteMapping("/{uuid}")
     public void delete(@PathVariable final UUID uuid){
          deleteProduct.delete(uuid);
     }
