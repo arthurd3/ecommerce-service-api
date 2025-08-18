@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
@@ -35,13 +34,13 @@ public class ProductController {
     }
 
     @ResponseStatus(OK)
-    @DeleteMapping("/{uuid}")
+    @DeleteMapping("{uuid}")
     public void delete(@PathVariable final UUID uuid){
          deleteProduct.delete(uuid);
     }
 
     @ResponseStatus(OK)
-    @GetMapping("/{uuid}")
+    @GetMapping("{uuid}")
     public ProductResponseDTO findById(@PathVariable final UUID uuid){
         return mapper.toDTO(findProduct.findById(uuid));
     }

@@ -4,6 +4,7 @@ import com.arthur.ecommerceapi.products.controllers.mappers.ProductMapper;
 import com.arthur.ecommerceapi.products.domain.models.Money;
 import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.domain.models.enums.ProductCategory;
+import com.arthur.ecommerceapi.products.dtos.request.ProductPutRequestDTO;
 import com.arthur.ecommerceapi.products.dtos.request.ProductRequestDTO;
 import com.arthur.ecommerceapi.products.dtos.response.ProductResponseDTO;
 import com.arthur.ecommerceapi.products.exceptions.ProductNotFoundException;
@@ -23,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
@@ -184,7 +186,7 @@ class ProductControllerTest {
     class findByIdProductWithSuccess {
 
         @Test
-        @DisplayName("")
+        @DisplayName("Should find product by id with success")
         void shouldFindByIdProductWithSuccess() throws Exception {
             final UUID idToFind = savedReturnProduct.getId();
 
@@ -202,14 +204,127 @@ class ProductControllerTest {
 
             verify(mapper).toDTO(savedReturnProduct);
             verify(findProduct, times(1)).findById(idToFind);
+        }
 
+        @Test
+        @DisplayName("Should find product by id with Error 404")
+        void shouldFindByIdProductWithError404() throws Exception {
+            final UUID invalidId = UUID.randomUUID();
+
+            when(findProduct.findById(invalidId))
+                    .thenThrow(new ProductNotFoundException("Product with :" + invalidId + " not exists!!"));
+
+            mockMvc.perform(get("/api/v1/product/{uuid}" , invalidId)
+                            .contentType(MediaType.APPLICATION_JSON))
+                            .andExpect(status().isNotFound());
+
+            verify(findProduct, times(1)).findById(invalidId);
         }
     }
-    @Test
-    void findById() {
-    }
 
-    @Test
-    void update() {
+    @Nested
+    @DisplayName("PUT , /api/v1/product/{uuid} , Edit Product ")
+    class editProductWithSuccess {
+
+        @Test
+        @DisplayName("Should update product with success")
+        void shouldUpdateProductWithSuccess() throws Exception {
+            final UUID idToEdit = savedReturnProduct.getId();
+
+            var editRequest = ProductTestBuilder.aProduct()
+                    .withName("Celulari")
+                    .withCategory(ProductCategory.ELECTRONICS)
+                    .withDescription("Eletronico Domestico")
+                    .withAvailableToDiscount(true)
+                    .withQuantity(100)
+                    .withPrice(new Money("100"))
+                    .buildPutRequestDTO();
+
+            var editProductDomain = ProductTestBuilder.aProduct()
+                    .withId(idToEdit)
+                    .withName(editRequest.name())
+                    .withCategory(editRequest.category())
+                    .withDescription(editRequest.description())
+                    .withAvailableToDiscount(editRequest.availableToDiscount())
+                    .withQuantity(editRequest.quantity())
+                    .withPrice(new Money(String.valueOf(editRequest.price())))
+                    .buildDomain();
+
+            var savedEditReturnProduct = ProductTestBuilder.aProduct()
+                    .withId(idToEdit)
+                    .withName(editProductDomain.getName())
+                    .withCategory(editProductDomain.getCategory())
+                    .withDescription(editProductDomain.getDescription())
+                    .withAvailableToDiscount(editProductDomain.getAvailableToDiscount())
+                    .withQuantity(editProductDomain.getQuantity())
+                    .withPrice(editProductDomain.getPrice())
+                    .buildDomain();
+
+            var responseEditProduct = ProductTestBuilder.aProduct()
+                    .withId(idToEdit)
+                    .withName(savedEditReturnProduct.getName())
+                    .withCategory(savedEditReturnProduct.getCategory())
+                    .withDescription(savedEditReturnProduct.getDescription())
+                    .withAvailableToDiscount(savedEditReturnProduct.getAvailableToDiscount())
+                    .withQuantity(savedEditReturnProduct.getQuantity())
+                    .withPrice(savedEditReturnProduct.getPrice())
+                    .buildResponseDTO();
+
+            when(mapper.updateFromDTO(editRequest , idToEdit)).thenReturn(editProductDomain);
+            when(updateProduct.update(editProductDomain)).thenReturn(savedEditReturnProduct);
+            when(mapper.toDTO(savedEditReturnProduct)).thenReturn(responseEditProduct);
+
+            mockMvc.perform(put("/api/v1/product/{uuid}" , idToEdit)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(editRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(idToEdit.toString()))
+                .andExpect(jsonPath("$.name").value(editProductDomain.getName()))
+                .andExpect(jsonPath("$.category").value(editProductDomain.getCategory().toString()))
+                .andExpect(jsonPath("$.description").value(editProductDomain.getDescription()))
+                .andExpect(jsonPath("$.availableToDiscount").value(editProductDomain.getAvailableToDiscount().toString()))
+                .andExpect(jsonPath("$.quantity").value(editProductDomain.getQuantity().toString()))
+                .andExpect(jsonPath("$.price").value(editProductDomain.getPrice().toString()));
+
+
+            verify(updateProduct, times(1)).update(editProductDomain);
+        }
+
+        @Test
+        @DisplayName("Should non Exist product with error 404")
+        void shouldUpdateNonExistsProduct() throws Exception {
+            final UUID invalidId = UUID.randomUUID();
+
+            var editRequest = ProductTestBuilder.aProduct()
+                    .withName("Celulari")
+                    .withCategory(ProductCategory.ELECTRONICS)
+                    .withDescription("Eletronico Domestico")
+                    .withAvailableToDiscount(true)
+                    .withQuantity(100)
+                    .withPrice(new Money("100"))
+                    .buildPutRequestDTO();
+
+            var editProductDomain = ProductTestBuilder.aProduct()
+                    .withId(invalidId)
+                    .withName(editRequest.name())
+                    .withCategory(editRequest.category())
+                    .withDescription(editRequest.description())
+                    .withAvailableToDiscount(editRequest.availableToDiscount())
+                    .withQuantity(editRequest.quantity())
+                    .withPrice(new Money(editRequest.price().toString()))
+                    .buildDomain();
+
+            when(mapper.updateFromDTO(editRequest , invalidId)).thenReturn(editProductDomain);
+
+            when(updateProduct.update(editProductDomain))
+                    .thenThrow(new ProductNotFoundException("Product with :" + invalidId + " not exists!!"));
+
+            mockMvc.perform(put("/api/v1/product/{uuid}" , invalidId)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(editRequest)))
+                    .andExpect(status().isNotFound());
+
+            verify(updateProduct, times(1)).update(editProductDomain);
+        }
     }
 }

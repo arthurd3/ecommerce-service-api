@@ -15,7 +15,6 @@ public class ProductTestBuilder {
 
     private UUID id;
     private String name;
-    private BigDecimal bigDecimalPrice;
     private Money price;
     private String description;
     private ProductCategory category;
@@ -51,6 +50,11 @@ public class ProductTestBuilder {
         return this;
     }
 
+    public ProductTestBuilder withDecimalPrice(BigDecimal bigDecimalPrice) {
+        this.price = new Money(bigDecimalPrice.toString());
+        return this;
+    }
+
     public ProductTestBuilder withQuantity(Integer quantity) {
         this.quantity = quantity;
         return this;
@@ -63,22 +67,22 @@ public class ProductTestBuilder {
 
 
     public ProductEntity buildEntity() {
-        return new ProductEntity(id , name , price.getValue() , description , category , quantity , availableToDiscount);
+        return new ProductEntity(id, name, price.getValue(), description, category, quantity, availableToDiscount);
     }
 
     public Product buildDomain() {
-        return new Product(id , name , new Money(price.getValue().toString()) , description , category , quantity , availableToDiscount);
+        return new Product(id, name, price, description, category, quantity, availableToDiscount);
     }
 
     public ProductPutRequestDTO buildPutRequestDTO() {
-        return new ProductPutRequestDTO(name , price.getValue() , description , category , quantity , availableToDiscount);
+        return new ProductPutRequestDTO(name, price.getValue(), description, category, quantity, availableToDiscount);
     }
 
     public ProductRequestDTO buildRequestDTO() {
-        return new ProductRequestDTO(name , price.getValue(), description , category , quantity , availableToDiscount);
+        return new ProductRequestDTO(name, price.getValue(), description, category, quantity, availableToDiscount);
     }
 
     public ProductResponseDTO buildResponseDTO() {
-        return new ProductResponseDTO(id , name , price.getFormatedValue() , description , category , quantity);
+        return new ProductResponseDTO(id, name, price.getFormatedValue(), description, category, quantity);
     }
 }
