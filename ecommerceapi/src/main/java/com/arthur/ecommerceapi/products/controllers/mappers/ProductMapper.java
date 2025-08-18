@@ -1,6 +1,5 @@
 package com.arthur.ecommerceapi.products.controllers.mappers;
 
-import com.arthur.ecommerceapi.products.domain.models.Money;
 import com.arthur.ecommerceapi.products.domain.models.Product;
 import com.arthur.ecommerceapi.products.dtos.request.ProductPutRequestDTO;
 import com.arthur.ecommerceapi.products.dtos.request.ProductRequestDTO;
@@ -8,18 +7,15 @@ import com.arthur.ecommerceapi.products.dtos.response.ProductResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 import static org.mapstruct.ReportingPolicy.IGNORE;
 
-@Mapper(componentModel = SPRING , unmappedTargetPolicy = IGNORE)
+@Mapper(componentModel = SPRING ,
+        unmappedTargetPolicy = IGNORE ,
+        uses = { MoneyMapper.class })
 public interface ProductMapper {
-
-    default Money map(BigDecimal value) {
-        return new Money(String.valueOf(value));
-    }
 
     Product toDomain(ProductRequestDTO dto);
 
@@ -28,4 +24,5 @@ public interface ProductMapper {
 
     @Mapping(target = "id" , source = "productId")
     Product updateFromDTO(ProductPutRequestDTO dto , UUID productId);
+    
 }
