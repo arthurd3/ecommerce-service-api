@@ -8,12 +8,14 @@ import com.arthur.ecommerceapi.products.dtos.request.ProductRequestDTO;
 import com.arthur.ecommerceapi.products.dtos.response.ProductResponseDTO;
 import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class ProductTestBuilder {
 
     private UUID id;
     private String name;
+    private BigDecimal bigDecimalPrice;
     private Money price;
     private String description;
     private ProductCategory category;

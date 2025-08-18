@@ -128,6 +128,23 @@ class ProductControllerTest {
             verify(mapper).toDTO(returnProduct);
         }
 
+
+        @Test
+        @DisplayName("Should create product with Error and return 400 Invalid request")
+        void shouldCreateProductWithError400() throws Exception {
+
+            var invalidRequest = new ProductRequestDTO(null , null , null , null , null , null);
+
+            mockMvc.perform(post("/api/v1/product")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(invalidRequest)))
+                    .andExpect(status().isBadRequest());
+
+            verify(mapper , never()).toDomain(any(ProductRequestDTO.class));
+
+            verify(createProduct, never()).create(any(Product.class));
+        }
+
     }
 
     @Test
