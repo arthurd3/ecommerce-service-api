@@ -106,7 +106,9 @@ class OrderControllerTest {
                     product.getPrice().getFormatedValue() ,
                     product.getDescription() ,
                     product.getCategory() ,
-                    product.getQuantity());
+                    product.getQuantity(),
+                    product.getAvailableToDiscount()
+            );
 
             responseDto = new OrderResponseDTO(createdOrder.getOrderId() ,
                     customerOderResponseDTO ,
@@ -181,7 +183,7 @@ class OrderControllerTest {
                     new CustomerOderResponseDTO(null , null , null , null) ,
                     new AddressOrderResponseDTO(null , null , null ,  null , null , null) ,
                     orderFounded.getSpecification() ,
-                    new ProductResponseDTO(null , null, null , null , null, null));
+                    new ProductResponseDTO(null , null, null , null , null, null , false));
 
 
             when(findOrder.findById(orderFounded.getOrderId())).thenReturn(orderFounded);

@@ -83,6 +83,6 @@ public class ProductTestBuilder {
     }
 
     public ProductResponseDTO buildResponseDTO() {
-        return new ProductResponseDTO(id, name, price.getFormatedValue(), description, category, quantity);
+        return new ProductResponseDTO(id, name, price.getFormatedValue(), description, category, quantity , availableToDiscount);
     }
 }

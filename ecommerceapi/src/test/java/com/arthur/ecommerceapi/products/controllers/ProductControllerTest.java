@@ -268,6 +268,7 @@ class ProductControllerTest {
                     .withAvailableToDiscount(savedEditReturnProduct.getAvailableToDiscount())
                     .withQuantity(savedEditReturnProduct.getQuantity())
                     .withPrice(savedEditReturnProduct.getPrice())
+                    .withAvailableToDiscount(savedEditReturnProduct.getAvailableToDiscount())
                     .buildResponseDTO();
 
             when(mapper.updateFromDTO(editRequest , idToEdit)).thenReturn(editProductDomain);
@@ -284,7 +285,7 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.description").value(editProductDomain.getDescription()))
                 .andExpect(jsonPath("$.availableToDiscount").value(editProductDomain.getAvailableToDiscount().toString()))
                 .andExpect(jsonPath("$.quantity").value(editProductDomain.getQuantity().toString()))
-                .andExpect(jsonPath("$.price").value(editProductDomain.getPrice().toString()));
+                .andExpect(jsonPath("$.formatedPrice").value(editProductDomain.getPrice().getFormatedValue()));
 
 
             verify(updateProduct, times(1)).update(editProductDomain);

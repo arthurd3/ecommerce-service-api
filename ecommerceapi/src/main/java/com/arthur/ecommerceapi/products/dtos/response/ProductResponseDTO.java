@@ -15,5 +15,7 @@ public record ProductResponseDTO (
 
         ProductCategory category,
 
-        Integer quantity
+        Integer quantity,
+
+        boolean availableToDiscount
 ) {}
