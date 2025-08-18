@@ -55,7 +55,7 @@ class ProductControllerTest {
 
     private Product productDomain;
     private ProductRequestDTO requestProduct;
-    private Product returnProduct;
+    private Product savedReturnProduct;
     private ProductResponseDTO responseProduct;
 
     @BeforeEach
@@ -79,7 +79,7 @@ class ProductControllerTest {
                 .withPrice(new Money("100"))
             .buildDomain();
 
-        returnProduct = ProductTestBuilder.aProduct()
+        savedReturnProduct = ProductTestBuilder.aProduct()
                 .withId(UUID.randomUUID())
                 .withName("Product name")
                 .withCategory(ProductCategory.ELECTRONICS)
@@ -90,13 +90,13 @@ class ProductControllerTest {
             .buildDomain();
 
         responseProduct = ProductTestBuilder.aProduct()
-                .withId(returnProduct.getId())
-                .withName(returnProduct.getName())
-                .withCategory(returnProduct.getCategory())
-                .withDescription(returnProduct.getDescription())
-                .withAvailableToDiscount(returnProduct.getAvailableToDiscount())
-                .withQuantity(returnProduct.getQuantity())
-                .withPrice(returnProduct.getPrice())
+                .withId(savedReturnProduct.getId())
+                .withName(savedReturnProduct.getName())
+                .withCategory(savedReturnProduct.getCategory())
+                .withDescription(savedReturnProduct.getDescription())
+                .withAvailableToDiscount(savedReturnProduct.getAvailableToDiscount())
+                .withQuantity(savedReturnProduct.getQuantity())
+                .withPrice(savedReturnProduct.getPrice())
             .buildResponseDTO();
 
     }
@@ -110,8 +110,8 @@ class ProductControllerTest {
         void shouldCreateProductWithSuccess() throws Exception {
 
             when(mapper.toDomain(requestProduct)).thenReturn(productDomain);
-            when(createProduct.create(productDomain)).thenReturn(returnProduct);
-            when(mapper.toDTO(returnProduct)).thenReturn(responseProduct);
+            when(createProduct.create(productDomain)).thenReturn(savedReturnProduct);
+            when(mapper.toDTO(savedReturnProduct)).thenReturn(responseProduct);
 
             mockMvc.perform(post("/api/v1/product")
                             .contentType(MediaType.APPLICATION_JSON)
@@ -126,7 +126,7 @@ class ProductControllerTest {
 
             verify(mapper).toDomain(requestProduct);
             verify(createProduct).create(productDomain);
-            verify(mapper).toDTO(returnProduct);
+            verify(mapper).toDTO(savedReturnProduct);
         }
 
         @Test
@@ -147,7 +147,6 @@ class ProductControllerTest {
 
     }
 
-
     @Nested
     @DisplayName("DELETE , /api/v1/product/{uuid} , Delete Product ")
     class deleteProductWithSuccess {
@@ -163,9 +162,8 @@ class ProductControllerTest {
                     .andExpect(status().isOk());
 
             verify(deleteProduct , times(1)).delete(idToDelete);
-
         }
-        
+
         @Test
         @DisplayName("Should Delete Product with 400 Error")
         void shouldDeleteProductWith400Error() throws Exception {
@@ -178,10 +176,35 @@ class ProductControllerTest {
                     .andExpect(status().isNotFound());
 
             verify(deleteProduct).delete(invalidId);
-
         }
     }
 
+    @Nested
+    @DisplayName("GET , /api/v1/product/{uuid} , Find by UUID Product ")
+    class findByIdProductWithSuccess {
+
+        @Test
+        @DisplayName("")
+        void shouldFindByIdProductWithSuccess() throws Exception {
+            final UUID idToFind = savedReturnProduct.getId();
+
+            when(findProduct.findById(idToFind)).thenReturn(savedReturnProduct);
+            when(mapper.toDTO(savedReturnProduct)).thenReturn(responseProduct);
+
+            mockMvc.perform(get("/api/v1/product/{uuid}" , idToFind)
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.id").value(responseProduct.id().toString()))
+                    .andExpect(jsonPath("$.name").value(responseProduct.name()))
+                    .andExpect(jsonPath("$.formatedPrice").value(responseProduct.formatedPrice()))
+                    .andExpect(jsonPath("$.description").value(responseProduct.description()))
+                    .andExpect(jsonPath("$.quantity").value(responseProduct.quantity()));
+
+            verify(mapper).toDTO(savedReturnProduct);
+            verify(findProduct, times(1)).findById(idToFind);
+
+        }
+    }
     @Test
     void findById() {
     }
