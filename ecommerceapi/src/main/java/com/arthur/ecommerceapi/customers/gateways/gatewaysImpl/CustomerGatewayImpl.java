@@ -50,12 +50,12 @@ public class CustomerGatewayImpl implements CustomerGateway {
     }
 
     @Override
-    public Boolean existsById(Long id) {
+    public Boolean existsById(final Long id) {
         return repository.existsById(id);
     }
 
     @Override
-    public Customer update(Customer updatedCustomer) {
+    public Customer update(final Customer updatedCustomer) {
         CustomerEntity customerEntity = this.findEntityById(updatedCustomer.getId());
 
         mapper.editCustomerEntityFromDomain(updatedCustomer , customerEntity);
@@ -64,7 +64,7 @@ public class CustomerGatewayImpl implements CustomerGateway {
     }
 
     @Override
-    public CustomerEntity findEntityById(Long customerId) {
+    public CustomerEntity findEntityById(final Long customerId) {
         return repository.findById(customerId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + customerId));
     }

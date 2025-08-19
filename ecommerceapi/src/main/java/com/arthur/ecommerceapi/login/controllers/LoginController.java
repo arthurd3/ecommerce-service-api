@@ -1,8 +1,12 @@
 package com.arthur.ecommerceapi.login.controllers;
 
+import com.arthur.ecommerceapi.customers.usecases.FindCustomer;
+import com.arthur.ecommerceapi.customers.usecases.ValidatorCustomer;
 import com.arthur.ecommerceapi.login.dtos.request.LoginRequestDTO;
 import com.arthur.ecommerceapi.login.dtos.request.RegisterRequestDTO;
+import com.arthur.ecommerceapi.login.dtos.response.LoginResponse;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -10,12 +14,15 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class LoginController {
+
+    private final ValidatorCustomer validatorCustomer;
 
     @ResponseStatus(OK)
     @PostMapping("/login")
-    public void login(@Valid @RequestBody LoginRequestDTO dto) {
-
+    public LoginResponse login(@Valid @RequestBody LoginRequestDTO dto) {
+        validatorCustomer.validateLogin(dto);
     }
 
     @ResponseStatus(CREATED)
