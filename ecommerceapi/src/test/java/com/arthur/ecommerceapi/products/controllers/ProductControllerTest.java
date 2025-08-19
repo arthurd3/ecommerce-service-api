@@ -287,7 +287,6 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.quantity").value(editProductDomain.getQuantity().toString()))
                 .andExpect(jsonPath("$.formatedPrice").value(editProductDomain.getPrice().getFormatedValue()));
 
-
             verify(updateProduct, times(1)).update(editProductDomain);
         }
 

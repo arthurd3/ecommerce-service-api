@@ -1,4 +1,4 @@
-package com.arthur.ecommerceapi.customers.dtos.request;
+package com.arthur.ecommerceapi.login.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 
