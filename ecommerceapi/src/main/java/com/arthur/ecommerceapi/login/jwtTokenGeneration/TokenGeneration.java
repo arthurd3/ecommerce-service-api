@@ -1,9 +1,9 @@
 package com.arthur.ecommerceapi.login.jwtTokenGeneration;
 
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
+import com.arthur.ecommerceapi.customers.domain.model.Role;
 import com.arthur.ecommerceapi.customers.usecases.FindCustomer;
 import com.arthur.ecommerceapi.login.dtos.request.LoginRequestDTO;
-import org.apache.catalina.Role;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -24,19 +24,20 @@ public class TokenGeneration {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String generateToken(final String customerEmail) {
+    public String generateToken(final LoginRequestDTO login) {
 
+        var customer = this.findCustomerByEmail(login.email());
 
         var now = Instant.now();
 
-        var scopes = dto.get().getRoles()
+        var scopes = customer.getRoles()
                 .stream()
                 .map(Role::getName)
                 .collect(Collectors.joining(" "));
 
         var claims = JwtClaimsSet.builder()
-                .issuer("mybackend")
-                .subject(dto.get().getUserId().toString())
+                .issuer("ecommerce-api-realidade4")
+                .subject(customer.getId().toString())
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiresIn))
                 .claim("scope", scopes)
@@ -45,8 +46,8 @@ public class TokenGeneration {
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-    public Customer findCustomerByEmail(String email) {
-        findCustomer.
+    public Customer findCustomerByEmail(final String email) {
+        return findCustomer.findByEmail(email);
     }
 
     public Long getExpiresIn() {

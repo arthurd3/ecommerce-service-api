@@ -74,5 +74,5 @@ public class CustomerGatewayImpl implements CustomerGateway {
     public Boolean existsById(final Long id) {
         return repository.existsById(id);
     }
-    
+
 }
