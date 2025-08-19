@@ -22,4 +22,5 @@ public class CustomMetadata {
         this.role = List.of("ROLE_ADMIN", "ROLE_MERCHANT_PREMIUM" , "ROLE_MERCHANT" , "ROLE_CUSTOMER");
         this.permission = List.of("EDIT", "DELETE", "CREATE" , "BUY" , "SALE" , "CREATE_PRODUCT");
     }
+
 }

@@ -1,7 +1,6 @@
 package com.arthur.ecommerceapi.shared.config;
 
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
-import com.arthur.ecommerceapi.customers.gateways.entities.CustomMetadata;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
@@ -10,8 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -41,8 +38,7 @@ public class AdminConfig implements CommandLineRunner {
         adminCustomer.setPassword(passwordEncoder.encode(adminPassword));
         adminCustomer.setPhone("999-999-999");
         adminCustomer.setAddress(new AddressEntity());
-        adminCustomer.setCustomMetadata(new CustomMetadata(List.of("ROLE_USER" , "ROLE_ADMIN") , List.of("EDIT")));
+        adminCustomer.se
         customerRepository.saveAndFlush(adminCustomer);
-
     }
 }

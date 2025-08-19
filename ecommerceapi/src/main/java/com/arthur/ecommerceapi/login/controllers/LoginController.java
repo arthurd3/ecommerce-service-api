@@ -1,7 +1,5 @@
 package com.arthur.ecommerceapi.login.controllers;
 
-import com.arthur.ecommerceapi.customers.usecases.CreateCustomer;
-import com.arthur.ecommerceapi.customers.usecases.FindCustomer;
 import com.arthur.ecommerceapi.customers.usecases.ValidatorCustomer;
 import com.arthur.ecommerceapi.login.dtos.request.LoginRequestDTO;
 import com.arthur.ecommerceapi.login.dtos.request.RegisterRequestDTO;
