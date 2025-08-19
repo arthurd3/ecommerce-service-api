@@ -15,4 +15,7 @@ public class FindCustomer {
         return customerGateway.findById(id);
     }
 
+    public Customer findByEmail(String email){
+        return customerGateway.findByEmail(email);
+    }
 }

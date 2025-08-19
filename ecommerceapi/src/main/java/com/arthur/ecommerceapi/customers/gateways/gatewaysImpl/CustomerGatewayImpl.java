@@ -19,8 +19,45 @@ public class CustomerGatewayImpl implements CustomerGateway {
     private final GatewayMapper mapper;
 
     @Override
+    public Customer findById(final Long id) {
+        return mapper.customerToDomain(repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id)));
+    }
+
+    @Override
+    public CustomerEntity findEntityById(final Long customerId) {
+        return repository.findById(customerId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + customerId));
+    }
+
+    @Override
+    public Customer findByEmail(String email) {
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+    }
+
+    @Override
+    public Page<Customer> findAll(final Pageable pageable) {
+        return repository.findAll(pageable).map(mapper::customerToDomain);
+    }
+
+    @Override
     public Customer save(final Customer customer) {
         return mapper.customerToDomain(repository.save(mapper.customerToEntity(customer)));
+    }
+
+    @Override
+    public void delete(final Long id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Customer update(final Customer updatedCustomer) {
+        CustomerEntity customerEntity = this.findEntityById(updatedCustomer.getId());
+
+        mapper.editCustomerEntityFromDomain(updatedCustomer , customerEntity);
+
+        return mapper.customerToDomain(repository.save(customerEntity));
     }
 
     @Override
@@ -34,38 +71,8 @@ public class CustomerGatewayImpl implements CustomerGateway {
     }
 
     @Override
-    public Page<Customer> findAll(final Pageable pageable) {
-        return repository.findAll(pageable).map(mapper::customerToDomain);
-    }
-
-    @Override
-    public Customer findById(final Long id) {
-        return mapper.customerToDomain(repository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id)));
-    }
-
-    @Override
-    public void delete(final Long id) {
-        repository.deleteById(id);
-    }
-
-    @Override
     public Boolean existsById(final Long id) {
         return repository.existsById(id);
     }
-
-    @Override
-    public Customer update(final Customer updatedCustomer) {
-        CustomerEntity customerEntity = this.findEntityById(updatedCustomer.getId());
-
-        mapper.editCustomerEntityFromDomain(updatedCustomer , customerEntity);
-
-        return mapper.customerToDomain(repository.save(customerEntity));
-    }
-
-    @Override
-    public CustomerEntity findEntityById(final Long customerId) {
-        return repository.findById(customerId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + customerId));
-    }
+    
 }

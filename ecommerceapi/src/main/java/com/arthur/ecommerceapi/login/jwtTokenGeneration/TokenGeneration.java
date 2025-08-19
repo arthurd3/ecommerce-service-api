@@ -1,5 +1,7 @@
 package com.arthur.ecommerceapi.login.jwtTokenGeneration;
 
+import com.arthur.ecommerceapi.customers.domain.model.Customer;
+import com.arthur.ecommerceapi.customers.usecases.FindCustomer;
 import com.arthur.ecommerceapi.login.dtos.request.LoginRequestDTO;
 import org.apache.catalina.Role;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -13,14 +15,17 @@ import java.util.stream.Collectors;
 @Component
 public class TokenGeneration {
 
+    private final FindCustomer findCustomer;
     private final JwtEncoder jwtEncoder;
     private final Long expiresIn = 300L;
 
-    public TokenGeneration(JwtEncoder jwtEncoder) {
+    public TokenGeneration(FindCustomer findCustomer, JwtEncoder jwtEncoder) {
+        this.findCustomer = findCustomer;
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String generateToken(final LoginRequestDTO dto ) {
+    public String generateToken(final String customerEmail) {
+
 
         var now = Instant.now();
 
@@ -40,9 +45,12 @@ public class TokenGeneration {
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
+    public Customer findCustomerByEmail(String email) {
+        findCustomer.
+    }
+
     public Long getExpiresIn() {
         return this.expiresIn;
     }
-
 
 }

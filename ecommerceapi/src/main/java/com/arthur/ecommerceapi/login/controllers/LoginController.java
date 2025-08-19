@@ -26,7 +26,7 @@ public class LoginController {
     @PostMapping("/login")
     public LoginResponse login(@Valid @RequestBody LoginRequestDTO loginDTO) {
         validatorCustomer.validateLogin(loginDTO);
-        var jwtToken = tokenGenerator.generateToken(loginDTO);
+        var jwtToken = tokenGenerator.generateToken();
         return new LoginResponse(jwtToken , tokenGenerator.getExpiresIn());
     }
 

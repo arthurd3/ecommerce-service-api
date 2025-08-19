@@ -10,9 +10,12 @@ import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
 
-    Boolean existsByEmailIgnoreCase(String email);
+    Boolean existsByEmailIgnoreCase(final String email);
 
-    Boolean existsByPhone(String phone);
+    Boolean existsByPhone(final String phone);
 
-    Page<CustomerEntity> findAll(Pageable pageable);
+    Page<CustomerEntity> findAll(final Pageable pageable);
+
+    Optional<Customer> findByEmail(final String email);
+
 }

@@ -8,19 +8,21 @@ import org.springframework.data.domain.Pageable;
 public interface CustomerGateway {
     Customer save(final Customer customer);
 
-    Boolean existsByEmail(final String email);
-
-    Boolean existsByPhone(final String phone);
-
     Page<Customer> findAll(final Pageable pageable);
 
     Customer findById(final Long id);
 
-    void delete(final Long id);
+    CustomerEntity findEntityById(final Long id);
+
+    Customer findByEmail(final String email);
+
+    Boolean existsByEmail(final String email);
+
+    Boolean existsByPhone(final String phone);
 
     Boolean existsById(final Long id);
 
     Customer update(final Customer updatedCustomer);
 
-    CustomerEntity findEntityById(final Long id);
+    void delete(final Long id);
 }
