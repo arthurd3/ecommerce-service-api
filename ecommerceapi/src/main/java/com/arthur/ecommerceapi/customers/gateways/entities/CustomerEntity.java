@@ -2,6 +2,9 @@ package com.arthur.ecommerceapi.customers.gateways.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 
 @Entity
 @AllArgsConstructor
@@ -28,4 +31,8 @@ public class CustomerEntity {
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private AddressEntity address;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    private CustomMetadata customMetadata;
+
 }

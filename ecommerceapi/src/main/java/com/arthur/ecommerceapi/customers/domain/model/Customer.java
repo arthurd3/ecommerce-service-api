@@ -8,13 +8,13 @@ import java.util.Set;
 @Getter
 @Setter
 public class Customer {
+
     private Long id;
     private String name;
     private String email;
     private String password;
     private String phone;
     private Address address;
-    private Set<Role> roles;
 
     public void defineAddress(Address address) {
         if(address == null)
@@ -24,14 +24,6 @@ public class Customer {
         if (address.getCustomer() != this) {
             address.defineCustomer(this);
         }
-    }
-
-    public void defineRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
     }
 
 }

@@ -11,6 +11,7 @@ import com.arthur.ecommerceapi.products.gateways.entities.ProductEntity;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+
 public class ProductTestBuilder {
 
     private UUID id;
