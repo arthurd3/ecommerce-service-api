@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+#Publics and private keys
+app.pub
+app.key
