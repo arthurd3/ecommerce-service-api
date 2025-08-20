@@ -6,4 +6,5 @@ CREATE TABLE role(
 INSERT IGNORE INTO role (role_id, name) VALUES (1, 'ADMIN');
 INSERT IGNORE INTO role (role_id, name) VALUES (2, 'MERCHANT_PREMIUM');
 INSERT IGNORE INTO role (role_id, name) VALUES (3, 'MERCHANTS');
-INSERT IGNORE INTO role (role_id, name) VALUES (4, 'CUSTOMER');
+INSERT IGNORE INTO role (role_id, name) VALUES (4, 'CUSTOMER_PREMIUM');
+INSERT IGNORE INTO role (role_id, name) VALUES (5, 'CUSTOMER');

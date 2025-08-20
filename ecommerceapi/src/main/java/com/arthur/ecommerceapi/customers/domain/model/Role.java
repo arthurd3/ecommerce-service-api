@@ -1,43 +1,34 @@
 package com.arthur.ecommerceapi.customers.domain.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.security.Permission;
 import java.util.Set;
 
+@Getter
+@Setter
 public class Role {
 
     private Long roleId;
     private String name;
     private Set<Permission> permission;
 
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public enum Values {
+    @Getter
+    public enum RoleValues {
 
         ADMIN(1L),
-        BASIC(2L);
+        MERCHANT_PREMIUM(2L),
+        MERCHANT(3L),
+        CUSTOMER_PREMIUM(4L),
+        CUSTOMER(5L);
 
-        long roleId;
+        final long roleId;
+        final String name = "";
 
-        Values(long roleId) {
+        RoleValues(long roleId) {
             this.roleId = roleId;
         }
 
-        public long getRoleId() {
-            return roleId;
-        }
     }
 }
