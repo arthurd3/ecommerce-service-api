@@ -32,7 +32,4 @@ public class CustomerEntity {
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private AddressEntity address;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    private CustomMetadata customMetadata;
-
 }

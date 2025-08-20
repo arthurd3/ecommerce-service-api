@@ -23,10 +23,10 @@ public class Role {
         CUSTOMER_PREMIUM(4L),
         CUSTOMER(5L);
 
-        final long roleId;
+        final Long roleId;
         final String name = "";
 
-        RoleValues(long roleId) {
+        RoleValues(Long roleId) {
             this.roleId = roleId;
         }
 

@@ -26,24 +26,25 @@ public class TokenGeneration {
 
     public String generateToken(final LoginRequestDTO login) {
 
-        var customer = this.findCustomerByEmail(login.email());
+//        var customer = this.findCustomerByEmail(login.email());
+//
+//        var now = Instant.now();
+//
+//        var scopes = customer.getRoles()
+//                .stream()
+//                .map(Role::getName)
+//                .collect(Collectors.joining(" "));
+//
+//        var claims = JwtClaimsSet.builder()
+//                .issuer("ecommerce-api-realidade4")
+//                .subject(customer.getId().toString())
+//                .issuedAt(now)
+//                .expiresAt(now.plusSeconds(expiresIn))
+//                .claim("scope", scopes)
+//                .build();
 
-        var now = Instant.now();
-
-        var scopes = customer.getRoles()
-                .stream()
-                .map(Role::getName)
-                .collect(Collectors.joining(" "));
-
-        var claims = JwtClaimsSet.builder()
-                .issuer("ecommerce-api-realidade4")
-                .subject(customer.getId().toString())
-                .issuedAt(now)
-                .expiresAt(now.plusSeconds(expiresIn))
-                .claim("scope", scopes)
-                .build();
-
-        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+//        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        return "";
     }
 
     public Customer findCustomerByEmail(final String email) {
