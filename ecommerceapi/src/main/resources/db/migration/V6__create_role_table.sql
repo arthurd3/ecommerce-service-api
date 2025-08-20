@@ -3,7 +3,7 @@ CREATE TABLE role (
       name VARCHAR(255) NOT NULL UNIQUE
 );
 
-INSERT INTO role (role_id ,name) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO role (role_id ,name) VALUES (1, 'ADMIN');
 INSERT INTO role (role_id ,name) VALUES (2,'MERCHANT_PREMIUM');
 INSERT INTO role (role_id ,name) VALUES (3,'MERCHANT');
 INSERT INTO role (role_id ,name) VALUES (4,'VIP');

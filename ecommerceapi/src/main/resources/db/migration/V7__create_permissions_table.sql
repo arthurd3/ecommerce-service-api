@@ -21,20 +21,20 @@ INSERT INTO permission (name) VALUES
 
 INSERT INTO role_permissions (role_id, permission_id)
 SELECT
-    (SELECT role_id FROM role WHERE name = 'ROLE_CUSTOMER'),
+    (SELECT role_id FROM role WHERE name = 'BASIC'),
     p.permission_id
 FROM permission p
 WHERE p.name IN ('ORDER:CREATE', 'ACCOUNT:EDIT_OWN', 'ACCOUNT:DELETE_OWN');
 
 INSERT INTO role_permissions (role_id, permission_id)
 SELECT
-    (SELECT role_id FROM role WHERE name = 'ROLE_MERCHANT'),
+    (SELECT role_id FROM role WHERE name = 'MERCHANT'),
     p.permission_id
 FROM permission p
 WHERE p.name IN ('PRODUCT:CREATE', 'PRODUCT:EDIT', 'ORDER:DELETE', 'ACCOUNT:EDIT_OWN');
 
 INSERT INTO role_permissions (role_id, permission_id)
 SELECT
-    (SELECT role_id FROM role WHERE name = 'ROLE_ADMIN'),
+    (SELECT role_id FROM role WHERE name = 'ADMIN'),
     p.permission_id
 FROM permission p;
