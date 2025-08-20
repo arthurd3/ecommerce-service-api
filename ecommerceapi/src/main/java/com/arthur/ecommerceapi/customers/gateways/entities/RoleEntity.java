@@ -1,9 +1,9 @@
 package com.arthur.ecommerceapi.customers.gateways.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.Set;
-
 
 @Entity
 @Table(name = "role")
@@ -23,25 +23,23 @@ public class RoleEntity {
     )
     private Set<PermissionEntity> permission;
 
-    public enum RoleValues {
+    @Getter
+    public enum RoleEntityValues {
 
-        ADMIN(1L),
-        MERCHANT_PREMIUM(2L),
-        MERCHANT(3L),
-        VIP(4L),
-        BASIC(5L);
+        ADMIN(1L , "ADMIN"),
+        MERCHANT_PREMIUM(2L , "MERCHANT_PREMIUM"),
+        MERCHANT(3L , "MERCHANT"),
+        CUSTOMER_PREMIUM(4L , "VIP"),
+        CUSTOMER(5L ,  "BASIC");
 
-        final long roleId;
+        final Long roleId;
+        final String name;
 
-        RoleValues(long roleId) {
+        RoleEntityValues(final Long roleId , final String name) {
             this.roleId = roleId;
-        }
-
-        public long getRoleId() {
-            return roleId;
+            this.name = "ROLE_" + name;
         }
 
     }
-
 
 }
