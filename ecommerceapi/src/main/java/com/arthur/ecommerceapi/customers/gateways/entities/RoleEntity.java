@@ -2,6 +2,8 @@ package com.arthur.ecommerceapi.customers.gateways.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 
 @Entity
 @Table(name = "role")
@@ -12,7 +14,14 @@ public class RoleEntity {
     @Column(name = "role_id")
     private Long roleId;
     private String name;
-//    private Set<Permission> permission;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "role_permissions",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private Set<PermissionEntity> permission;
 
     public enum RoleValues {
 
