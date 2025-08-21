@@ -32,8 +32,8 @@ public class CustomerGatewayImpl implements CustomerGateway {
 
     @Override
     public Customer findByEmail(String email) {
-        return repository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+        return mapper.customerToDomain(repository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email)));
     }
 
     @Override

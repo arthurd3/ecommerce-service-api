@@ -7,8 +7,6 @@ import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.roles.gateways.mappers.PermissionMapper;
 import com.arthur.ecommerceapi.roles.gateways.mappers.RoleMapper;
-import com.arthur.ecommerceapi.shared.roles.gateways.mappers.PermissionMapper;
-import com.arthur.ecommerceapi.shared.roles.gateways.mappers.RoleMapper;
 import org.mapstruct.*;
 
 import static org.mapstruct.ReportingPolicy.IGNORE;

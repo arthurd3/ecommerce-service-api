@@ -4,7 +4,6 @@ import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.domain.model.RoleValues;
 import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
 import com.arthur.ecommerceapi.roles.usecases.FindRole;
-import com.arthur.ecommerceapi.shared.roles.usecases.FindRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ public class CreateCustomer {
         validatorCustomer.existsByEmailAndPhone(customer.getEmail(), customer.getPhone());
 
         var customerRole = findRole.findRole(RoleValues.CUSTOMER);
-        
+
         customer.addRole(customerRole);
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
 

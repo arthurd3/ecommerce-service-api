@@ -3,6 +3,7 @@ package com.arthur.ecommerceapi.customers.domain.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -15,7 +16,7 @@ public class Customer {
     private String password;
     private String phone;
     private Address address;
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();;
 
     public void defineAddress(Address address) {
         if(address == null)
