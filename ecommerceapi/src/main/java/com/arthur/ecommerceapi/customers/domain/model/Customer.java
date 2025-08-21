@@ -15,7 +15,7 @@ public class Customer {
     private String password;
     private String phone;
     private Address address;
-//    private Set<Role> roles;
+    private Set<Role> roles;
 
     public void defineAddress(Address address) {
         if(address == null)
@@ -27,5 +27,11 @@ public class Customer {
         }
     }
 
+    public void addRole(final Role role){
+        if(role == null)
+            throw new NullPointerException("Role is null");
+
+        this.getRoles().add(role);
+    }
 
 }

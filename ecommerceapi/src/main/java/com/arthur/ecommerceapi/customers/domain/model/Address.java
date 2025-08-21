@@ -15,7 +15,6 @@ public class Address {
     private String zip;
     private String country;
     private Customer customer;
-    private Set<Role> roles;
 
     public void defineCustomer(final Customer customer){
         if(customer == null)
@@ -24,7 +23,4 @@ public class Address {
         this.customer = customer;
     }
 
-    public void defineRoles(final Role.RoleValues roles){
-
-    }
 }

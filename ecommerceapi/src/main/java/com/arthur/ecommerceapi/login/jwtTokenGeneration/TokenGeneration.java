@@ -17,7 +17,7 @@ public class TokenGeneration {
 
     private final FindCustomer findCustomer;
     private final JwtEncoder jwtEncoder;
-    private final Long expiresIn = 300L;
+    private final Long EXPIRE_IN = 300L;
 
     public TokenGeneration(FindCustomer findCustomer, JwtEncoder jwtEncoder) {
         this.findCustomer = findCustomer;
@@ -26,33 +26,27 @@ public class TokenGeneration {
 
     public String generateToken(final LoginRequestDTO login) {
 
-//        var customer = this.findCustomerByEmail(login.email());
-//
-//        var now = Instant.now();
-//
-//        var scopes = customer.getRoles()
-//                .stream()
-//                .map(Role::getName)
-//                .collect(Collectors.joining(" "));
-//
-//        var claims = JwtClaimsSet.builder()
-//                .issuer("ecommerce-api-realidade4")
-//                .subject(customer.getId().toString())
-//                .issuedAt(now)
-//                .expiresAt(now.plusSeconds(expiresIn))
-//                .claim("scope", scopes)
-//                .build();
+        var customer = this.findCustomerByEmail(login.email());
 
-//        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-        return "";
+        var now = Instant.now();
+
+        var scopes = customer.getRoles()
+                .stream()
+                .map(Role::getName)
+                .collect(Collectors.joining(" "));
+
+        var claims = JwtClaimsSet.builder()
+                .issuer("ecommerce-api-realidade4")
+                .subject(customer.getId().toString())
+                .issuedAt(now)
+                .expiresAt(now.plusSeconds(this.EXPIRE_IN))
+                .claim("scope", scopes)
+                .build();
+
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
     public Customer findCustomerByEmail(final String email) {
         return findCustomer.findByEmail(email);
     }
-
-    public Long getExpiresIn() {
-        return this.expiresIn;
-    }
-
 }
