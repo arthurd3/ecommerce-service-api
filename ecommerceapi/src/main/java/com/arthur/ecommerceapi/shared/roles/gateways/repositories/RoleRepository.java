@@ -1,4 +1,7 @@
 package com.arthur.ecommerceapi.shared.roles.gateways.repositories;
 
-public class RoleRepository {
+import com.arthur.ecommerceapi.customers.gateways.entities.RoleEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
 }

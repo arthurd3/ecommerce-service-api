@@ -49,4 +49,8 @@ public class TokenGeneration {
     public Customer findCustomerByEmail(final String email) {
         return findCustomer.findByEmail(email);
     }
+
+    public Long getExpireIn() {
+        return EXPIRE_IN;
+    }
 }

@@ -13,7 +13,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/auth/v2/")
 @RequiredArgsConstructor
 public class LoginController {
 
@@ -25,11 +25,11 @@ public class LoginController {
     public LoginResponse login(@Valid @RequestBody LoginRequestDTO loginDTO) {
         validatorCustomer.validateLogin(loginDTO);
         var jwtToken = tokenGenerator.generateToken(loginDTO);
-        return new LoginResponse(jwtToken , tokenGenerator.getExpiresIn());
+        return new LoginResponse(jwtToken , tokenGenerator.getExpireIn());
     }
 
     @ResponseStatus(CREATED)
-    @PostMapping
+    @PostMapping("/register")
     public void register(@Valid @RequestBody RegisterRequestDTO dto) {
 
     }

@@ -1,4 +1,4 @@
-package com.arthur.ecommerceapi.shared.roles.repositories;
+package com.arthur.ecommerceapi.shared.roles.gateways;
 
 import com.arthur.ecommerceapi.customers.domain.model.Role;
 
