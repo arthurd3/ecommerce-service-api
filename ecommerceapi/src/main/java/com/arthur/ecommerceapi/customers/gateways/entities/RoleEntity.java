@@ -2,12 +2,15 @@ package com.arthur.ecommerceapi.customers.gateways.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "role")
 @Getter
+@Setter
 public class RoleEntity {
 
     @Id
@@ -22,9 +25,6 @@ public class RoleEntity {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    private Set<PermissionEntity> permission;
+    private Set<PermissionEntity> permissions = new HashSet<>();;
 
-    public Set<PermissionEntity> getPermissions(){
-        return this.permission;
-    }
 }

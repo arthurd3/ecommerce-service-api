@@ -46,7 +46,7 @@ class CreateCustomerTest {
             when(customerGateway.save(any(Customer.class))).thenReturn(customer);
             Customer createdCustomer = createCustomer.create(customer);
 
-            verify(validatorCustomer, times(1)).validate(customer);
+            verify(validatorCustomer, times(1)).existsByEmailAndPhone(customer.getEmail(), customer.getPhone());
             verify(customerGateway, times(1)).save(customer);
 
             assertNotNull(createdCustomer);
@@ -58,12 +58,12 @@ class CreateCustomerTest {
         void shouldThrowUserAlreadyExistsExceptionWithEmail(){
 
             UserAlreadyExistsException exceptionToThrow = new UserAlreadyExistsException("Email already exists");
-            doThrow(exceptionToThrow).when(validatorCustomer).validate(customer);
+            doThrow(exceptionToThrow).when(validatorCustomer).existsByEmailAndPhone(customer.getEmail(), customer.getPhone());
 
             UserAlreadyExistsException exception = assertThrows(UserAlreadyExistsException.class,
                     () -> createCustomer.create(customer));
 
-            verify(validatorCustomer, times(1)).validate(customer);
+            verify(validatorCustomer, times(1)).existsByEmailAndPhone(customer.getEmail(), customer.getPhone());
             verify(customerGateway, never()).save(any(Customer.class));
             assertEquals(exceptionToThrow.getMessage(), exception.getMessage());
         }
@@ -73,12 +73,12 @@ class CreateCustomerTest {
         void shouldThrowUserAlreadyExistsExceptionWithPhone(){
 
             UserAlreadyExistsException exceptionToThrow = new UserAlreadyExistsException("Phone already exists");
-            doThrow(exceptionToThrow).when(validatorCustomer).validate(customer);
+            doThrow(exceptionToThrow).when(validatorCustomer).existsByEmailAndPhone(customer.getEmail(), customer.getPhone());
 
             UserAlreadyExistsException exception = assertThrows(UserAlreadyExistsException.class,
                     () -> createCustomer.create(customer));
 
-            verify(validatorCustomer, times(1)).validate(customer);
+            verify(validatorCustomer, times(1)).existsByEmailAndPhone(customer.getEmail(), customer.getPhone());
             verify(customerGateway, never()).save(any(Customer.class));
             assertEquals(exceptionToThrow.getMessage(), exception.getMessage());
         }

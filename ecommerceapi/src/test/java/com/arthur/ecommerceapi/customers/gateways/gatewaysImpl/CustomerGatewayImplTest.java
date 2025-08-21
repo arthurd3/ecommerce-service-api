@@ -70,7 +70,7 @@ class CustomerGatewayImplTest {
         @DisplayName("Should throw DataIntegrityViolationException on save duplicated e-mail")
         void shouldThrowExceptionWhenSavingCustomerWithDuplicateEmail() {
 
-            CustomerEntity existingCustomer = new CustomerEntity(null, "Jose Original", "jose@gmail.com", "123", "111", null);
+            CustomerEntity existingCustomer = new CustomerEntity(null, "Jose Original", "jose@gmail.com", "123", "111", null , null);
             repository.save(existingCustomer);
             entityManager.flush();
 

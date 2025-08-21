@@ -44,7 +44,7 @@ class ValidatorCustomerTest {
             when(customerGateway.existsByEmail(customer.getEmail())).thenReturn(false);
             when(customerGateway.existsByPhone(customer.getPhone())).thenReturn(false);
 
-            assertDoesNotThrow(() -> validator.validate(customer));
+            assertDoesNotThrow(() -> validator.existsByEmailAndPhone(customer.getEmail(), customer.getPhone()));
 
             verify(customerGateway , times(1)).existsByEmail(customer.getEmail());
             verify(customerGateway , times(1)).existsByPhone(customer.getPhone());
@@ -56,7 +56,7 @@ class ValidatorCustomerTest {
             when(customerGateway.existsByEmail(customer.getEmail())).thenReturn(true);
 
             EmailAlreadyExistsException exception = assertThrows(
-                    EmailAlreadyExistsException.class , () -> validator.validate(customer));
+                    EmailAlreadyExistsException.class , () -> validator.existsByEmailAndPhone(customer.getEmail(), customer.getPhone()));
 
             assertEquals("Email already exists", exception.getMessage());
             verify(customerGateway , times(1)).existsByEmail(customer.getEmail());
@@ -70,7 +70,7 @@ class ValidatorCustomerTest {
             when(customerGateway.existsByPhone(customer.getPhone())).thenReturn(true);
 
             PhoneAlreadyExistsException exception = assertThrows(
-                    PhoneAlreadyExistsException.class , () -> validator.validate(customer));
+                    PhoneAlreadyExistsException.class , () -> validator.existsByEmailAndPhone(customer.getEmail(), customer.getPhone()));
 
             assertEquals("Phone already exists", exception.getMessage());
             verify(customerGateway , times(1)).existsByEmail(customer.getEmail());

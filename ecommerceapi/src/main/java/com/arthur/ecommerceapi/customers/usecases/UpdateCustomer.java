@@ -13,7 +13,7 @@ public class UpdateCustomer {
     private final ValidatorCustomer validatorCustomer;
 
     public Customer update(Customer updatedCustomer){
-        validatorCustomer.validate(updatedCustomer);
+        validatorCustomer.existsByEmailAndPhone(updatedCustomer.getEmail(), updatedCustomer.getPhone());
         return customerGateway.update(updatedCustomer);
     }
 }

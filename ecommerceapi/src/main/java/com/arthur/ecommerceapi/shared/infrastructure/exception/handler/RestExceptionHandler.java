@@ -100,6 +100,18 @@ public class RestExceptionHandler{
                 .build();
     }
 
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ExceptionFilters illegalArgumentException(RoleNotFoundException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(NOT_FOUND.value())
+                .title("RoleNotFoundException")
+                .build();
+    }
+
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(OrderNotFoundExecption.class)

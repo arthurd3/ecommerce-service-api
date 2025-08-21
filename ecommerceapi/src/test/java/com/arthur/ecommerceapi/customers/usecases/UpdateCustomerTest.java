@@ -1,11 +1,8 @@
 package com.arthur.ecommerceapi.customers.usecases;
 
-import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
-import com.arthur.ecommerceapi.customers.gateways.AddressGateway;
 import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
-import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
 import com.arthur.ecommerceapi.testFactory.DataTestFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,7 +52,7 @@ class UpdateCustomerTest {
             assertEquals(customer.getName(), updatedCustomer.getName());
             assertEquals(customer.getEmail(), updatedCustomer.getEmail());
 
-            verify(validatorCustomer, times(1)).validate(customer);
+            verify(validatorCustomer, times(1)).existsByEmailAndPhone(customer.getEmail(), customer.getPhone());
             verify(customerGateway , times(1)).update(customer);
         }
 
@@ -73,7 +69,7 @@ class UpdateCustomerTest {
                     () -> updateCustomer.update(customer));
 
             assertEquals("User not found with id: " + customerId, exception.getMessage());
-            verify(validatorCustomer, times(1)).validate(customer);
+            verify(validatorCustomer, times(1)).existsByEmailAndPhone(customer.getEmail(), customer.getPhone());
             verify(customerGateway , times(1)).update(customer);
         }
 

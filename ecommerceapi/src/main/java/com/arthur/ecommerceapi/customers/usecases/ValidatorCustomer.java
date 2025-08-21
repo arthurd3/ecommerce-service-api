@@ -7,7 +7,6 @@ import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
 import com.arthur.ecommerceapi.login.dtos.request.LoginRequestDTO;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -19,11 +18,11 @@ public class ValidatorCustomer {
     private final CustomerGateway customerGateway;
     private final PasswordEncoder passwordEncoder;
 
-    public void validate(final Customer customer) {
-        if (customerGateway.existsByEmail(customer.getEmail()))
+    public void existsByEmailAndPhone(final String email, final String phone) {
+        if (customerGateway.existsByEmail(email))
             throw new EmailAlreadyExistsException("Email already exists");
 
-        if(customerGateway.existsByPhone(customer.getPhone()))
+        if(customerGateway.existsByPhone(phone))
             throw new PhoneAlreadyExistsException("Phone already exists");
     }
 
