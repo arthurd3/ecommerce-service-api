@@ -1,4 +1,4 @@
-package com.arthur.ecommerceapi.login.jwtTokenGeneration;
+package com.arthur.ecommerceapi.security.jwt;
 
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.domain.model.Role;
@@ -36,7 +36,7 @@ public class TokenGeneration {
                 .collect(Collectors.joining(" "));
 
         var claims = JwtClaimsSet.builder()
-                .issuer("ecommerce-api-realidade4")
+                .issuer("ecommerceReal")
                 .subject(customer.getId().toString())
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(this.EXPIRE_IN))

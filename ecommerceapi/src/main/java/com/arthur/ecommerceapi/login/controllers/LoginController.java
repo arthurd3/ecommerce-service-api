@@ -4,7 +4,7 @@ import com.arthur.ecommerceapi.customers.usecases.ValidatorCustomer;
 import com.arthur.ecommerceapi.login.dtos.request.LoginRequestDTO;
 import com.arthur.ecommerceapi.login.dtos.request.RegisterRequestDTO;
 import com.arthur.ecommerceapi.login.dtos.response.LoginResponse;
-import com.arthur.ecommerceapi.login.jwtTokenGeneration.TokenGeneration;
+import com.arthur.ecommerceapi.security.jwt.TokenGeneration;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

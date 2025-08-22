@@ -33,7 +33,7 @@ public class ValidatorCustomer {
 
     public void validateLogin(final LoginRequestDTO login){
         var originalCustomer = customerGateway.findByEmail(login.email());
-        
+
         if(!passwordEncoder.matches(login.password(), originalCustomer.getPassword())){
             throw new BadCredentialsException("Invalid credentials");
         }

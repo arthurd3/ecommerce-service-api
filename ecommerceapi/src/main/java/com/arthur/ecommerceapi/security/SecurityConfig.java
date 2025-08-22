@@ -1,4 +1,4 @@
-package com.arthur.ecommerceapi.shared.security;
+package com.arthur.ecommerceapi.security;
 
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
