@@ -15,18 +15,14 @@ import java.util.stream.Collectors;
 @Component
 public class TokenGeneration {
 
-    private final FindCustomer findCustomer;
     private final JwtEncoder jwtEncoder;
     private final Long EXPIRE_IN = 300L;
 
-    public TokenGeneration(FindCustomer findCustomer, JwtEncoder jwtEncoder) {
-        this.findCustomer = findCustomer;
+    public TokenGeneration(JwtEncoder jwtEncoder) {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String generateToken(final LoginRequestDTO login) {
-
-        var customer = this.findCustomerByEmail(login.email());
+    public String generateToken(final Customer customer) {
 
         var now = Instant.now();
 
@@ -44,10 +40,6 @@ public class TokenGeneration {
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-    }
-
-    public Customer findCustomerByEmail(final String email) {
-        return findCustomer.findByEmail(email);
     }
 
     public Long getExpireIn() {

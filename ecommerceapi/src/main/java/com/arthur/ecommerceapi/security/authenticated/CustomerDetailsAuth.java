@@ -7,11 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class CustomerAuthenticated implements UserDetails {
+public class CustomerDetailsAuth implements UserDetails {
 
     private final Customer customer;
 
-    public CustomerAuthenticated(final Customer customer) {
+    public CustomerDetailsAuth(final Customer customer) {
         this.customer = customer;
     }
 

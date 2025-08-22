@@ -15,6 +15,6 @@ public class CustomerDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
-        return new CustomerAuthenticated(findCustomer.findByEmail(email));
+        return new CustomerDetailsAuth(findCustomer.findByEmail(email));
     }
 }
