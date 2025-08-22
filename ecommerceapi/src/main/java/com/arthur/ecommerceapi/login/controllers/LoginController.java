@@ -4,6 +4,8 @@ import com.arthur.ecommerceapi.customers.usecases.ValidatorCustomer;
 import com.arthur.ecommerceapi.login.dtos.request.LoginRequestDTO;
 import com.arthur.ecommerceapi.login.dtos.request.RegisterRequestDTO;
 import com.arthur.ecommerceapi.login.dtos.response.LoginResponse;
+import com.arthur.ecommerceapi.login.usecases.CustomerAuthenticate;
+import com.arthur.ecommerceapi.security.authenticated.CustomerAuthenticated;
 import com.arthur.ecommerceapi.security.jwt.TokenGeneration;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +19,12 @@ import static org.springframework.http.HttpStatus.OK;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final ValidatorCustomer validatorCustomer;
-    private final TokenGeneration tokenGenerator;
+    private final CustomerAuthenticate customerAuthenticated;
 
     @ResponseStatus(OK)
     @PostMapping("/login")
     public LoginResponse login(@Valid @RequestBody LoginRequestDTO loginDTO) {
-        validatorCustomer.validateLogin(loginDTO);
-        var jwtToken = tokenGenerator.generateToken(loginDTO);
-        return new LoginResponse(jwtToken , tokenGenerator.getExpireIn());
+        return customerAuthenticated.authenticateLogin(loginDTO);
     }
 
     @ResponseStatus(CREATED)

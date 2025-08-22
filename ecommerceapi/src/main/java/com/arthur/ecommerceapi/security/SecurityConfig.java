@@ -34,7 +34,6 @@ public class SecurityConfig {
     @Value("${jwt.public.key}")
     private RSAPublicKey publicKey;
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
