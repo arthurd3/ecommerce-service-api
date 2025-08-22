@@ -2,8 +2,6 @@ package com.arthur.ecommerceapi.security.jwt;
 
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.domain.model.Role;
-import com.arthur.ecommerceapi.customers.usecases.FindCustomer;
-import com.arthur.ecommerceapi.login.dtos.request.LoginRequestDTO;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
