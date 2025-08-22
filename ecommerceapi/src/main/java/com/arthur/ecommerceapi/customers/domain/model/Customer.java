@@ -1,10 +1,12 @@
 package com.arthur.ecommerceapi.customers.domain.model;
 
+import com.arthur.ecommerceapi.customers.gateways.entities.PermissionEntity;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -33,6 +35,12 @@ public class Customer {
             throw new NullPointerException("Role is null");
 
         this.getRoles().add(role);
+    }
+
+    public Set<Permission> getPermissions() {
+        return this.roles.stream()
+                .flatMap(role -> role.getPermission().stream())
+                .collect(Collectors.toSet());
     }
 
 }
