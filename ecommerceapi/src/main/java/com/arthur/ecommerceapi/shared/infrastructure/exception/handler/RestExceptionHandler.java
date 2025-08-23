@@ -121,7 +121,19 @@ public class RestExceptionHandler{
                 .details(ex.getMessage())
                 .devMsg(ex.getClass().getName())
                 .status(NOT_FOUND.value())
-                .title("OrderNotFoundExecption")
+                .title("OrderNotFoundException")
+                .build();
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(BadLoginCredentialsException.class)
+    public ExceptionFilters illegalArgumentException(BadLoginCredentialsException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(NOT_FOUND.value())
+                .title("BadLoginCredentialsException")
                 .build();
     }
 

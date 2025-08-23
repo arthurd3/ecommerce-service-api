@@ -25,4 +25,5 @@ public interface CustomerGateway {
     Customer update(final Customer updatedCustomer);
 
     void delete(final Long id);
+
 }

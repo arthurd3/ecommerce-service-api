@@ -1,6 +1,5 @@
 package com.arthur.ecommerceapi.customers.domain.model;
 
-import com.arthur.ecommerceapi.customers.gateways.entities.PermissionEntity;
 import lombok.Getter;
 import lombok.Setter;
 

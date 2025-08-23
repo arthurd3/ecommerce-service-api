@@ -1,6 +1,7 @@
 package com.arthur.ecommerceapi.customers.usecases;
 
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
+import com.arthur.ecommerceapi.customers.exceptions.BadLoginCredentialsException;
 import com.arthur.ecommerceapi.customers.exceptions.EmailAlreadyExistsException;
 import com.arthur.ecommerceapi.customers.exceptions.PhoneAlreadyExistsException;
 import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
@@ -35,7 +36,7 @@ public class ValidatorCustomer {
         var originalCustomer = customerGateway.findByEmail(login.email());
 
         if(!passwordEncoder.matches(login.password(), originalCustomer.getPassword())){
-            throw new BadCredentialsException("Invalid credentials");
+            throw new BadLoginCredentialsException("Invalid credentials");
         }
 
     }

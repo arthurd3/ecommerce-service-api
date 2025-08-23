@@ -1,5 +1,6 @@
 package com.arthur.ecommerceapi.login.usecases;
 
+import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.usecases.FindCustomer;
 import com.arthur.ecommerceapi.customers.usecases.ValidatorCustomer;
 import com.arthur.ecommerceapi.login.dtos.request.LoginRequestDTO;
@@ -29,7 +30,6 @@ public class AuthenticateLogin {
         validatorCustomer.validateLogin(loginRequestDTO);
 
         var customer = findCustomer.findByEmail(loginRequestDTO.email());
-
         var customerAuth = new UsernamePasswordAuthenticationToken(loginRequestDTO.email(), loginRequestDTO.password());
 
         this.authenticationManager.authenticate(customerAuth);
