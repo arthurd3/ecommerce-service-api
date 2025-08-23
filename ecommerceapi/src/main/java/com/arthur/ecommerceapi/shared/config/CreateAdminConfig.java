@@ -1,9 +1,8 @@
 package com.arthur.ecommerceapi.shared.config;
 
-import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.domain.model.RoleValues;
-import com.arthur.ecommerceapi.customers.gateways.mappers.GatewayMapper;
+import com.arthur.ecommerceapi.customers.gateways.mappers.CustomerGatewayMapper;
 import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
 import com.arthur.ecommerceapi.roles.usecases.FindRole;
 import jakarta.transaction.Transactional;
@@ -18,9 +17,9 @@ public class CreateAdminConfig implements CommandLineRunner {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final FindRole findRole;
-    private final GatewayMapper mapper;
+    private final CustomerGatewayMapper mapper;
 
-    public CreateAdminConfig(CustomerRepository customerRepository, PasswordEncoder passwordEncoder, FindRole findRole, GatewayMapper mapper) {
+    public CreateAdminConfig(CustomerRepository customerRepository, PasswordEncoder passwordEncoder, FindRole findRole, CustomerGatewayMapper mapper) {
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
         this.findRole = findRole;

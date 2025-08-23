@@ -1,6 +1,6 @@
 package com.arthur.ecommerceapi.orders.gateways.gatewayImpl;
 
-import com.arthur.ecommerceapi.customers.gateways.mappers.GatewayMapper;
+import com.arthur.ecommerceapi.customers.gateways.mappers.CustomerGatewayMapper;
 import com.arthur.ecommerceapi.orders.domain.model.Order;
 import com.arthur.ecommerceapi.orders.exceptions.OrderNotFoundExecption;
 import com.arthur.ecommerceapi.orders.gateways.OrderGateway;
@@ -18,15 +18,11 @@ public class OrderGatewayImpl implements OrderGateway {
 
     private final OrderRepository repository;
     private final ProductGatewayMapper productMapper;
-    private final GatewayMapper gatewayMapper;
+    private final CustomerGatewayMapper mapper;
 
     @Override
     public Order create(final OrderEntity order) {
         OrderEntity savedOrder = repository.save(order);
-
-        productMapper.toDomain(order.getProduct());
-                gatewayMapper.customerToDomain(order.getCustomer());
-                gatewayMapper.addressToDomain(order.getToAddress());
 
         return orderToDomain(savedOrder);
     }
@@ -41,8 +37,8 @@ public class OrderGatewayImpl implements OrderGateway {
         return Order.createOrder(
                 order.getId(),
                 productMapper.toDomain(order.getProduct()),
-                gatewayMapper.customerToDomain(order.getCustomer()),
-                gatewayMapper.addressToDomain(order.getToAddress()),
+                mapper.customerToDomain(order.getCustomer()),
+                mapper.addressToDomain(order.getToAddress()),
                 order.getSpecification(),
                 order.getStatus()
         );

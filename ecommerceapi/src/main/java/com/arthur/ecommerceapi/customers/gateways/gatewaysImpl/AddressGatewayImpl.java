@@ -4,7 +4,7 @@ import com.arthur.ecommerceapi.customers.domain.model.Address;
 import com.arthur.ecommerceapi.customers.exceptions.AddressNotFoundException;
 import com.arthur.ecommerceapi.customers.gateways.AddressGateway;
 import com.arthur.ecommerceapi.customers.gateways.entities.AddressEntity;
-import com.arthur.ecommerceapi.customers.gateways.mappers.GatewayMapper;
+import com.arthur.ecommerceapi.customers.gateways.mappers.CustomerGatewayMapper;
 import com.arthur.ecommerceapi.customers.repositories.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class AddressGatewayImpl implements AddressGateway {
 
     private final AddressRepository repository;
-    private final GatewayMapper mapper;
+    private final CustomerGatewayMapper mapper;
 
     @Override
     public Address save(final Address address) {

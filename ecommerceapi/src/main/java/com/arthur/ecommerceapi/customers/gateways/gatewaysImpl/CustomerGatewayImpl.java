@@ -4,7 +4,7 @@ import com.arthur.ecommerceapi.customers.domain.model.Customer;
 import com.arthur.ecommerceapi.customers.exceptions.UserNotFoundException;
 import com.arthur.ecommerceapi.customers.gateways.CustomerGateway;
 import com.arthur.ecommerceapi.customers.gateways.entities.CustomerEntity;
-import com.arthur.ecommerceapi.customers.gateways.mappers.GatewayMapper;
+import com.arthur.ecommerceapi.customers.gateways.mappers.CustomerGatewayMapper;
 import com.arthur.ecommerceapi.customers.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class CustomerGatewayImpl implements CustomerGateway {
 
     private final CustomerRepository repository;
-    private final GatewayMapper mapper;
+    private final CustomerGatewayMapper mapper;
 
     @Override
     public Customer findById(final Long id) {
