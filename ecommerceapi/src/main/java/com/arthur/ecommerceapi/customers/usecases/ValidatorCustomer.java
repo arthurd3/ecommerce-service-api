@@ -32,13 +32,14 @@ public class ValidatorCustomer {
             throw new UserNotFoundException("Customer not exists");
     }
 
-    public void validateLogin(final LoginRequestDTO login){
+    public Customer validateLogin(final LoginRequestDTO login){
         var originalCustomer = customerGateway.findByEmail(login.email());
 
         if(!passwordEncoder.matches(login.password(), originalCustomer.getPassword())){
             throw new BadLoginCredentialsException("Invalid credentials");
         }
 
+        return originalCustomer;
     }
 
 }

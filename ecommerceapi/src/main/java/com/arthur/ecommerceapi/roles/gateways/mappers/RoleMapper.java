@@ -13,5 +13,4 @@ public interface RoleMapper {
 
     RoleEntity toEntity(Role domain);
 
-
 }

@@ -38,7 +38,7 @@ public class Customer {
 
     public Set<Permission> getPermissions() {
         return this.roles.stream()
-                .flatMap(role -> role.getPermission().stream())
+                .flatMap(role -> role.getPermissions().stream())
                 .collect(Collectors.toSet());
     }
 

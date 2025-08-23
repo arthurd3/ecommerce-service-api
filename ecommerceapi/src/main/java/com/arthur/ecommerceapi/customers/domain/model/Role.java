@@ -13,6 +13,6 @@ public class Role {
     private Long roleId;
     private String name;
 
-    private Set<Permission> permission = new HashSet<>();
+    private Set<Permission> permissions = new HashSet<>();
 
 }
