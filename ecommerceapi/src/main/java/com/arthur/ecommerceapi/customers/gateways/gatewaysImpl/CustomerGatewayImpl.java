@@ -37,7 +37,6 @@ public class CustomerGatewayImpl implements CustomerGateway {
         if (customer.isEmpty())
             throw new UserNotFoundException("User not found with email: " + email);
 
-        customer.get().getPermissions();
         return mapper.customerToDomain(customer.get());
     }
 

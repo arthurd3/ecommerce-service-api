@@ -44,9 +44,4 @@ public class CustomerEntity {
     )
     private Set<RoleEntity> roles = new HashSet<>();
 
-    public Set<PermissionEntity> getPermissions() {
-        return this.roles.stream()
-                .flatMap(role -> role.getPermissions().stream())
-                .collect(Collectors.toSet());
-    }
 }

@@ -36,7 +36,6 @@ public interface CustomerGatewayMapper {
     @Mapping(target = "id", ignore = true)
     void editAddressEntityFromDomain(Address domainSource, @MappingTarget AddressEntity entityTarget);
 
-
     //PERMISSION
     Permission toDomain(PermissionEntity entity);
 
