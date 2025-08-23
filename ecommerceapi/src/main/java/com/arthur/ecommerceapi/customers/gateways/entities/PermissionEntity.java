@@ -1,9 +1,7 @@
 package com.arthur.ecommerceapi.customers.gateways.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +12,7 @@ import lombok.Setter;
 public class PermissionEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "permission_id")
     private Long id;
 

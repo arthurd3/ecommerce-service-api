@@ -31,6 +31,7 @@ public class AuthenticateLogin {
         var customer = findCustomer.findByEmail(loginRequestDTO.email());
 
         var customerAuth = new UsernamePasswordAuthenticationToken(loginRequestDTO.email(), loginRequestDTO.password());
+
         this.authenticationManager.authenticate(customerAuth);
 
         var jwtToken = tokenGenerator.generateToken(customer);
