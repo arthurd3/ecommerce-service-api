@@ -12,11 +12,9 @@ import org.springframework.stereotype.Service;
 public class RegisterCustomer {
 
     private final CreateCustomer createCustomer;
-    private final ValidatorCustomer validatorCustomer;
 
-    public void registerCustomer(final Customer registerRequestDTO){
-        validatorCustomer.existsByEmailAndPhone(registerRequestDTO.email(), registerRequestDTO.phone());
-        createCustomer.create()
+    public void registerCustomer(final Customer customerRegister) {
+        createCustomer.create(customerRegister);
     }
 
 }

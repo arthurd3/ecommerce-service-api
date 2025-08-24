@@ -1,5 +1,6 @@
 package com.arthur.ecommerceapi.login.controllers;
 
+import com.arthur.ecommerceapi.customers.controllers.mappers.CustomerMapper;
 import com.arthur.ecommerceapi.login.dtos.request.LoginRequestDTO;
 import com.arthur.ecommerceapi.login.dtos.request.RegisterRequestDTO;
 import com.arthur.ecommerceapi.login.dtos.response.LoginResponse;
@@ -19,6 +20,7 @@ public class LoginController {
 
     private final AuthenticateLogin customerAuthenticated;
     private final RegisterCustomer registerCustomer;
+    private final CustomerMapper customerMapper;
 
     @ResponseStatus(OK)
     @PostMapping("/login")
@@ -29,6 +31,6 @@ public class LoginController {
     @ResponseStatus(CREATED)
     @PostMapping("/register")
     public void register(@Valid @RequestBody RegisterRequestDTO dto) {
-        var customerRegister = registerCustomer.registerCustomer(dto);
+        var customerRegister = registerCustomer.registerCustomer(customerMapper.registerToDomain(dto));
     }
 }
