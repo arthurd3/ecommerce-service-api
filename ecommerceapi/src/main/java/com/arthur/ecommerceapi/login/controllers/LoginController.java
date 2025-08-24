@@ -4,6 +4,7 @@ import com.arthur.ecommerceapi.login.dtos.request.LoginRequestDTO;
 import com.arthur.ecommerceapi.login.dtos.request.RegisterRequestDTO;
 import com.arthur.ecommerceapi.login.dtos.response.LoginResponse;
 import com.arthur.ecommerceapi.login.usecases.AuthenticateLogin;
+import com.arthur.ecommerceapi.login.usecases.RegisterCustomer;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,6 @@ public class LoginController {
     @ResponseStatus(CREATED)
     @PostMapping("/register")
     public void register(@Valid @RequestBody RegisterRequestDTO dto) {
-
+        var customerRegister = registerCustomer.registerCustomer(dto);
     }
 }
