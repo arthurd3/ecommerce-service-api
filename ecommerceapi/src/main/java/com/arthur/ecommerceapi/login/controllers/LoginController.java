@@ -17,6 +17,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class LoginController {
 
     private final AuthenticateLogin customerAuthenticated;
+    private final RegisterCustomer registerCustomer;
 
     @ResponseStatus(OK)
     @PostMapping("/login")
