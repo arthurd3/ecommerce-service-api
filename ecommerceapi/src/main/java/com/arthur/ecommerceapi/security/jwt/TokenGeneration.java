@@ -27,6 +27,7 @@ public class TokenGeneration {
         var scopes = customer.getRoles()
                 .stream()
                 .map(Role::getName)
+                .map(name -> "ROLE_" + name)
                 .collect(Collectors.joining(" "));
 
         var claims = JwtClaimsSet.builder()
