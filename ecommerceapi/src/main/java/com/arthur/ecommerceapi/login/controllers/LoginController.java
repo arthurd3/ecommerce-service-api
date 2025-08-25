@@ -30,7 +30,11 @@ public class LoginController {
 
     @ResponseStatus(CREATED)
     @PostMapping("/register")
-    public void register(@Valid @RequestBody RegisterRequestDTO dto) {
+    public LoginResponse register(@Valid @RequestBody RegisterRequestDTO dto) {
         var customerRegister = registerCustomer.registerCustomer(customerMapper.registerToDomain(dto));
+
+        LoginRequestDTO login = new LoginRequestDTO(customerRegister.getEmail(), customerRegister.getPassword());
+
+        return customerAuthenticated.authenticateLogin(login);
     }
 }

@@ -11,8 +11,8 @@ public class RegisterCustomer {
 
     private final CreateCustomer createCustomer;
 
-    public void registerCustomer(final Customer customerRegister) {
-        createCustomer.create(customerRegister);
+    public Customer registerCustomer(final Customer customerRegister) {
+        return createCustomer.create(customerRegister);
     }
 
 }
