@@ -22,19 +22,17 @@ public class CustomerDetailsAuth implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Permission> allPermissions = customer.getRoles().stream()
+
+        Set<SimpleGrantedAuthority> permissions = customer.getRoles().stream()
                 .flatMap(role -> role.getPermissions().stream())
+                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
                 .collect(Collectors.toSet());
 
         Set<SimpleGrantedAuthority> roles = customer.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toSet());
 
-        Set<SimpleGrantedAuthority> authorities = allPermissions.stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
-                .collect(Collectors.toSet());
-
-        return Stream.concat(authorities.stream(), roles.stream())
+        return Stream.concat(permissions.stream(), roles.stream())
                 .collect(Collectors.toList());
     }
 

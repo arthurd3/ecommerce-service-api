@@ -17,4 +17,8 @@ public class CustomerDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
         return new CustomerDetailsAuth(findCustomer.findByEmail(email));
     }
+
+    public UserDetails loadUserById(final Long customerId) throws UsernameNotFoundException {
+        return new CustomerDetailsAuth(findCustomer.findById(customerId));
+    }
 }
