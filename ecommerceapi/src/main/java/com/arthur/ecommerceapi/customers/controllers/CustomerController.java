@@ -43,7 +43,6 @@ public class CustomerController {
     }
 
     @ResponseStatus(OK)
-    @PreAuthorize("hasAuthority('PRODUCT:EDIT')")
     @GetMapping("{id}")
     public CustomerResponseDTO findById(@PathVariable final Long id){
         return mapper.toDTO(findCustomer.findById(id));

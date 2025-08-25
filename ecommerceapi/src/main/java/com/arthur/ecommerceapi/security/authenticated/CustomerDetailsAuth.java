@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class CustomerDetailsAuth implements UserDetails {
@@ -25,8 +26,15 @@ public class CustomerDetailsAuth implements UserDetails {
                 .flatMap(role -> role.getPermissions().stream())
                 .collect(Collectors.toSet());
 
-        return allPermissions.stream()
+        Set<SimpleGrantedAuthority> roles = customer.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toSet());
+
+        Set<SimpleGrantedAuthority> authorities = allPermissions.stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.getName()))
+                .collect(Collectors.toSet());
+
+        return Stream.concat(authorities.stream(), roles.stream())
                 .collect(Collectors.toList());
     }
 

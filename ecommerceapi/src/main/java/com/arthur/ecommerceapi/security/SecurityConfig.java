@@ -44,6 +44,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/v1/**").permitAll()
+                        .requestMatchers("/api/v1/customer/**").hasAuthority("PRODUCT:EDIT")
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
