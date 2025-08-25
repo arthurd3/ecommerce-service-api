@@ -33,7 +33,7 @@ public class LoginController {
     public LoginResponse register(@Valid @RequestBody RegisterRequestDTO dto) {
         var customerRegister = registerCustomer.registerCustomer(customerMapper.registerToDomain(dto));
 
-        LoginRequestDTO login = new LoginRequestDTO(customerRegister.getEmail(), customerRegister.getPassword());
+        LoginRequestDTO login = new LoginRequestDTO(customerRegister.getEmail(), dto.password());
 
         return customerAuthenticated.authenticateLogin(login);
     }
